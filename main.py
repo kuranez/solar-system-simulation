@@ -21,62 +21,61 @@ FPS = 60
 # Solar System Bodies
 # Parameters: x, y, radius, mass
 
-sun = Sun(0, 0, 2, constants.sun_mass)
+sun = Sun(0, 0, constants.sun_radius * Body.SCALE, constants.sun_mass)
 sun.draw_line = False
 
 mercury = Planet(
-    -constants.mercury_perihelion / constants.earth_perihelion * constants.AU,
-    0,
+    -constants.mercury_perihelion / constants.earth_perihelion * Body.AU, 0,
     constants.mercury_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
     constants.mercury_mass)
 mercury.y_vel = constants.mercury_velocity
 mercury.draw_line = True
 
 venus = Planet(
-    -constants.venus_perihelion / constants.earth_perihelion * constants.AU, 0,
+    -constants.venus_perihelion / constants.earth_perihelion * Body.AU, 0,
     constants.venus_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
     constants.venus_mass)
 venus.y_vel = constants.venus_velocity
 venus.draw_line = True
 
 earth = Planet(
-    -constants.earth_perihelion / constants.earth_perihelion * constants.AU, 0,
+    -constants.earth_perihelion / constants.earth_perihelion * Body.AU, 0,
     constants.earth_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
     constants.earth_mass)
 earth.y_vel = constants.earth_velocity
 earth.draw_line = True
 
 mars = Planet(
-    -constants.mars_perihelion / constants.earth_perihelion * constants.AU, 0,
+    -constants.mars_perihelion / constants.earth_perihelion * Body.AU, 0,
     constants.mars_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
     constants.mars_mass)
 mars.y_vel = constants.mars_velocity
 mars.draw_line = True
 
 jupiter = Planet(
-    -constants.jupiter_perihelion / constants.earth_perihelion * constants.AU,
-    0, constants.jupiter_radius / constants.earth_radius * 1e9 * Body.SCALE,
+    -constants.jupiter_perihelion / constants.earth_perihelion * Body.AU, 0,
+    constants.jupiter_radius / constants.earth_radius * 1e9 * Body.SCALE,
     constants.jupiter_mass)
 jupiter.y_vel = constants.jupiter_velocity
 earth.draw_line = True
 
 saturn = Planet(
-    -constants.saturn_perihelion / constants.earth_perihelion * constants.AU,
-    0, constants.saturn_radius / constants.earth_radius * 1e9 * Body.SCALE,
+    -constants.saturn_perihelion / constants.earth_perihelion * Body.AU, 0,
+    constants.saturn_radius / constants.earth_radius * 1e9 * Body.SCALE,
     constants.saturn_mass)
 saturn.y_vel = constants.saturn_velocity
 saturn.draw_line = True
 
 uranus = Planet(
-    -constants.uranus_perihelion / constants.earth_perihelion * constants.AU,
-    0, constants.uranus_radius / constants.earth_radius * 1e9 * Body.SCALE,
+    -constants.uranus_perihelion / constants.earth_perihelion * Body.AU, 0,
+    constants.uranus_radius / constants.earth_radius * 1e9 * Body.SCALE,
     constants.uranus_mass)
 uranus.y_vel = constants.uranus_velocity
 uranus.draw_line = True
 
 neptune = Planet(
-    -constants.neptune_perihelion / constants.earth_perihelion * constants.AU,
-    0, constants.neptune_radius / constants.earth_radius * 1e9 * Body.SCALE,
+    -constants.neptune_perihelion / constants.earth_perihelion * Body.AU, 0,
+    constants.neptune_radius / constants.earth_radius * 1e9 * Body.SCALE,
     constants.neptune_mass)
 neptune.draw_line = True
 
@@ -102,15 +101,15 @@ while True:
         if event.type == pygame.KEYDOWN:
             # Adjust Simulation Scale
             if event.key == pygame.K_UP:
-                Body.SCALE += 10 / constants.AU
+                Body.SCALE += 10 / Body.AU
             elif event.key == pygame.K_DOWN:
-                Body.SCALE -= 10 / constants.AU
+                Body.SCALE -= 10 / Body.AU
 
             # Adjust Simulation Spped
             if event.key == pygame.K_RIGHT:
-                constants.TIMESTEP += 3600 * 24
+                Body.TIMESTEP += 3600 * 24
             elif event.key == pygame.K_LEFT:
-                constants.TIMESTEP -= 3600 * 24
+                Body.TIMESTEP -= 3600 * 24
 
             # Toggle Orbit Lines on/off
             if event.key == pygame.K_q:
@@ -147,6 +146,7 @@ while True:
             elif event.key == pygame.K_d:
                 current_solarsystem = outer_planets
 
+    # ---> Draw and update Solar System <---
     DISPLAYSURF.fill(constants.COLOR_BACKGROUND)
 
     for body in current_solarsystem:
@@ -161,30 +161,30 @@ while True:
     # Settings
     scale_text = FONT_2.render("Press UP / DOWN to adjust Simulation Scale",
                                True, constants.COLOR_TEXT)
-    DISPLAYSURF.blit(fps_text, (15, 45))
+    DISPLAYSURF.blit(scale_text, (15, 45))
 
     speed_text = FONT_2.render("Press RIGHT / LEFT to adjust Simulation Speed",
                                True, constants.COLOR_TEXT)
-    DISPLAYSURF.blit(fps_text, (15, 75))
+    DISPLAYSURF.blit(speed_text, (15, 75))
 
     # Orbit Lines
     orbit_text = FONT_2.render(
         "Press Q or Number Keys 1-8 to toggle Orbit Lines", True,
         constants.COLOR_TEXT)
-    DISPLAYSURF.blit(fps_text, (15, 105))
+    DISPLAYSURF.blit(orbit_text, (15, 105))
 
     # Planets
     all_text = FONT_2.render("Press A to show all Planets", True,
                              constants.COLOR_TEXT)
-    DISPLAYSURF.blit(fps_text, (15, 135))
+    DISPLAYSURF.blit(all_text, (15, 135))
 
     inner_text = FONT_2.render("Press S to show Inner Planets", True,
                                constants.COLOR_TEXT)
-    DISPLAYSURF.blit(fps_text, (15, 165))
+    DISPLAYSURF.blit(inner_text, (15, 165))
 
     outer_text = FONT_2.render("Press D to show Outer Planets", True,
                                constants.COLOR_TEXT)
-    DISPLAYSURF.blit(fps_text, (15, 195))
+    DISPLAYSURF.blit(outer_text, (15, 195))
 
     # Display Planet Names and Distances
     sun_surface = FONT_1.render("Distance from the Sun", True,

@@ -10,8 +10,8 @@ class Body:
     # Constants
     AU = 149.6e9  # Astronomical Unit, distance in meters
     G = 6.67428e-11  # Gravitational constant
-    SCALE = 400 / AU  # 1 AU = 400 pixels
-    TIMESTEP = 3600 * 24  # seconds in 1 day
+    SCALE = 300 / AU  # 1 AU = 300 pixels
+    TIMESTEP = 3600 * 24.0  # seconds in 1 day
 
     def __init__(self, x, y, radius, mass):
         self.x = x
@@ -36,11 +36,12 @@ class Body:
         x = self.x * self.SCALE + constants.WIDTH / 2
         y = self.y * self.SCALE + constants.HEIGHT / 2
 
-        if len(self.orbit) > 2:  # min 3 points needed
-            del self.orbit[:-10000]
+        if len(self.orbit) >= 3:  # min 3 points needed
+            #del self.orbit[:-10000]
             updated_points = [(x * self.SCALE + constants.WIDTH / 2,
                                y * self.SCALE + constants.HEIGHT / 2)
                               for x, y in self.orbit]
+            #updated_points.append((x,y))
             if self.draw_line:
                 pygame.draw.lines(DISPLAYSURF, self.color, False,
                                   updated_points, 1)
