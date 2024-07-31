@@ -13,7 +13,7 @@ and inspired by tweaks and additions by [@zerot69](https://github.com/zerot69/So
 
 ## Screenshot
 
-![screenshot.png](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/main/screenshot/Screenshot.png)
+![screenshot.png](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/main/screenshot/Screenshot-v1-1.jpg)
 
 ---
 
