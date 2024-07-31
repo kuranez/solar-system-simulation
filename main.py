@@ -2,7 +2,9 @@ import constants
 import pygame
 import sys
 from pygame.locals import QUIT
-from solarsystem import Body, Sun, Planet
+#import solarsystem_scale
+from solarsystem_sim import Body, Sun, Planet
+
 
 # Initialize pygame
 pygame.init()
@@ -21,77 +23,56 @@ FPS = 60
 # Solar System Bodies
 # Parameters: x, y, radius, mass
 
-sun = Sun(0, 0, constants.sun_radius * Body.SCALE, constants.sun_mass)
+sun = Sun(0, 0, 2 * Planet.SCALE * 10 ** 9, 1.98892 * 10 ** 30)
 sun.draw_line = False
 
-mercury = Planet(
-    -constants.mercury_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.mercury_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
-    constants.mercury_mass)
-mercury.y_vel = constants.mercury_velocity
+mercury = Planet(-0.387 * Planet.AU, 0, 5 * Planet.SCALE * 10 ** 9, 3.30 * 10 ** 23)
+mercury.y_vel = 47.4 * 1000
 mercury.draw_line = True
 
-venus = Planet(
-    -constants.venus_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.venus_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
-    constants.venus_mass)
-venus.y_vel = constants.venus_velocity
+venus = Planet(-0.723 * Planet.AU, 0, 9 * Planet.SCALE * 10 ** 9, 4.8685 * 10 ** 24)
+venus.y_vel = 35.02 * 1000
 venus.draw_line = True
 
-earth = Planet(
-    -constants.earth_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.earth_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
-    constants.earth_mass)
-earth.y_vel = constants.earth_velocity
+earth = Planet(-1 * Planet.AU, 0, 10 * Planet.SCALE * 10 ** 9, 5.9722 * 10 ** 24)
+earth.y_vel = 29.783 * 1000
 earth.draw_line = True
 
-mars = Planet(
-    -constants.mars_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.mars_radius / constants.earth_radius * 1e9 * 3 * Body.SCALE,
-    constants.mars_mass)
-mars.y_vel = constants.mars_velocity
+mars = Planet(-1.524 * Planet.AU, 0, 5 * Planet.SCALE * 10 ** 9, 6.39 * 10 ** 23)
+mars.y_vel = 24.077 * 1000
 mars.draw_line = True
 
-jupiter = Planet(
-    -constants.jupiter_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.jupiter_radius / constants.earth_radius * 1e9 * Body.SCALE,
-    constants.jupiter_mass)
-jupiter.y_vel = constants.jupiter_velocity
-earth.draw_line = True
+jupiter = Planet(-5.204 * Planet.AU, 0, 20 * Planet.SCALE * 10 ** 9, 1.898 * 10 ** 27)
+jupiter.y_vel = 13.06 * 1000
+jupiter.draw_line = True
 
-saturn = Planet(
-    -constants.saturn_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.saturn_radius / constants.earth_radius * 1e9 * Body.SCALE,
-    constants.saturn_mass)
-saturn.y_vel = constants.saturn_velocity
+saturn = Planet(-9.573 * Planet.AU, 0, 18 * Planet.SCALE * 10 ** 9, 5.683 * 10 ** 26)
+saturn.y_vel = 9.68 * 1000
 saturn.draw_line = True
 
-uranus = Planet(
-    -constants.uranus_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.uranus_radius / constants.earth_radius * 1e9 * Body.SCALE,
-    constants.uranus_mass)
-uranus.y_vel = constants.uranus_velocity
+uranus = Planet(-19.165 * Planet.AU, 0, 14 * Planet.SCALE * 10 ** 9, 8.681 * 10 ** 25)
+uranus.y_vel = 6.80 * 1000
 uranus.draw_line = True
 
-neptune = Planet(
-    -constants.neptune_perihelion / constants.earth_perihelion * Body.AU, 0,
-    constants.neptune_radius / constants.earth_radius * 1e9 * Body.SCALE,
-    constants.neptune_mass)
+neptune = Planet(-30.178 * Planet.AU, 0, 12 * Planet.SCALE * 10 ** 9, 1.024 * 10 ** 26)
+neptune.y_vel = 5.43 * 1000
 neptune.draw_line = True
 
 # Solar System
 solarsystem = [
-    sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune
+    mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, sun
 ]
 
-inner_planets = [sun, mercury, venus, earth, mars]
+inner_planets = [mercury, venus, earth, mars, sun]
 
-outer_planets = [sun, jupiter, saturn, uranus, neptune]
+outer_planets = [jupiter, saturn, uranus, neptune, sun]
 
 current_solarsystem = solarsystem
 
 # Main Loop
 while True:
+    clock.tick(FPS)
+    DISPLAYSURF.fill(constants.COLOR_BACKGROUND)
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -147,8 +128,6 @@ while True:
                 current_solarsystem = outer_planets
 
     # ---> Draw and update Solar System <---
-    DISPLAYSURF.fill(constants.COLOR_BACKGROUND)
-
     for body in current_solarsystem:
         body.update_position(current_solarsystem)
         body.draw(DISPLAYSURF)
@@ -232,4 +211,3 @@ while True:
     DISPLAYSURF.blit(neptune_surface, (15, 685))
 
     pygame.display.update()
-    clock.tick(FPS)
