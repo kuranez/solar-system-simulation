@@ -1,23 +1,8 @@
-# constants.py 
-
 # Display Variables
 WIDTH, HEIGHT = 1280, 720
+
 COLOR_TEXT = (255, 255, 255)
 COLOR_BACKGROUND = (36, 36, 36)
-
-
-# General
-AU = 149.6e9  # Astronomical Unit in meters
-G = 6.67428e-11  # Gravitational constant
-
-# Scale Factors
-SCALE = 300 / AU  # 1 AU = 300 px
-OUTER_PLANET_SCALE_FACTOR = 0.8  # Outer Planets are 20% smaller
-BASE_SIZE = 50  # Base size for planets in px
-earth_diameter = 12742e3  # Earth's diameter in meters
-
-# Simulation Speed
-TIMESTEP = 3600 * 24.0 # Seconds in 1 day 
 
 # Solar System Colors
 COLOR_SUN = (252, 150, 1)
@@ -46,7 +31,6 @@ jupiter_perihelion = 740.6e9
 saturn_perihelion = 1357.6e9
 uranus_perihelion = 2732.7e9
 neptune_perihelion = 4471.1e9
-
 
 # Radius in meters
 mercury_radius = 4879e3 / 2

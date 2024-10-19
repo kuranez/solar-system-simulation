@@ -1,52 +1,36 @@
-#import constants
-#from solarsystem_sim import Body
+# solarsystem_scale.py
 
-# Solar System Parameters for different Scales
+import constants
 
-# Positions
-# Scale relative to Earth Distance from the Sun
+# Scale calculations
+def scale_planet_size(planet_radius, zoom_factor=1, is_outer_planet=False):
+    """Scale the planet size based on Earth diameter with additional scaling for outer planets."""
+    diameter = planet_radius * 2  # Convert radius to diameter
+    scale_factor = constants.OUTER_PLANET_SCALE_FACTOR if is_outer_planet else 1  # Apply outer planet scaling if needed
+    return (diameter / constants.earth_diameter) * constants.BASE_SIZE * scale_factor * zoom_factor
 
-#mercury_xpos = -constants.mercury_perihelion / constants.earth_perihelion * Body.AU
-#venus_xpos = -constants.venus_perihelion / constants.earth_perihelion * Body.AU
-#earth_xpos = -constants.earth_perihelion / constants.earth_perihelion * Body.AU
-#mars_xpos = -constants.mars_perihelion / constants.earth_perihelion * Body.AU
-#jupiter_xpos = -constants.jupiter_perihelion / constants.earth_perihelion * Body.AU
-#saturn_xpos = -constants.saturn_perihelion / constants.earth_perihelion * Body.AU
-#uranus_xpos = -constants.uranus_perihelion / constants.earth_perihelion * Body.AU
-#neptune_xpos = -constants.neptune_perihelion / constants.earth_perihelion * Body.AU
+def calculate_scaled_sizes(zoom_factor=1):
+    """Calculate scaled sizes for all planets using radius."""
+    scaled_sizes = {
+        "Mercury": scale_planet_size(constants.mercury_radius, zoom_factor),
+        "Venus": scale_planet_size(constants.venus_radius, zoom_factor),
+        "Earth": scale_planet_size(constants.earth_radius, zoom_factor),
+        "Mars": scale_planet_size(constants.mars_radius, zoom_factor),
+        "Jupiter": scale_planet_size(constants.jupiter_radius, zoom_factor, is_outer_planet=True),
+        "Saturn": scale_planet_size(constants.saturn_radius, zoom_factor, is_outer_planet=True),
+        "Uranus": scale_planet_size(constants.uranus_radius, zoom_factor, is_outer_planet=True),
+        "Neptune": scale_planet_size(constants.neptune_radius, zoom_factor, is_outer_planet=True),
+    }
 
-#print (mercury_xpos, venus_xpos, earth_xpos, mars_xpos, jupiter_xpos, saturn_xpos, uranus_xpos, neptune_xpos)
+    return scaled_sizes
 
-# Numerical values (scaled)
-#mercury_xpos = -0.468
-#venus_xpos = -1.093
-#earth_xpos = -1.496
-#mars_xpos = -2.102
-#jupiter_xpos = -7.532
-#saturn_xpos = -13.807
-#uranus_xpos = -27.791
-#neptune_xpos = -45.471
+# Get Sizes
+scaled_sizes = calculate_scaled_sizes()
 
-# Planet Radii
-# Scale relative to Earth Size
+# def main():
+#     """Main function to execute calculations and display results."""
+#     for planet, size in scaled_sizes.items():
+#         print(f"{planet}: {size:.2f} pixels")
 
-#mercury_rad = constants.mercury_radius / constants.earth_radius * 1e9 * Body.SCALE
-#venus_rad = constants.venus_radius / constants.earth_radius * 1e9 * Body.SCALE
-#earth_rad = constants.earth_radius / constants.earth_radius * 1e9 * Body.SCALE
-#mars_rad = constants.mars_radius / constants.earth_radius * 1e9 * Body.SCALE
-#jupiter_rad = constants.jupiter_radius / constants.earth_radius * 1e9 * Body.SCALE
-#saturn_rad = constants.saturn_radius / constants.earth_radius * 1e9 * Body.SCALE
-#uranus_rad = constants.uranus_radius / constants.earth_radius * 1e9 * Body.SCALE
-#neptune_rad = constants.neptune_radius / constants.earth_radius * 1e9 * Body.SCALE
-
-#print(mercury_rad, venus_rad, earth_rad, mars_rad, jupiter_rad, saturn_rad, uranus_rad, neptune_rad)
-
-# Numerical values
-#mercury_rad = 0.77
-#venus_rad = 1.90
-#earth_rad = 2.01
-#mars_rad = 1.07
-#jupiter_rad = 22.48
-#saturn_rad = 18.95
-#uranus_rad = 8.04
-#neptune_rad = 7.79
+# if __name__ == "__main__":
+#     main()
