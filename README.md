@@ -10,8 +10,8 @@ and inspired by tweaks and additions by [@zerot69](https://github.com/zerot69/So
  - Basic commands to scale and speed up the simulation 
 
 **New to Version 1.2:**
-- Improved Scaling
-- Improved Orbit trails
+- Improved scaling
+- Improved orbit trails
 
 ---
 
