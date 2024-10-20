@@ -1,6 +1,6 @@
 """
 constants.py
-Solar System Simulation v.1.3
+Solar System Simulation v.1.2
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -9,7 +9,6 @@ https://github.com/kuranez/Solar-System-Simulation
 WIDTH, HEIGHT = 1280, 720
 COLOR_TEXT = (255, 255, 255)
 COLOR_BACKGROUND = (36, 36, 36)
-
 
 # General
 AU = 149.6e9  # Astronomical Unit in meters

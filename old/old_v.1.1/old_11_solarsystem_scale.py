@@ -1,3 +1,10 @@
+"""
+solarsystem_scale.py
+Solar System Simulation v.1.1
+@author: kuranez
+https://github.com/kuranez/Solar-System-Simulation
+"""
+
 #import constants
 #from solarsystem_sim import Body
 

@@ -1,6 +1,6 @@
 """
 solarsystem_sim.py
-Solar System Simulation v.1.3
+Solar System Simulation v.1.2
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -13,7 +13,7 @@ import itertools
 
 # Solar system bodies
 class Body:
-    
+
     # Constants
     AU = constants.AU
     G = constants.G
@@ -48,7 +48,7 @@ class Body:
         distance_y = dy - self.y
         # Total Distance
         distance = math.sqrt(distance_x**2 + distance_y**2)
-        
+
         if other.sun:
             self.distance_to_sun = distance
         # Force
@@ -96,7 +96,7 @@ class Body:
         # Calculate position on screen
         x = self.x * self.SCALE + constants.WIDTH / 2
         y = self.y * self.SCALE + constants.HEIGHT / 2
-        
+
         # Draw the orbit line with a gradient effect
         if self.draw_line and len(self.orbit) >= 2:
             # Create a list to store the updated points for drawing
@@ -106,25 +106,25 @@ class Body:
                 px, py = point
                 px = px * self.SCALE + constants.WIDTH / 2
                 py = py * self.SCALE + constants.HEIGHT / 2
-                
+
                 # Calculate the color based on distance from the current point
                 # Fading effect: the further from the current position, the more it fades
                 distance = len(self.orbit) - i
                 fade_factor = max(0, min(255, int(255 * (distance / len(self.orbit)) * fade_scale)))
-                
+
                 # Calculate the faded color
                 faded_color = (
                     int(self.color[0] * (1 - fade_factor / 255) + constants.COLOR_BACKGROUND[0] * (fade_factor / 255)),
                     int(self.color[1] * (1 - fade_factor / 255) + constants.COLOR_BACKGROUND[1] * (fade_factor / 255)),
                     int(self.color[2] * (1 - fade_factor / 255) + constants.COLOR_BACKGROUND[2] * (fade_factor / 255))
                 )
-                
+
                 # Append the point for drawing
                 updated_points.append((px, py))
                 if i > 0:
                     # Draw a line segment with the faded color
                     pygame.draw.line(DISPLAYSURF, faded_color, updated_points[i - 1], updated_points[i], 1)
-                    
+
             # Draw the planet (or the Sun)
             pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), int(self.radius))
 

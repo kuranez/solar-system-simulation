@@ -1,3 +1,10 @@
+"""
+solarsystem.py
+Solar System Simulation v.1.0
+@author: kuranez
+https://github.com/kuranez/Solar-System-Simulation
+"""
+
 import constants
 import pygame
 import math
@@ -10,8 +17,8 @@ class Body:
     # Constants
     AU = 149.6e9  # Astronomical Unit, distance in meters
     G = 6.67428e-11  # Gravitational constant
-    SCALE = 100 / AU  # 1 AU = 100 pixels
-    TIMESTEP = 3600 * 24.0  # seconds in 1 day
+    SCALE = 400 / AU  # 1 AU = 400 pixels
+    TIMESTEP = 3600 * 24  # seconds in 1 day
 
     def __init__(self, x, y, radius, mass):
         self.x = x
@@ -21,10 +28,10 @@ class Body:
 
         self.color = (0, 0, 0)
 
+        self.orbit = []
+
         self.sun = False
         self.distance_to_sun = 0
-
-        self.orbit = []
 
         self.x_vel = 0.0
         self.y_vel = 0.0
@@ -36,13 +43,11 @@ class Body:
         x = self.x * self.SCALE + constants.WIDTH / 2
         y = self.y * self.SCALE + constants.HEIGHT / 2
 
-        if len(self.orbit) >= 3:  # min 3 points needed
-            updated_points = []
-            for point in self.orbit:
-                x, y = point
-                x = x * self.SCALE + constants.WIDTH / 2
-                y = y * self.SCALE + constants.HEIGHT / 2
-                updated_points.append((x, y))
+        if len(self.orbit) > 2:  # min 3 points needed
+            del self.orbit[:-10000]
+            updated_points = [(x * self.SCALE + constants.WIDTH / 2,
+                               y * self.SCALE + constants.HEIGHT / 2)
+                              for x, y in self.orbit]
             if self.draw_line:
                 pygame.draw.lines(DISPLAYSURF, self.color, False,
                                   updated_points, 1)
@@ -71,11 +76,11 @@ class Body:
         return force_x, force_y
 
     # Method to update the position of the bodies
-    def update_position(self, current_solarsystem):
+    def update_position(self, solarsystem):
         # Total forces, conservation of mass
         total_fx = total_fy = 0
         # Forces for each body in the solar system
-        for body in current_solarsystem:
+        for body in solarsystem:
             if self == body:
                 continue
 

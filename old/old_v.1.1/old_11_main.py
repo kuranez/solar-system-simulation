@@ -1,10 +1,16 @@
+"""
+main.py
+Solar System Simulation v.1.1
+@author: kuranez
+https://github.com/kuranez/Solar-System-Simulation
+"""
+
 import constants
 import pygame
 import sys
 from pygame.locals import QUIT
 #import solarsystem_scale
 from solarsystem_sim import Body, Sun, Planet
-
 
 # Initialize pygame
 pygame.init()
@@ -23,38 +29,44 @@ FPS = 60
 # Solar System Bodies
 # Parameters: x, y, radius, mass
 
-sun = Sun(0, 0, 2 * Planet.SCALE * 10 ** 9, 1.98892 * 10 ** 30)
+sun = Sun(0, 0, 2 * Planet.SCALE * 10**9, 1.98892 * 10**30)
 sun.draw_line = False
 
-mercury = Planet(-0.387 * Planet.AU, 0, 5 * Planet.SCALE * 10 ** 9, 3.30 * 10 ** 23)
+mercury = Planet(-0.387 * Planet.AU, 0, 5 * Planet.SCALE * 10**9,
+                 3.30 * 10**23)
 mercury.y_vel = 47.4 * 1000
 mercury.draw_line = True
 
-venus = Planet(-0.723 * Planet.AU, 0, 9 * Planet.SCALE * 10 ** 9, 4.8685 * 10 ** 24)
+venus = Planet(-0.723 * Planet.AU, 0, 9 * Planet.SCALE * 10**9,
+               4.8685 * 10**24)
 venus.y_vel = 35.02 * 1000
 venus.draw_line = True
 
-earth = Planet(-1 * Planet.AU, 0, 10 * Planet.SCALE * 10 ** 9, 5.9722 * 10 ** 24)
+earth = Planet(-1 * Planet.AU, 0, 10 * Planet.SCALE * 10**9, 5.9722 * 10**24)
 earth.y_vel = 29.783 * 1000
 earth.draw_line = True
 
-mars = Planet(-1.524 * Planet.AU, 0, 5 * Planet.SCALE * 10 ** 9, 6.39 * 10 ** 23)
+mars = Planet(-1.524 * Planet.AU, 0, 5 * Planet.SCALE * 10**9, 6.39 * 10**23)
 mars.y_vel = 24.077 * 1000
 mars.draw_line = True
 
-jupiter = Planet(-5.204 * Planet.AU, 0, 20 * Planet.SCALE * 10 ** 9, 1.898 * 10 ** 27)
+jupiter = Planet(-5.204 * Planet.AU, 0, 20 * Planet.SCALE * 10**9,
+                 1.898 * 10**27)
 jupiter.y_vel = 13.06 * 1000
 jupiter.draw_line = True
 
-saturn = Planet(-9.573 * Planet.AU, 0, 18 * Planet.SCALE * 10 ** 9, 5.683 * 10 ** 26)
+saturn = Planet(-9.573 * Planet.AU, 0, 18 * Planet.SCALE * 10**9,
+                5.683 * 10**26)
 saturn.y_vel = 9.68 * 1000
 saturn.draw_line = True
 
-uranus = Planet(-19.165 * Planet.AU, 0, 14 * Planet.SCALE * 10 ** 9, 8.681 * 10 ** 25)
+uranus = Planet(-19.165 * Planet.AU, 0, 14 * Planet.SCALE * 10**9,
+                8.681 * 10**25)
 uranus.y_vel = 6.80 * 1000
 uranus.draw_line = True
 
-neptune = Planet(-30.178 * Planet.AU, 0, 12 * Planet.SCALE * 10 ** 9, 1.024 * 10 ** 26)
+neptune = Planet(-30.178 * Planet.AU, 0, 12 * Planet.SCALE * 10**9,
+                 1.024 * 10**26)
 neptune.y_vel = 5.43 * 1000
 neptune.draw_line = True
 

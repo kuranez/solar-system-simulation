@@ -1,6 +1,6 @@
 """
 solarsystem_scale.py
-Solar System Simulation v.1.3
+Solar System Simulation v.1.2
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -26,16 +26,16 @@ def calculate_scaled_sizes(zoom_factor=1):
         "Uranus": scale_planet_size(constants.uranus_radius, zoom_factor, is_outer_planet=True),
         "Neptune": scale_planet_size(constants.neptune_radius, zoom_factor, is_outer_planet=True),
     }
-    
+
     return scaled_sizes
 
 # Get Sizes
 scaled_sizes = calculate_scaled_sizes()
 
-def main():
-    """Main function to execute calculations and display results."""
-    for planet, size in scaled_sizes.items():
-        print(f"{planet}: {size:.2f} pixels")
+# def main():
+#     """Main function to execute calculations and display results."""
+#     for planet, size in scaled_sizes.items():
+#         print(f"{planet}: {size:.2f} pixels")
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
