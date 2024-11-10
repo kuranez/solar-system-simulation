@@ -1,4 +1,9 @@
-# solarsystem_sim.py
+"""
+solarsystem_sim.py
+Solar System Simulation v.1.3
+@author: kuranez
+https://github.com/kuranez/Solar-System-Simulation
+"""
 
 import constants
 import pygame
@@ -86,11 +91,11 @@ class Body:
         if len(self.orbit) > general_trail_length:
             self.orbit.pop(0)
 
-    def draw(self, DISPLAYSURF, screen_offset_x=0, screen_offset_y=0):
+    def draw(self, DISPLAYSURF):
         """Draw objects on the screen"""
         # Calculate position on screen
-        x = self.x * self.SCALE + constants.WIDTH / 2 + screen_offset_x
-        y = self.y * self.SCALE + constants.HEIGHT / 2 + screen_offset_y
+        x = self.x * self.SCALE + constants.WIDTH / 2
+        y = self.y * self.SCALE + constants.HEIGHT / 2
         
         # Draw the orbit line with a gradient effect
         if self.draw_line and len(self.orbit) >= 2:
@@ -99,8 +104,8 @@ class Body:
             fade_scale = 1.5 # Adjust this value to control brightness
             for i, point in enumerate(self.orbit):
                 px, py = point
-                px = px * self.SCALE + constants.WIDTH / 2 + screen_offset_x
-                py = py * self.SCALE + constants.HEIGHT / 2 + screen_offset_y
+                px = px * self.SCALE + constants.WIDTH / 2
+                py = py * self.SCALE + constants.HEIGHT / 2
                 
                 # Calculate the color based on distance from the current point
                 # Fading effect: the further from the current position, the more it fades
@@ -123,6 +128,7 @@ class Body:
             # Draw the planet (or the Sun)
             pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), int(self.radius))
 
+
 # Sun
 class Sun(Body):
 
@@ -132,18 +138,18 @@ class Sun(Body):
         self.name = "Sun"
         self.color = constants.COLOR_SUN
 
-    def draw(self, DISPLAYSURF, screen_offset_x=0, screen_offset_y=0):
+    def draw(self, DISPLAYSURF):
         # Calculate position on screen
-        x = self.x * self.SCALE + constants.WIDTH / 2 + screen_offset_x # Scale factor
-        y = self.y * self.SCALE + constants.HEIGHT / 2 + screen_offset_y # Scale factor
+        x = self.x * self.SCALE + constants.WIDTH / 2  # Scale factor
+        y = self.y * self.SCALE + constants.HEIGHT / 2  # Scale factor
 
         # Only draw the orbit line if there are enough points
         if len(self.orbit) >= 2:
             updated_points = []
             for point in self.orbit:
                 px, py = point
-                px = px * self.SCALE + constants.WIDTH / 2 + screen_offset_x  # Scale factor
-                py = py * self.SCALE + constants.HEIGHT / 2 + screen_offset_y # Scale factor
+                px = px * self.SCALE + constants.WIDTH / 2  # Scale factor
+                py = py * self.SCALE + constants.HEIGHT / 2  # Scale factor
                 updated_points.append((px, py))
             pygame.draw.lines(DISPLAYSURF, self.color, False, updated_points, 1)
 
@@ -169,7 +175,6 @@ class Planet(Body):
         self.sun = False
         self.name = name
         self.color = next(Planet.cycle_colors)
-        self.original_radius = radius  # Store the original size for later zooming
 
         # Set orbit trail length based on whether it's an inner or outer planet
         self.trail_length = 800 if is_inner_planet else 8000  # Adjust values as needed
@@ -182,6 +187,6 @@ class Planet(Body):
         if len(self.orbit) > self.trail_length:
             self.orbit.pop(0)
 
-    def draw(self, DISPLAYSURF, screen_offset_x=0, screen_offset_y=0):
+    def draw(self, DISPLAYSURF):
         # Inherit the draw method from Body and call it
-        super().draw(DISPLAYSURF, screen_offset_x, screen_offset_y)        
+        super().draw(DISPLAYSURF)        

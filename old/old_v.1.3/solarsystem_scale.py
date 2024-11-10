@@ -1,9 +1,14 @@
-# solarsystem_scale.py
+"""
+solarsystem_scale.py
+Solar System Simulation v.1.3
+@author: kuranez
+https://github.com/kuranez/Solar-System-Simulation
+"""
 
 import constants
 
 # Scale calculations
-def scale_planet_size(planet_radius, zoom_factor=1.0, is_outer_planet=False):
+def scale_planet_size(planet_radius, zoom_factor=1, is_outer_planet=False):
     """Scale the planet size based on Earth diameter with additional scaling for outer planets."""
     diameter = planet_radius * 2  # Convert radius to diameter
     scale_factor = constants.OUTER_PLANET_SCALE_FACTOR if is_outer_planet else 1  # Apply outer planet scaling if needed

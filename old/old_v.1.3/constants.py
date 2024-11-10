@@ -1,4 +1,9 @@
-# constants.py 
+"""
+constants.py
+Solar System Simulation v.1.3
+@author: kuranez
+https://github.com/kuranez/Solar-System-Simulation
+"""
 
 # Display Variables
 WIDTH, HEIGHT = 1280, 720

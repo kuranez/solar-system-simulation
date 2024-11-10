@@ -1,8 +1,10 @@
 """
-Solar System Simulation v.1.4
+main.py
+Solar System Simulation v.1.3
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
+
 import constants
 import pygame
 import sys
@@ -25,11 +27,8 @@ FPS = 60
 dt = 0
 
 # Initialize the initial scale factor
-zoom_step = 0.05    # Amount to zoom in/out per scroll step
-zoom_factor = 1.0  # This will track the current zoom factor
-zoom_speed = 10 / Body.AU  # How fast zoom in/out should change scale
-screen_offset_x = 0  # Offset for horizontal movement
-screen_offset_y = 0  # Offset for vertical movement
+initial_scale = 1.0  # Represents 100%
+zoom_factor = initial_scale  # This will track the current zoom factor
 
 # Solar System Creation
 
@@ -90,8 +89,7 @@ def create_solarsystem():
         {"name": "Neptune", 
          "position": -30.178 * Planet.AU, 
          "scaled_size": scaled_sizes["Neptune"], 
-         "mass": constants.neptune_mass, 
-         "is_inner": False, 
+         "mass": constants.neptune_mass, "is_inner": False, 
          "velocity": constants.neptune_velocity},
     ]
 
@@ -118,32 +116,43 @@ solarsystem = create_solarsystem()
 # Assign individual planet variables
 sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune = solarsystem
 
+# # Inner and Outer Planets
+# inner_planets = [mercury, venus, earth, mars]  
+# outer_planets = [jupiter, saturn, uranus, neptune]
 
 # Current Solar System
 current_solarsystem = solarsystem
 
 # Render Menu Text
+
 def render_menu_texts():
     # Displaying FPS in the upper left corner
     fps_text = "FPS: " + str(int(clock.get_fps()))
+    
+    # Render FPS in the upper left corner
     fps_surface = FONT_1.render(fps_text, True, constants.COLOR_TEXT)
     DISPLAYSURF.blit(fps_surface, (15, 15))
 
     # Displaying title in the upper right corner
-    title = "Solar System Simulation v.1.4"
+    title = "Solar System Simulation v.1.3"
     title_surface = FONT_1.render(title, True, constants.COLOR_TEXT)
+
+    # Calculate position for upper right corner
     title_width, title_height = title_surface.get_size()
     upper_right_x = DISPLAYSURF.get_width() - title_width - 15
     upper_right_y = 15
+    
     DISPLAYSURF.blit(title_surface, (upper_right_x, upper_right_y))
 
     # Displaying navigation texts in the lower right corner
     navigation_texts = [
         "Navigation:",
-        "Adjust view with arrow keys or by moving mouse to screen edges.",
-        "Scroll mouse wheel to adjust simulation scale and zoom.",
-        "Press [+] / [-] to adjust simulation speed",
-        "Press [ESC] to quit simulation." ,
+        "Press UP / DOWN to adjust Simulation Scale",
+        "Press RIGHT / LEFT to adjust Simulation Speed",
+        # "Press Q or Number Keys 1-8 to toggle Orbit Lines",
+        # "Press A to show all Planets",
+        # "Press S to show Inner Planets",
+        # "Press D to show Outer Planets"
     ]
 
     # Prepare surfaces for navigation texts
@@ -151,7 +160,7 @@ def render_menu_texts():
     
     # Initial position for lower right corner navigation
     lower_right_x = DISPLAYSURF.get_width() - 15  # Right aligned
-    lower_right_y = DISPLAYSURF.get_height() - 160  # Fixed starting y position
+    lower_right_y = DISPLAYSURF.get_height() - 100  # Fixed starting y position
 
     # Render each navigation item with 15px spacing
     for i, surface in enumerate(navigation_surfaces):
@@ -191,80 +200,61 @@ while True:
             pygame.quit()
             sys.exit()
 
-        # Mouse wheel event for zoom control
-        if event.type == pygame.MOUSEWHEEL:
-            if event.y > 0:
-                zoom_factor += zoom_step  # Zoom in scrolling up)
-                Body.SCALE += zoom_speed 
-            else:
-                zoom_factor -= zoom_step  # Zoom out (scrolling down)
-                Body.SCALE -= zoom_speed
-            
-            # Prevent zoom from going too small or too large
-            zoom_factor = max(0.1, min(zoom_factor, 2.0))                
-
-        # Keyboard events for speed control
         if event.type == pygame.KEYDOWN:
-            # Adjust simulation speed using [+] or [-] from both regular keys and numpad
-            if event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS or event.key == pygame.K_KP_PLUS:
-                Body.TIMESTEP += 3600 * 24  # Increase time step (faster)
-            elif event.key == pygame.K_MINUS or event.key == pygame.K_KP_MINUS:
-                Body.TIMESTEP -= 3600 * 24  # Decrease time step (slower)
-
-            # Exit the program with ESC
-            if event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
-            
+            # Adjust Simulation Scale
+            if event.key == pygame.K_UP:
+                zoom_factor *= 1.1 # Increase zoom factor by 10%
+                Body.SCALE += 10 / Body.AU
+            elif event.key == pygame.K_DOWN:
+                zoom_factor *= 0.9 # Decrease zoom factor by 10%
+                Body.SCALE -= 10 / Body.AU
+    
             # Recalculate planet sizes based on the updated zoom factor
             scaled_sizes = calculate_scaled_sizes(zoom_factor)
 
-    # Move the screen with arrow keys
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        screen_offset_x += 5
-    if keys[pygame.K_RIGHT]:
-        screen_offset_x -= 5
-    if keys[pygame.K_UP]:
-        screen_offset_y += 5
-    if keys[pygame.K_DOWN]:
-        screen_offset_y -= 5
+            # Adjust Simulation Speed
+            if event.key == pygame.K_RIGHT:
+                Body.TIMESTEP += 3600 * 24
+            elif event.key == pygame.K_LEFT:
+                Body.TIMESTEP -= 3600 * 24
 
-    # Move screen if the mouse is near the borders
-    mouse_x, mouse_y = pygame.mouse.get_pos()  # Get mouse position
+            # # Toggle Orbit Lines on/off
+            # if event.key == pygame.K_q:
+            #     for planet in solarsystem[1:]:
+            #         planet.draw_line = not planet.draw_line
+            # elif event.key == pygame.K_1:
+            #     mercury.draw_line = not mercury.draw_line
+            # elif event.key == pygame.K_2:
+            #     venus.draw_line = not venus.draw_line
+            # elif event.key == pygame.K_3:
+            #     earth.draw_line = not earth.draw_line
+            # elif event.key == pygame.K_4:
+            #     mars.draw_line = not mars.draw_line
+            # elif event.key == pygame.K_5:
+            #     jupiter.draw_line = not jupiter.draw_line
+            # elif event.key == pygame.K_6:
+            #     saturn.draw_line = not saturn.draw_line
+            # elif event.key == pygame.K_7:
+            #     uranus.draw_line = not uranus.draw_line
+            # elif event.key == pygame.K_8:
+            #     neptune.draw_line = not neptune.draw_line
 
-    # If mouse is near the screen's left or right edge, move the screen horizontally
-    if mouse_x <= 10:  # Left border
-        screen_offset_x += 5
-    elif mouse_x >= constants.WIDTH - 10:  # Right border
-        screen_offset_x -= 5
-
-    # If mouse is near the screen's top or bottom edge, move the screen vertically
-    if mouse_y <= 10:  # Top border
-        screen_offset_y += 5
-    elif mouse_y >= constants.HEIGHT - 10:  # Bottom border
-        screen_offset_y -= 5
-
-    # # Check mouse position for screen movement (for future use)
-    # mouse_x, mouse_y = pygame.mouse.get_pos()  # Get current mouse position
-    # if mouse_x <= 10:  # If mouse is at the left edge
-    #     screen_offset_x += 5
-    # elif mouse_x >= constants.WIDTH - 10:  # If mouse is at the right edge
-    #     screen_offset_x -= 5
-    # if mouse_y <= 10:  # If mouse is at the top edge
-    #     screen_offset_y += 5
-    # elif mouse_y >= constants.HEIGHT - 10:  # If mouse is at the bottom edge
-    #     screen_offset_y -= 5
+            # # Toggle Planets on/off
+            # if event.key == pygame.K_a:
+            #     current_solarsystem = solarsystem
+            # elif event.key == pygame.K_s:
+            #     current_solarsystem = inner_planets
+            # elif event.key == pygame.K_d:
+            #     current_solarsystem = outer_planets
 
     # Draw and update Solar System, new sizes
     for body in current_solarsystem:
         if isinstance(body, Planet):  # Only apply scaling and toggling to planets
             body.radius = scaled_sizes[body.name] # Update radius based on zoom factor
-            body.radius = body.original_radius * zoom_factor  # Apply zoom factor to planet size
             body.update_position(current_solarsystem) # Update positions of bodies
-            body.draw(DISPLAYSURF, screen_offset_x, screen_offset_y) # Pass offsets to draw method
+            body.draw(DISPLAYSURF)
         else:
-            body.draw(DISPLAYSURF, screen_offset_x, screen_offset_y)  # Just draw the Sun as is, with no scaling or orbit lines
+            body.draw(DISPLAYSURF)  # Just draw the Sun as is, with no scaling or orbit lines
 
     # Render menu texts and planet distances
     render_menu_texts()
