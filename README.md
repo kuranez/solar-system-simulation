@@ -38,16 +38,19 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 ![screenshot.png](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-4.png)
 
 ---
-## Version Comparison
 
-| Version | Screenshot | Key Features & Changes |
-|---------|------------|-----------------------|
-| **v1.0** | ![v1.0](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-0.png) | - Simulation of inner & outer planets<br>- Adjust scale & speed with keyboard<br>- Toggle orbits & planets<br>- Display planet distances to Sun |
-| **v1.1** | ![v1.1](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-1.jpg) | - All v1.0 features<br>- **NEW:** Adjusted planet & orbit sizes<br>- **NEW:** 720p resolution<br>- Display distances to the Sun |
-| **v1.2** | ![v1.2](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-2.png) | - All v1.1 features<br>- **NEW:** Overhauled solar system creation<br>- **NEW:** Overhauled scaling & zoom<br>- **NEW:** Improved orbit visuals (trail fade)<br>- **BUGGY:** Toggle orbits & planets |
-| **v1.3** | ![v1.3](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-3.png) | - All v1.2 features<br>- Pan view with arrow keys or mouse edges<br>- **NEW:** Improved menu texts<br>- **NEW:** Frame rate independent physics<br>- **NEW:** Removed buggy orbit/planet toggles |
-| **v1.4** | ![v1.4](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-4.png) | - All v1.3 features<br>- **NEW:** Mouse wheel zoom (scales orbits & planets)<br>- **NEW:** Enhanced orbit trail fade effect<br>- **NEW:** Modular code structure |
-
+| v.1.0    | v.1.1    | v.1.2    | v.1.3    | v.1.4    |
+|----------|----------|----------|----------|----------|
+| ![v.1.0](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-0.png) | ![v.1.1](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-1.jpg) | ![v.1.2](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-2.png) | ![v.1.3](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-3.png) | ![v.1.4](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-4.png) |
+| **Features & Changes** | **Features & Changes** | **Features & Changes** | **Features & Changes** | **Features & Changes** |
+| - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets |
+| - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard |
+| - Toggle Orbits & Planets | - Toggle Orbits & Planets | - **BUGGY: Toggle Orbits & Planets** | - Pan view with arrow keys or mouse edges | - Pan view with arrow keys or mouse edges |
+| - Display planet distances to Sun | - Display Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun |
+|                                | - **NEW: Adjusted Planet & Orbit Sizes** | - **NEW: Overhauled Solar System Creation** | - **NEW: Improved menu texts** | - **NEW: Mouse wheel zoom** |
+|                                | - **NEW: 720p resolution** | - **NEW: Overhauled Scaling & Zoom (Additional variables)** | - **NEW: Frame rate independent physics** | - **NEW: Scalable zoom for orbits & planets** |
+|                                |                            | - **NEW: Improved Orbit Visuals (Orbit Trail Fade)** | - **NEW: Removed buggy orbit/planet toggles** | - **NEW: Enhanced orbit trail fade effect** |
+|                                |                            |                            |                            | - **NEW: Modular code structure** |
 
 ---
 
