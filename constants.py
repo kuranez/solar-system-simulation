@@ -5,7 +5,6 @@ WIDTH, HEIGHT = 1280, 720
 COLOR_TEXT = (255, 255, 255)
 COLOR_BACKGROUND = (36, 36, 36)
 
-
 # General
 AU = 149.6e9  # Astronomical Unit in meters
 G = 6.67428e-11  # Gravitational constant

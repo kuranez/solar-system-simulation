@@ -89,7 +89,19 @@ This Python/Pygame project simulates the solar system using real astronomical da
 
 - **Add new planets:** Update `constants.py`, `planets_data` in `main.py`, and optionally `solarsystem_scale.py` for custom scaling.
 - **Customize scaling:** Edit scale formulas in `solarsystem_scale.py`.
+
+---
+
+## Roadmap
+
+**Planned Features**
+
+- Mouse control navigation
+- Orbit drawing improvements
+- Use of different planet distances from the sun and real value comparison
+- Further visual and code optimizations
 - **Web version:** Refactor rendering logic to support a JavaScript/Pyodide frontend.
+- **Additional Objects:** Asteroid belt and transneptunian objects
 
 ---
 
@@ -111,6 +123,11 @@ This Python/Pygame project simulates the solar system using real astronomical da
 
 ## Credits
 
-- Based on Tech With Tim, zerot69, and NASA planetary data.
+**Based on Tech With Tim, zerot69, rastr-0 and NASA planetary data.**
+
+- Tech With Tim's tutorial: [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo)
+- Article by rastr-0: [teletype.in](https://teletype.in/@rastr_0/solar_system)
+- Zerot69's Solar System Simulation: [GitHub](https://github.com/zerot69/Solar-System-Simulation)
+- Planetary Data from NASA: [nssdc.gsfc.nasa.gov](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
 
 ---
