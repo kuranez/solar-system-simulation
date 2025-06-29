@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.5c
+Solar System Simulation v.1.5
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -9,6 +9,7 @@ import sys
 from pygame.locals import QUIT
 from solarsystem_scale import calculate_scaled_sizes
 from solarsystem_sim import Body, Sun, Planet
+import datetime  # For screenshot timestamps
 
 # Initialize pygame
 pygame.init()
@@ -340,6 +341,13 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+            
+            # Take screenshot with F12 key
+            if event.key == pygame.K_F12:
+                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                screenshot_path = f"~/Desktop/solar_system_{timestamp}.png"
+                pygame.image.save(DISPLAYSURF, screenshot_path)
+                print(f"Screenshot saved to: {screenshot_path}")
 
     # Draw and update Solar System, new sizes
     for body in current_solarsystem:
@@ -358,4 +366,4 @@ while True:
 
     # Update display
     pygame.display.update()
-    
+
