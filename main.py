@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.5b
+Solar System Simulation v.1.5c
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -137,37 +137,53 @@ def render_menu_texts():
     DISPLAYSURF.blit(fps_surface, (15, 15))
 
     # Displaying title in the upper right corner
-    title = "Solar System Simulation v.1.5a"
+    title = "Solar System Simulation v.1.5"
     title_surface = FONT_1.render(title, True, constants.COLOR_TEXT)
     title_width, title_height = title_surface.get_size()
     upper_right_x = DISPLAYSURF.get_width() - title_width - 15
     upper_right_y = 15
     DISPLAYSURF.blit(title_surface, (upper_right_x, upper_right_y))
 
-    # Displaying navigation texts in the lower left corner
-    navigation_texts = [
-        "Navigation :",
-        "[Mouse Wheel] : Zoom In/Out",
-        "[Left Click] +  Drag : Move View",
-        "[+] / [-] : Adjust Speed",
-        "[ESC] : Quit",
+    # Displaying navigation table in the lower left corner
+    nav_headers = ["Controls", "Action"]
+    navigation_data = [
+        ("Mouse Wheel", "Zoom In/Out"),
+        ("[Left Click] + Drag", "Move View"),
+        ("[+] / [-]", "Adjust Speed"),
+        ("[ESC]", "Quit"),
     ]
 
-    # Prepare surfaces for navigation texts
-    navigation_surfaces = [FONT_1.render(text, True, constants.COLOR_TEXT) for text in navigation_texts]
-    
-    # Initial position for lower left corner navigation
+    # Define column widths for navigation table
+    nav_col1_width = 160   # Controls column
+    nav_col2_width = 120   # Action column
+
+    # Initial position for lower left corner navigation table
     lower_left_x = 15  # Left aligned
-    lower_left_y = DISPLAYSURF.get_height() - 160  # Fixed starting y position
+    lower_left_y = DISPLAYSURF.get_height() - 150  # Fixed starting y position
+    
+    # Render navigation table headers
+    nav_header1 = FONT_1.render(nav_headers[0], True, constants.COLOR_TEXT)
+    nav_header2 = FONT_1.render(nav_headers[1], True, constants.COLOR_TEXT)
+    
+    DISPLAYSURF.blit(nav_header1, (lower_left_x, lower_left_y))
+    DISPLAYSURF.blit(nav_header2, (lower_left_x + nav_col1_width, lower_left_y))
+    
+    # Render navigation data rows
+    for i, (control, action) in enumerate(navigation_data):
+        row_y = lower_left_y + 30 + i * 25  # 30px spacing after header, 25px between rows
+        
+        # Control column
+        control_surface = FONT_1.render(control, True, constants.COLOR_TEXT)
+        DISPLAYSURF.blit(control_surface, (lower_left_x, row_y))
+        
+        # Action column
+        action_surface = FONT_1.render(action, True, constants.COLOR_TEXT)
+        DISPLAYSURF.blit(action_surface, (lower_left_x + nav_col1_width, row_y))
 
-    # Render each navigation item with 15px spacing
-    for i, surface in enumerate(navigation_surfaces):
-        surface_width, surface_height = surface.get_size()
-        DISPLAYSURF.blit(surface, (lower_left_x, lower_left_y + i * (surface_height + 15)))  # 15 pixels spacing
-
-    # Displaying planet distance texts in the lower right corner
-    distance_title = "Distance from the Sun:"
-    planet_distances = [
+    # Displaying planet information table in the lower right corner
+    # Table headers
+    table_headers = ["Planets", "Distance from the Sun", "Orbits"]
+    planet_data = [
         ("Mercury", mercury, constants.COLOR_MERCURY),
         ("Venus", venus, constants.COLOR_VENUS),
         ("Earth", earth, constants.COLOR_EARTH),
@@ -178,42 +194,47 @@ def render_menu_texts():
         ("Neptune", neptune, constants.COLOR_NEPTUNE)
     ]
 
-    distance_title_surface = FONT_1.render(distance_title, True, constants.COLOR_TEXT)
-    distance_title_width, distance_title_height = distance_title_surface.get_size()
-    lower_right_x = DISPLAYSURF.get_width() - distance_title_width - 15
-    DISPLAYSURF.blit(distance_title_surface, (lower_right_x, 475))
+    # Define column widths for alignment
+    col1_width = 80   # Planet names
+    col2_width = 180  # Distance
+    col3_width = 60   # Orbits
 
-    # Adjusting spacing for planet distances (5 pixels narrower)
-    for i, (name, planet, color) in enumerate(planet_distances):
-        distance_text = f"{name}: {round(planet.distance_to_sun / 1000, 1)} km"
-        surface = FONT_1.render(distance_text, True, color)
-        distance_text_width, distance_text_height = surface.get_size()
-        lower_right_x = DISPLAYSURF.get_width() - distance_text_width - 15
-        DISPLAYSURF.blit(surface, (lower_right_x, 205 + i * 25))  # 25 pixels between each item
+    # Render table headers
+    starting_y = DISPLAYSURF.get_height() - 250  # Fixed starting y position for the table
+    header_y = starting_y
+    
+    # Column headers
+    header1 = FONT_1.render(table_headers[0], True, constants.COLOR_TEXT)
+    header2 = FONT_1.render(table_headers[1], True, constants.COLOR_TEXT)
+    header3 = FONT_1.render(table_headers[2], True, constants.COLOR_TEXT)
+    
+    # Position headers from right edge
+    right_edge = DISPLAYSURF.get_width() - 15
+    col3_x = right_edge - col3_width
+    col2_x = col3_x - col2_width
+    col1_x = col2_x - col1_width
+    
+    DISPLAYSURF.blit(header1, (col1_x, header_y))
+    DISPLAYSURF.blit(header2, (col2_x, header_y))
+    DISPLAYSURF.blit(header3, (col3_x, header_y))
 
-    # Add this in the render_menu_texts() function in main.py where you display planet distances
-    # After displaying the planet distances:
-
-    # Display orbit counts
-    orbit_title = "Orbits Completed:"
-    orbit_title_surface = FONT_1.render(orbit_title, True, constants.COLOR_TEXT)
-    orbit_title_width, orbit_title_height = orbit_title_surface.get_size()
-    lower_right_x = DISPLAYSURF.get_width() - orbit_title_width - 15
-    DISPLAYSURF.blit(orbit_title_surface, (lower_right_x, 715))
-
-    # List planets with orbit counts 
-    orbit_counts = [
-        (planet.name, planet.orbit_count, planet.color) 
-        for planet in current_solarsystem 
-        if hasattr(planet, "orbit_count") and not isinstance(planet, Sun)  # Add explicit Sun check
-        ]
-    # Display each planet's orbit count
-    for i, (name, count, color) in enumerate(orbit_counts):
-        orbit_text = f"{name}: {count} orbits"
-        surface = FONT_1.render(orbit_text, True, color)
-        orbit_text_width, _ = surface.get_size()
-        lower_right_x = DISPLAYSURF.get_width() - orbit_text_width - 15
-        DISPLAYSURF.blit(surface, (lower_right_x, 505 + i * 25))
+    # Render planet data rows
+    for i, (name, planet, color) in enumerate(planet_data):
+        row_y = header_y + 30 + i * 25  # 30px spacing after header, 25px between rows
+        
+        # Planet name
+        name_surface = FONT_1.render(name, True, color)
+        DISPLAYSURF.blit(name_surface, (col1_x, row_y))
+        
+        # Distance from sun
+        distance_text = f"{round(planet.distance_to_sun / 1000, 1)} km"
+        distance_surface = FONT_1.render(distance_text, True, color)
+        DISPLAYSURF.blit(distance_surface, (col2_x, row_y))
+        
+        # Orbit count
+        orbit_text = f"{planet.orbit_count}"
+        orbit_surface = FONT_1.render(orbit_text, True, color)
+        DISPLAYSURF.blit(orbit_surface, (col3_x, row_y))
 
 # Main Loop
 while True:
