@@ -32,8 +32,11 @@ scale = constants.DEFAULT_SCALE  # This is the zoom factor for positions
 zoom_speed = scale * 0.1  # 10 % per scroll step
 screen_offset_x = 0  # Offset for horizontal movement
 screen_offset_y = 0  # Offset for vertical movement
-
 scaled_sizes = calculate_scaled_sizes(scale)
+
+# Control Variables
+dragging = False
+drag_start_x, drag_start_y = 0, 0
 
 # Solar System Creation
 
@@ -134,35 +137,35 @@ def render_menu_texts():
     DISPLAYSURF.blit(fps_surface, (15, 15))
 
     # Displaying title in the upper right corner
-    title = "Solar System Simulation v.1.4"
+    title = "Solar System Simulation v.1.5a"
     title_surface = FONT_1.render(title, True, constants.COLOR_TEXT)
     title_width, title_height = title_surface.get_size()
     upper_right_x = DISPLAYSURF.get_width() - title_width - 15
     upper_right_y = 15
     DISPLAYSURF.blit(title_surface, (upper_right_x, upper_right_y))
 
-    # Displaying navigation texts in the lower right corner
+    # Displaying navigation texts in the lower left corner
     navigation_texts = [
-        "Navigation:",
-        "Adjust view with arrow keys or by moving mouse to screen edges.",
-        "Scroll mouse wheel to adjust simulation scale and zoom.",
-        "Press [+] / [-] to adjust simulation speed",
-        "Press [ESC] to quit simulation." ,
+        "Navigation :",
+        "[Mouse Wheel] : Zoom In/Out",
+        "[Left Click] +  Drag : Move View",
+        "[+] / [-] : Adjust Speed",
+        "[ESC] : Quit",
     ]
 
     # Prepare surfaces for navigation texts
     navigation_surfaces = [FONT_1.render(text, True, constants.COLOR_TEXT) for text in navigation_texts]
     
-    # Initial position for lower right corner navigation
-    lower_right_x = DISPLAYSURF.get_width() - 15  # Right aligned
-    lower_right_y = DISPLAYSURF.get_height() - 160  # Fixed starting y position
+    # Initial position for lower left corner navigation
+    lower_left_x = 15  # Left aligned
+    lower_left_y = DISPLAYSURF.get_height() - 160  # Fixed starting y position
 
     # Render each navigation item with 15px spacing
     for i, surface in enumerate(navigation_surfaces):
         surface_width, surface_height = surface.get_size()
-        DISPLAYSURF.blit(surface, (lower_right_x - surface_width, lower_right_y + i * (surface_height + 15)))  # 15 pixels spacing
+        DISPLAYSURF.blit(surface, (lower_left_x, lower_left_y + i * (surface_height + 15)))  # 15 pixels spacing
 
-    # Displaying planet distance texts in the lower left corner
+    # Displaying planet distance texts in the lower right corner
     distance_title = "Distance from the Sun:"
     planet_distances = [
         ("Mercury", mercury, constants.COLOR_MERCURY),
@@ -176,13 +179,17 @@ def render_menu_texts():
     ]
 
     distance_title_surface = FONT_1.render(distance_title, True, constants.COLOR_TEXT)
-    DISPLAYSURF.blit(distance_title_surface, (15, 475))
+    distance_title_width, distance_title_height = distance_title_surface.get_size()
+    lower_right_x = DISPLAYSURF.get_width() - distance_title_width - 15
+    DISPLAYSURF.blit(distance_title_surface, (lower_right_x, 475))
 
     # Adjusting spacing for planet distances (5 pixels narrower)
     for i, (name, planet, color) in enumerate(planet_distances):
         distance_text = f"{name}: {round(planet.distance_to_sun / 1000, 1)} km"
         surface = FONT_1.render(distance_text, True, color)
-        DISPLAYSURF.blit(surface, (15, 505 + i * 25))  # 25 pixels between each item
+        distance_text_width, distance_text_height = surface.get_size()
+        lower_right_x = DISPLAYSURF.get_width() - distance_text_width - 15
+        DISPLAYSURF.blit(surface, (lower_right_x, 505 + i * 25))  # 25 pixels between each item
 
 
 # Main Loop
@@ -201,7 +208,7 @@ while True:
             # Positive value means scroll up (zoom in), negative means scroll down (zoom out)
             if event.y > 0:
                 scale *= 1.1  # Zoom in (increase scale)
-            else:
+            elif event.y < 0:
                 scale /= 1.1  # Zoom out (decrease scale)
             # Ensure scale is within a reasonable range (not too small or too large)
             scale = max(constants.DEFAULT_SCALE * 0.05, min(scale, constants.DEFAULT_SCALE * 10))
@@ -211,6 +218,27 @@ while True:
             for body in current_solarsystem:
                 if hasattr(body, "name") and body.name in scaled_sizes:
                     body.radius = scaled_sizes[body.name]
+        
+        # Mouse dragging events
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:  # Left mouse button
+                dragging = True
+                drag_start_x, drag_start_y = pygame.mouse.get_pos()
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:  # Left mouse button
+                dragging = False
+        elif event.type == pygame.MOUSEMOTION:
+            if dragging:
+                # Get the current mouse position
+                current_x, current_y = pygame.mouse.get_pos()
+                # Calculate the difference from the start position
+                dx = current_x - drag_start_x
+                dy = current_y - drag_start_y
+                # Update the screen offsets based on the mouse movement
+                screen_offset_x += dx
+                screen_offset_y += dy
+                # Update the drag start position for the next motion event
+                drag_start_x, drag_start_y = current_x, current_y
 
         # Keyboard events for speed control
         if event.type == pygame.KEYDOWN:
