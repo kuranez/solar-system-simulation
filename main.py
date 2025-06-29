@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.4a
+Solar System Simulation v.1.5a
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -248,50 +248,21 @@ while True:
             elif event.key == pygame.K_MINUS or event.key == pygame.K_KP_MINUS:
                 Body.TIMESTEP -= 3600 * 24  # Decrease time step (slower)
 
+            # # Check mouse position for screen movement (for future use)
+            # mouse_x, mouse_y = pygame.mouse.get_pos()  # Get current mouse position
+            # if mouse_x <= 10:  # If mouse is at the left edge
+            #     screen_offset_x += 5
+            # elif mouse_x >= constants.WIDTH - 10:  # If mouse is at the right edge
+            #     screen_offset_x -= 5
+            # if mouse_y <= 10:  # If mouse is at the top edge
+            #     screen_offset_y += 5
+            # elif mouse_y >= constants.HEIGHT - 10:  # If mouse is at the bottom edge
+            #     screen_offset_y -= 5
+
             # Exit the program with ESC
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-            
-            # Recalculate planet sizes based on the updated zoom factor
-            # scaled_sizes = calculate_scaled_sizes(zoom_factor)
-
-    # Move the screen with arrow keys
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
-        screen_offset_x += 5
-    if keys[pygame.K_RIGHT]:
-        screen_offset_x -= 5
-    if keys[pygame.K_UP]:
-        screen_offset_y += 5
-    if keys[pygame.K_DOWN]:
-        screen_offset_y -= 5
-
-    # Move screen if the mouse is near the borders
-    mouse_x, mouse_y = pygame.mouse.get_pos()  # Get mouse position
-
-    # If mouse is near the screen's left or right edge, move the screen horizontally
-    if mouse_x <= 10:  # Left border
-        screen_offset_x += 5
-    elif mouse_x >= constants.WIDTH - 10:  # Right border
-        screen_offset_x -= 5
-
-    # If mouse is near the screen's top or bottom edge, move the screen vertically
-    if mouse_y <= 10:  # Top border
-        screen_offset_y += 5
-    elif mouse_y >= constants.HEIGHT - 10:  # Bottom border
-        screen_offset_y -= 5
-
-    # # Check mouse position for screen movement (for future use)
-    # mouse_x, mouse_y = pygame.mouse.get_pos()  # Get current mouse position
-    # if mouse_x <= 10:  # If mouse is at the left edge
-    #     screen_offset_x += 5
-    # elif mouse_x >= constants.WIDTH - 10:  # If mouse is at the right edge
-    #     screen_offset_x -= 5
-    # if mouse_y <= 10:  # If mouse is at the top edge
-    #     screen_offset_y += 5
-    # elif mouse_y >= constants.HEIGHT - 10:  # If mouse is at the bottom edge
-    #     screen_offset_y -= 5
 
     # Draw and update Solar System, new sizes
     for body in current_solarsystem:
