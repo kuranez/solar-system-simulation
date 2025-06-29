@@ -82,7 +82,7 @@ class Body:
         self.orbit.append((self.x, self.y))
 
         # General limit for orbit length for all bodies
-        general_trail_length = 8000  # Maximum points in the orbit for all bodies
+        general_trail_length = 20000  # Maximum points in the orbit for all bodies
         if len(self.orbit) > general_trail_length:
             self.orbit.pop(0)
 
@@ -184,34 +184,47 @@ class Planet(Body):
             self.flash_timer -= 1
 
     def _check_orbit_completion(self):
-        """Check if the planet has completed a full orbit."""
-        # Check if we've crossed the negative x-axis from below to above
-        crossed_negative_x = (self.prev_y <= 0 and self.y > 0) and self.x < 0
-    
-        # Alternative: Check if we've crossed the positive x-axis from above to below
-        crossed_positive_x = (self.prev_y >= 0 and self.y < 0) and self.x > 0
+        """Check if the planet has completed a full orbit by returning to start point."""
+        # Only check for orbit completion if we have enough trail points
+        if len(self.orbit) < 100:  # Need minimum points to have a meaningful orbit
+            return
         
-        # Count the orbit if either crossing is detected
-        if crossed_negative_x or crossed_positive_x:
-            if not self.orbit_detected:
-                self.orbit_count += 1
-                self.orbit_detected = True
+        # Get the starting point of the current orbit
+        if self.orbit_start_index < len(self.orbit):
+            start_point = self.orbit[self.orbit_start_index]
+            current_point = (self.x, self.y)
             
-                # Save the current orbit as the last complete orbit
-                if len(self.orbit) > self.orbit_start_index:
-                    self.last_complete_orbit = self.orbit[self.orbit_start_index:]
-
-                # Mark the beginning of the new orbit
-                self.orbit_start_index = len(self.orbit)
-
-                # Set the flash timer to create visual indicator
-                self.flash_timer = self.flash_duration
-
-                # Print debug info
-                print(f"{self.name} completed orbit #{self.orbit_count}")
-        else:    
-            # Reset detection flag when we're not in the detection zones
-            self.orbit_detected = False
+            # Calculate distance from current position to start point
+            distance_to_start = math.sqrt(
+                (current_point[0] - start_point[0])**2 + 
+                (current_point[1] - start_point[1])**2
+            )
+            
+            # Define a threshold for "close enough" to starting point (relative to AU)
+            threshold = 0.01 * self.AU  # 1% of AU distance
+            
+            # Check if we've returned close to the starting point
+            if distance_to_start < threshold and not self.orbit_detected:
+                # Make sure we've traveled far enough to be a real orbit
+                if len(self.orbit) - self.orbit_start_index > 50:  # Minimum orbit length
+                    self.orbit_count += 1
+                    self.orbit_detected = True
+                    
+                    # Save the current orbit as the last complete orbit
+                    self.last_complete_orbit = self.orbit[self.orbit_start_index:].copy()
+                    
+                    # Mark the beginning of the new orbit
+                    self.orbit_start_index = len(self.orbit)
+                    
+                    # Set the flash timer to create visual indicator
+                    self.flash_timer = self.flash_duration
+                    
+                    # Print debug info
+                    print(f"{self.name} completed orbit #{self.orbit_count}")
+            
+            # Reset detection flag when we're far enough from start point
+            elif distance_to_start > threshold * 2:
+                self.orbit_detected = False
 
     def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
         """Draw the body with its orbit trail."""

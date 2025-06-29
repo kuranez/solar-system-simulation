@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.5a
+Solar System Simulation v.1.5b
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
