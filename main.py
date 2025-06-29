@@ -189,8 +189,31 @@ def render_menu_texts():
         surface = FONT_1.render(distance_text, True, color)
         distance_text_width, distance_text_height = surface.get_size()
         lower_right_x = DISPLAYSURF.get_width() - distance_text_width - 15
-        DISPLAYSURF.blit(surface, (lower_right_x, 505 + i * 25))  # 25 pixels between each item
+        DISPLAYSURF.blit(surface, (lower_right_x, 205 + i * 25))  # 25 pixels between each item
 
+    # Add this in the render_menu_texts() function in main.py where you display planet distances
+    # After displaying the planet distances:
+
+    # Display orbit counts
+    orbit_title = "Orbits Completed:"
+    orbit_title_surface = FONT_1.render(orbit_title, True, constants.COLOR_TEXT)
+    orbit_title_width, orbit_title_height = orbit_title_surface.get_size()
+    lower_right_x = DISPLAYSURF.get_width() - orbit_title_width - 15
+    DISPLAYSURF.blit(orbit_title_surface, (lower_right_x, 715))
+
+    # List planets with orbit counts 
+    orbit_counts = [
+        (planet.name, planet.orbit_count, planet.color) 
+        for planet in current_solarsystem 
+        if hasattr(planet, "orbit_count") and not isinstance(planet, Sun)  # Add explicit Sun check
+        ]
+    # Display each planet's orbit count
+    for i, (name, count, color) in enumerate(orbit_counts):
+        orbit_text = f"{name}: {count} orbits"
+        surface = FONT_1.render(orbit_text, True, color)
+        orbit_text_width, _ = surface.get_size()
+        lower_right_x = DISPLAYSURF.get_width() - orbit_text_width - 15
+        DISPLAYSURF.blit(surface, (lower_right_x, 505 + i * 25))
 
 # Main Loop
 while True:
