@@ -184,6 +184,7 @@ def render_menu_texts():
         ("Mouse Wheel", "Zoom In/Out"),
         ("[Left Click] + Drag", "Move View"),
         ("[+] / [-]", "Adjust Speed"),
+        ("[F12]", "Take Screenshot"),
         ("[ESC]", "Quit Simulation"),
     ]
 
@@ -193,7 +194,7 @@ def render_menu_texts():
 
     # Initial position for lower left corner navigation table
     lower_left_x = 15  # Left aligned
-    lower_left_y = DISPLAYSURF.get_height() - 150  # Fixed starting y position
+    lower_left_y = DISPLAYSURF.get_height() - 160  # Fixed starting y position
     
     # Render navigation table headers
     nav_header1 = FONT_1.render(nav_headers[0], True, constants.COLOR_TEXT)
@@ -234,7 +235,7 @@ def render_menu_texts():
     col3_width = 60   # Orbits
 
     # Render table headers
-    starting_y = DISPLAYSURF.get_height() - 250  # Fixed starting y position for the table
+    starting_y = DISPLAYSURF.get_height() - 240  # Fixed starting y position for the table
     header_y = starting_y
     
     # Column headers
@@ -345,7 +346,7 @@ while True:
             # Take screenshot with F12 key
             if event.key == pygame.K_F12:
                 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-                screenshot_path = f"~/Desktop/solar_system_{timestamp}.png"
+                screenshot_path = f"screenshots/solar_system_{timestamp}.png"
                 pygame.image.save(DISPLAYSURF, screenshot_path)
                 print(f"Screenshot saved to: {screenshot_path}")
 

@@ -1,36 +1,44 @@
 # Changelog
 
-## [1.4] - 2025-06-27 (Final)
+## [1.5] - 2025-06-29 (Current Release)
 
 ### Current Repository State
-This version represents the final v.1.4 release with the following core files:
+This version represents the latest v.1.5 release with enhanced interactivity and user interface improvements:
 - `constants.py` — Physical constants, colors, and planetary data
-- `main.py` — Main loop, event handling, and rendering
+- `main.py` — Main loop, event handling, and rendering with enhanced controls
 - `solarsystem_scale.py` — Scaling and planet size calculations  
-- `solarsystem_sim.py` — Sun, Planet, and Body classes for physics and drawing
+- `solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking
 
 ### Added
-- **Mouse wheel zoom:** Both orbits and planet visuals scale dynamically with zoom
-- **Modular architecture:** Separated scaling logic into dedicated `solarsystem_scale.py`
-- **Enhanced orbit trails:** Improved fade effect for clearer visualization
-- **Real-time planet scaling:** Planet sizes update immediately with zoom changes
-- **Unified constants:** Centralized all physical and visual constants
+- **Mouse drag navigation:** Left-click and drag to move the view around the solar system
+- **Orbit counter system:** Each planet now tracks and displays completed orbits
+- **Enhanced orbit visualization:** Only the most recent orbit trail is displayed with visual fade effect
+- **Orbit completion indicators:** Flash ring effect when planets complete an orbit
+- **Improved menu system:** Tabular layout for controls and planet information
+- **Time elapsed indicator:** Real-time display of simulated time in years/days/hours/minutes
+- **Screenshot functionality:** Press F12 to save screenshots directly from the simulation
+- **Professional UI layout:** Organized display with proper table formatting
 
 ### Changed
-- Complete refactoring of zoom and scaling system
-- Planet sizes now scale proportionally with zoom level
-- Improved code organization and modularity
-- Optimized drawing and update loops
-- Enhanced user interface with better navigation instructions
+- Complete overhaul of the user interface with table-based layouts
+- Enhanced planet data display showing distance and orbit counts
+- Improved navigation controls with clear visual organization
+- Optimized orbit trail rendering with memory management
+- Better visual feedback for user interactions
 
 ### Fixed
-- Planet size scaling issues during zoom operations
-- Orbit trail fade inconsistencies
-- Code redundancy in scaling calculations
+- Orbit trail memory leaks by clearing trails on orbit completion
+- UI element positioning and alignment issues
+- Time tracking accuracy and display formatting
 
 ---
 
 ## Version History Overview
+
+### [1.4] - Final Release
+- **Added:** Mouse wheel zoom, modular architecture, enhanced orbit trails, real-time planet scaling, unified constants
+- **Changed:** Complete refactoring of zoom and scaling system, improved code organization, optimized drawing and update loops, enhanced user interface
+- **Fixed:** Planet size scaling issues, orbit trail fade inconsistencies, code redundancy in scaling calculations
 
 ### [1.3] - Frame Rate Independence & UI Improvements
 - **Added:** Frame rate independent physics
