@@ -38,6 +38,10 @@ scaled_sizes = calculate_scaled_sizes(scale)
 dragging = False
 drag_start_x, drag_start_y = 0, 0
 
+# Time tracking
+simulation_start_time = 0  # Will be set when simulation starts
+total_elapsed_time = 0  # Total simulated time in seconds
+
 # Solar System Creation
 
 def create_solarsystem():
@@ -144,13 +148,42 @@ def render_menu_texts():
     upper_right_y = 15
     DISPLAYSURF.blit(title_surface, (upper_right_x, upper_right_y))
 
+    # Displaying time elapsed below the title in the upper right corner
+    global total_elapsed_time
+    
+    # Convert seconds to years, days, hours, minutes, seconds
+    years = int(total_elapsed_time // (365.25 * 24 * 3600))
+    remaining_time = total_elapsed_time % (365.25 * 24 * 3600)
+    days = int(remaining_time // (24 * 3600))
+    remaining_time = remaining_time % (24 * 3600)
+    hours = int(remaining_time // 3600)
+    remaining_time = remaining_time % 3600
+    minutes = int(remaining_time // 60)
+    seconds = int(remaining_time % 60)
+    
+    # Format time display
+    if years > 0:
+        time_text = f"Time: {years}y {days}d {hours}h {minutes}m"
+    elif days > 0:
+        time_text = f"Time: {days}d {hours}h {minutes}m"
+    elif hours > 0:
+        time_text = f"Time: {hours}h {minutes}m {seconds}s"
+    else:
+        time_text = f"Time: {minutes}m {seconds}s"
+    
+    time_surface = FONT_1.render(time_text, True, constants.COLOR_TEXT)
+    time_width, time_height = time_surface.get_size()
+    time_x = DISPLAYSURF.get_width() - time_width - 15
+    time_y = upper_right_y + title_height + 5  # 5px spacing below title
+    DISPLAYSURF.blit(time_surface, (time_x, time_y))
+
     # Displaying navigation table in the lower left corner
     nav_headers = ["Controls", "Action"]
     navigation_data = [
         ("Mouse Wheel", "Zoom In/Out"),
         ("[Left Click] + Drag", "Move View"),
         ("[+] / [-]", "Adjust Speed"),
-        ("[ESC]", "Quit"),
+        ("[ESC]", "Quit Simulation"),
     ]
 
     # Define column widths for navigation table
@@ -312,8 +345,9 @@ while True:
     for body in current_solarsystem:
         body.update_position(current_solarsystem)
         body.draw(DISPLAYSURF, scale, screen_offset_x, screen_offset_y)
-    # else:
-    #    body.draw(DISPLAYSURF, screen_offset_x, screen_offset_y)  # Just draw the Sun as is, with no scaling or orbit lines
+    
+    # Update total elapsed simulation time
+    total_elapsed_time += Body.TIMESTEP
 
     # Render menu texts and planet distances
     render_menu_texts()

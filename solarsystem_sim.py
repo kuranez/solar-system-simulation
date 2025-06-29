@@ -210,11 +210,9 @@ class Planet(Body):
                     self.orbit_count += 1
                     self.orbit_detected = True
                     
-                    # Save the current orbit as the last complete orbit
-                    self.last_complete_orbit = self.orbit[self.orbit_start_index:].copy()
-                    
-                    # Mark the beginning of the new orbit
-                    self.orbit_start_index = len(self.orbit)
+                    # Clear the old trail and start fresh for the new orbit
+                    self.orbit = [(self.x, self.y)]  # Keep only current position
+                    self.orbit_start_index = 0
                     
                     # Set the flash timer to create visual indicator
                     self.flash_timer = self.flash_duration
@@ -232,42 +230,37 @@ class Planet(Body):
         x = self.x * scale + constants.WIDTH / 2 + screen_offset_x
         y = self.y * scale + constants.HEIGHT / 2 + screen_offset_y
         
-        # Draw orbit trails
-        if self.draw_line:
-            # Draw complete orbit if available and we're past the first orbit
-            if self.orbit_count > 0 and len(self.last_complete_orbit) >= 2:
-                # Draw the last complete orbit with full opacity
-                orbit_points = [
-                    (
-                        px * scale + constants.WIDTH / 2 + screen_offset_x,
-                        py * scale + constants.HEIGHT / 2 + screen_offset_y
-                    )
-                    for px, py in self.last_complete_orbit
-                ]
-                for i in range(1, len(orbit_points)):
-                    pygame.draw.line(DISPLAYSURF, self.color, orbit_points[i - 1], orbit_points[i], 1)
+        # Draw orbit trail with fade effect
+        if self.draw_line and len(self.orbit) >= 2:
+            # Calculate the fade factor based on orbit count
+            # Each completed orbit makes the trail 10% darker
+            orbit_fade_multiplier = max(0.1, 1.0 - (self.orbit_count * 0.1))
             
-            # Draw current orbit path
-            if len(self.orbit) >= 2:
-                orbit_points = [
-                    (
-                        px * scale + constants.WIDTH / 2 + screen_offset_x,
-                        py * scale + constants.HEIGHT / 2 + screen_offset_y
-                    )
-                    for px, py in self.orbit
-                ]
-                for i in range(self.orbit_start_index + 1, len(orbit_points)):
-                    pygame.draw.line(DISPLAYSURF, self.color, orbit_points[i - 1], orbit_points[i], 1)
+            fade_scale = 1.0  # Adjust this value to control brightness
+            orbit_points = [
+                (
+                    px * scale + constants.WIDTH / 2 + screen_offset_x,
+                    py * scale + constants.HEIGHT / 2 + screen_offset_y
+                )
+                for px, py in self.orbit
+            ]
+            
+            # Draw the trail with both distance fade and orbit count fade
+            for i in range(1, len(orbit_points)):
+                # Distance-based fade (older parts of trail are more faded)
+                distance = len(orbit_points) - i
+                distance_fade_factor = max(0, min(255, int(255 * (distance / len(orbit_points)) * fade_scale)))
                 
-                # Draw the connection to the last complete orbit if we have one
-                if self.orbit_count > 0 and len(self.last_complete_orbit) > 0 and self.orbit_start_index < len(orbit_points):
-                    # Connect the last point of the complete orbit to the first point of current orbit
-                    last_point = (
-                        self.last_complete_orbit[-1][0] * scale + constants.WIDTH / 2 + screen_offset_x,
-                        self.last_complete_orbit[-1][1] * scale + constants.HEIGHT / 2 + screen_offset_y
-                    )
-                    first_point = orbit_points[self.orbit_start_index]
-                    pygame.draw.line(DISPLAYSURF, self.color, last_point, first_point, 1)
+                # Combine orbit count fade with distance fade
+                combined_fade = orbit_fade_multiplier * (1 - distance_fade_factor / 255)
+                
+                faded_color = (
+                    int(self.color[0] * combined_fade + constants.COLOR_BACKGROUND[0] * (1 - combined_fade)),
+                    int(self.color[1] * combined_fade + constants.COLOR_BACKGROUND[1] * (1 - combined_fade)),
+                    int(self.color[2] * combined_fade + constants.COLOR_BACKGROUND[2] * (1 - combined_fade))
+                )
+                
+                pygame.draw.line(DISPLAYSURF, faded_color, orbit_points[i - 1], orbit_points[i], 1)
         
         # Draw the planet itself
         pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), int(self.radius))
