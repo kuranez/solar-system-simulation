@@ -53,7 +53,7 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshots
 
-![screenshot.png](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-4.png)
+![screenshot.png](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-5.png)
 
 ---
 
