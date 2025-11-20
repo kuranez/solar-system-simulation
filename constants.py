@@ -76,3 +76,22 @@ jupiter_velocity = 13.06e3
 saturn_velocity = 9.68e3
 uranus_velocity = 6.80e3
 neptune_velocity = 5.43e3
+
+# Major Asteroids
+ASTEROID_CERES = {
+    "name": "Ceres",
+    "radius": 473e3,  # meters
+    "mass": 9.393e20,  # kg
+    "semi_major_axis": 2.77 * AU,
+    "orbital_velocity": 17900,  # m/s
+    "color": (180, 180, 180)
+}
+
+ASTEROID_VESTA = {
+    "name": "Vesta",
+    "radius": 262.7e3,
+    "mass": 2.59e20,
+    "semi_major_axis": 2.36 * AU,
+    "orbital_velocity": 19300,
+    "color": (190, 185, 180)
+}

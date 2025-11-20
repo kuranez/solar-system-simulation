@@ -276,3 +276,34 @@ class Planet(Body):
             
             # Draw as a ring (not filled)
             pygame.draw.circle(DISPLAYSURF, flash_color, (int(x), int(y)), flash_radius, 2)
+
+class Asteroid(Body):
+    def __init__(self, x, y, radius, mass, color=(192, 192, 192)):
+        super().__init__(x, y, radius, mass)
+        self.sun = False
+        self.name = "Asteroid"
+        self.color = color  # Set asteroid color
+        self.draw_line = False # Asteroids don't need orbit trails
+    
+    def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
+        """Optimized draw for asteroids"""
+        x = self.x * scale + constants.WIDTH / 2 + screen_offset_x
+        y = self.y * scale + constants.HEIGHT / 2 + screen_offset_y
+        
+        # Only draw if on screen (culling)
+        if 0 <= x <= constants.WIDTH and 0 <= y <= constants.HEIGHT:
+            # Draw as simple circle (no fade trails)
+            pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), max(1, int(self.radius)))
+
+    # def update_position(self, current_solarsystem):
+    #    return super().update_position(current_solarsystem)
+    def update_position(self, current_solarsystem):
+        """Only calculate attraction to the Sun for performance"""
+        # The Sun is the first object in the solar system list
+        sun = current_solarsystem[0]
+        fx, fy = self.attraction(sun)
+        self.x_vel += fx / self.mass * self.TIMESTEP
+        self.y_vel += fy / self.mass * self.TIMESTEP
+        self.x += self.x_vel * self.TIMESTEP
+        self.y += self.y_vel * self.TIMESTEP
+        # No orbit trail needed

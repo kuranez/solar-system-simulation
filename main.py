@@ -4,18 +4,20 @@ Solar System Simulation v.1.5
 https://github.com/kuranez/Solar-System-Simulation
 """
 import constants
+import math
 import pygame
+import random
 import sys
 from pygame.locals import QUIT
 from solarsystem_scale import calculate_scaled_sizes
-from solarsystem_sim import Body, Sun, Planet
+from solarsystem_sim import Body, Sun, Planet, Asteroid
 import datetime  # For screenshot timestamps
 
 # Initialize pygame
 pygame.init()
 
 # Window Settings
-DISPLAYSURF = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
+DISPLAYSURF = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption('Solar System Simulation')
 
 FONT_1 = pygame.font.SysFont(None, 21)
@@ -124,15 +126,64 @@ def create_solarsystem():
     
     return [sun] + planets
 
+def create_asteroid_belt(num_asteroids=500):
+    """Generate asteroids between Mars and Jupiter orbits"""
+    asteroids = []
+    
+    # Asteroid belt range (2.2 to 3.2 AU from the Sun)
+    inner_radius = 2.2 * Planet.AU
+    outer_radius = 3.2 * Planet.AU
+    
+    for i in range(num_asteroids):
+        # Random orbital distance
+        distance = random.uniform(inner_radius, outer_radius)
+        
+        # Random angle around the Sun
+        angle = random.uniform(0, 2 * math.pi)
+        
+        # Calculate x, y position
+        x = distance * math.cos(angle)
+        y = distance * math.sin(angle)
+        
+        # Small random size (1-3 pixels)
+        size = random.uniform(0.5, 2)
+        
+        # Very small mass (negligible gravitational effect)
+        mass = 1e15  # Much smaller than planets
+        
+        # Uniform light gray color
+        color = (128, 128, 128)
+        
+        asteroid = Asteroid(x, y, size, mass, color)
+        
+        # Calculate orbital velocity (circular orbit around Sun)
+        orbital_speed = math.sqrt(constants.G * constants.sun_mass / distance)
+        
+        # Set velocity perpendicular to position vector
+        asteroid.x_vel = -orbital_speed * math.sin(angle)
+        asteroid.y_vel = orbital_speed * math.cos(angle)
+        
+        # Add some random eccentricity
+        asteroid.x_vel *= random.uniform(0.95, 1.05)
+        asteroid.y_vel *= random.uniform(0.95, 1.05)
+        
+        asteroids.append(asteroid)
+    
+    return asteroids
+
 # Create solar system 
 solarsystem = create_solarsystem()
 
 # Assign individual planet variables
 sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune = solarsystem
 
+# Create asteroid belt
+asteroids = create_asteroid_belt(num_asteroids=300)
 
-# Current Solar System
-current_solarsystem = solarsystem
+# Current Solar System (combine all bodies)
+current_solarsystem = solarsystem + asteroids
+
+
 
 # Render Menu Text
 def render_menu_texts():
@@ -142,7 +193,7 @@ def render_menu_texts():
     DISPLAYSURF.blit(fps_surface, (15, 15))
 
     # Displaying title in the upper right corner
-    title = "Solar System Simulation v.1.5"
+    title = "Solar System Simulation v.1.6"
     title_surface = FONT_1.render(title, True, constants.COLOR_TEXT)
     title_width, title_height = title_surface.get_size()
     upper_right_x = DISPLAYSURF.get_width() - title_width - 15
