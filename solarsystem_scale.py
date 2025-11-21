@@ -13,16 +13,16 @@ def scale_planet_size(planet_radius, scale, is_outer_planet=False):
 
 def calculate_scaled_sizes(scale):
     """Calculate scaled sizes for all planets using radius and current scale."""
-    return {
-        "Mercury": scale_planet_size(constants.mercury_radius, scale),
-        "Venus": scale_planet_size(constants.venus_radius, scale),
-        "Earth": scale_planet_size(constants.earth_radius, scale),
-        "Mars": scale_planet_size(constants.mars_radius, scale),
-        "Jupiter": scale_planet_size(constants.jupiter_radius, scale, is_outer_planet=True),
-        "Saturn": scale_planet_size(constants.saturn_radius, scale, is_outer_planet=True),
-        "Uranus": scale_planet_size(constants.uranus_radius, scale, is_outer_planet=True),
-        "Neptune": scale_planet_size(constants.neptune_radius, scale, is_outer_planet=True),
-    }
+    scaled_sizes = {}
+    
+    # Add planets from PLANETS_DATA
+    for planet_data in constants.PLANETS_DATA:
+        planet_name = planet_data["name"]
+        planet_radius = planet_data["radius"]
+        is_outer = not planet_data["is_inner"]
+        scaled_sizes[planet_name] = scale_planet_size(planet_radius, scale, is_outer_planet=is_outer)
+    
+    return scaled_sizes
     
 #     return scaled_sizes
 

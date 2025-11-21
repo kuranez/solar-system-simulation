@@ -295,8 +295,6 @@ class Asteroid(Body):
             # Draw as simple circle (no fade trails)
             pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), max(1, int(self.radius)))
 
-    # def update_position(self, current_solarsystem):
-    #    return super().update_position(current_solarsystem)
     def update_position(self, current_solarsystem):
         """Only calculate attraction to the Sun for performance"""
         # The Sun is the first object in the solar system list

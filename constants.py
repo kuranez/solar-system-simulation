@@ -77,6 +77,82 @@ saturn_velocity = 9.68e3
 uranus_velocity = 6.80e3
 neptune_velocity = 5.43e3
 
+# Planets Data Structure
+PLANETS_DATA = [
+    {
+        "name": "Mercury",
+        "position": -0.387,  # AU from Sun
+        "perihelion": 46.0e9,  # meters
+        "radius": 4879e3 / 2,  # meters
+        "mass": 0.33e24,  # kg
+        "velocity": 47.40e3,  # m/s
+        "is_inner": True
+    },
+    {
+        "name": "Venus",
+        "position": -0.723,
+        "perihelion": 107.5e9,
+        "radius": 12104e3 / 2,
+        "mass": 4.87e24,
+        "velocity": 35.02e3,
+        "is_inner": True
+    },
+    {
+        "name": "Earth",
+        "position": -1.0,
+        "perihelion": 147.1e9,
+        "radius": 12756e3 / 2,
+        "mass": 5.97e24,
+        "velocity": 29.78e3,
+        "is_inner": True
+    },
+    {
+        "name": "Mars",
+        "position": -1.524,
+        "perihelion": 206.7e9,
+        "radius": 6792e3 / 2,
+        "mass": 0.642e24,
+        "velocity": 24.06e3,
+        "is_inner": True
+    },
+    {
+        "name": "Jupiter",
+        "position": -5.204,
+        "perihelion": 740.6e9,
+        "radius": 142984e3 / 2,
+        "mass": 1898e24,
+        "velocity": 13.06e3,
+        "is_inner": False
+    },
+    {
+        "name": "Saturn",
+        "position": -9.573,
+        "perihelion": 1357.6e9,
+        "radius": 120536e3 / 2,
+        "mass": 568e24,
+        "velocity": 9.68e3,
+        "is_inner": False
+    },
+    {
+        "name": "Uranus",
+        "position": -19.165,
+        "perihelion": 2732.7e9,
+        "radius": 51118e3 / 2,
+        "mass": 86.8e24,
+        "velocity": 6.80e3,
+        "is_inner": False
+    },
+    {
+        "name": "Neptune",
+        "position": -30.178,
+        "perihelion": 4471.1e9,
+        "radius": 49528e3 / 2,
+        "mass": 102e24,
+        "velocity": 5.43e3,
+        "is_inner": False
+    }
+]
+
 # Major Asteroids
 ASTEROID_CERES = {
     "name": "Ceres",

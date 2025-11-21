@@ -51,72 +51,17 @@ def create_solarsystem():
     """Create objects in the solar system using scaled sizes."""
     sun = Sun(0, 0, 2, constants.sun_mass)
 
-    planets_data = [
-        
-        {"name": "Mercury", 
-         "position": -0.387 * Planet.AU, 
-         "scaled_size": scaled_sizes["Mercury"], 
-         "mass": constants.mercury_mass, 
-         "is_inner": True, 
-         "velocity": constants.mercury_velocity},
-        
-        {"name": "Venus", 
-         "position": -0.723 * Planet.AU, 
-         "scaled_size": scaled_sizes["Venus"], 
-         "mass": constants.venus_mass, 
-         "is_inner": True, 
-         "velocity": constants.venus_velocity},
-        
-        {"name": "Earth", 
-         "position": -1 * Planet.AU, 
-         "scaled_size": scaled_sizes["Earth"], 
-         "mass": constants.earth_mass, "is_inner": True, 
-         "velocity": constants.earth_velocity},
-        
-        {"name": "Mars", 
-         "position": -1.524 * Planet.AU, 
-         "scaled_size": scaled_sizes["Mars"], 
-         "mass": constants.mars_mass, 
-         "is_inner": True, 
-         "velocity": constants.mars_velocity},
-        
-        {"name": "Jupiter", 
-         "position": -5.204 * Planet.AU, 
-         "scaled_size": scaled_sizes["Jupiter"], 
-         "mass": constants.jupiter_mass, 
-         "is_inner": False, 
-         "velocity": constants.jupiter_velocity},
-        
-        {"name": "Saturn", 
-         "position": -9.573 * Planet.AU, 
-         "scaled_size": scaled_sizes["Saturn"], 
-         "mass": constants.saturn_mass, 
-         "is_inner": False, 
-         "velocity": constants.saturn_velocity},
-        
-        {"name": "Uranus", 
-         "position": -19.165 * Planet.AU, 
-         "scaled_size": scaled_sizes["Uranus"], 
-         "mass": constants.uranus_mass, 
-         "is_inner": False, 
-         "velocity": constants.uranus_velocity},
-        
-        {"name": "Neptune", 
-         "position": -30.178 * Planet.AU, 
-         "scaled_size": scaled_sizes["Neptune"], 
-         "mass": constants.neptune_mass, 
-         "is_inner": False, 
-         "velocity": constants.neptune_velocity},
-    ]
-
+    # Use planet data from constants
     planets = []
-    for data in planets_data:
-        planet = Planet(data["position"], 
-                        0, 
-                        data["scaled_size"], 
-                        data["mass"], 
-                        name=data["name"],
-                        is_inner_planet=data["is_inner"])
+    for data in constants.PLANETS_DATA:
+        planet = Planet(
+            data["position"] * Planet.AU,
+            0,
+            scaled_sizes[data["name"]],
+            data["mass"],
+            name=data["name"],
+            is_inner_planet=data["is_inner"]
+        )
         planet.y_vel = data["velocity"]
         planet.draw_line = True
         planets.append(planet)
@@ -125,6 +70,52 @@ def create_solarsystem():
     sun.draw_line = False  
     
     return [sun] + planets
+
+def create_major_asteroids():
+    """Create major asteroids Ceres and Vesta"""
+    major_asteroids = []
+    
+    # Create Ceres
+    ceres_data = constants.ASTEROID_CERES
+    ceres_distance = ceres_data["semi_major_axis"]
+    ceres_angle = random.uniform(0, 2 * math.pi)
+    ceres = Planet(
+        ceres_distance * math.cos(ceres_angle),
+        ceres_distance * math.sin(ceres_angle),
+        3,  # Size in pixels
+        ceres_data["mass"],
+        name=ceres_data["name"],
+        is_inner_planet=True
+    )
+    # Calculate orbital velocity
+    orbital_speed = math.sqrt(constants.G * constants.sun_mass / ceres_distance)
+    ceres.x_vel = -orbital_speed * math.sin(ceres_angle)
+    ceres.y_vel = orbital_speed * math.cos(ceres_angle)
+    ceres.color = ceres_data["color"]
+    ceres.draw_line = False  # No orbit trail
+    major_asteroids.append(ceres)
+    
+    # Create Vesta
+    vesta_data = constants.ASTEROID_VESTA
+    vesta_distance = vesta_data["semi_major_axis"]
+    vesta_angle = random.uniform(0, 2 * math.pi)
+    vesta = Planet(
+        vesta_distance * math.cos(vesta_angle),
+        vesta_distance * math.sin(vesta_angle),
+        2.5,  # Size in pixels
+        vesta_data["mass"],
+        name=vesta_data["name"],
+        is_inner_planet=True
+    )
+    # Calculate orbital velocity
+    orbital_speed = math.sqrt(constants.G * constants.sun_mass / vesta_distance)
+    vesta.x_vel = -orbital_speed * math.sin(vesta_angle)
+    vesta.y_vel = orbital_speed * math.cos(vesta_angle)
+    vesta.color = vesta_data["color"]
+    vesta.draw_line = False  # No orbit trail
+    major_asteroids.append(vesta)
+    
+    return major_asteroids
 
 def create_asteroid_belt(num_asteroids=500):
     """Generate asteroids between Mars and Jupiter orbits"""
@@ -177,11 +168,14 @@ solarsystem = create_solarsystem()
 # Assign individual planet variables
 sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune = solarsystem
 
+# Create major asteroids (Ceres and Vesta)
+major_asteroids = create_major_asteroids()
+
 # Create asteroid belt
 asteroids = create_asteroid_belt(num_asteroids=300)
 
 # Current Solar System (combine all bodies)
-current_solarsystem = solarsystem + asteroids
+current_solarsystem = solarsystem + major_asteroids + asteroids
 
 
 
@@ -193,7 +187,7 @@ def render_menu_texts():
     DISPLAYSURF.blit(fps_surface, (15, 15))
 
     # Displaying title in the upper right corner
-    title = "Solar System Simulation v.1.6"
+    title = "Solar System Simulation v.1.7"
     title_surface = FONT_1.render(title, True, constants.COLOR_TEXT)
     title_width, title_height = title_surface.get_size()
     upper_right_x = DISPLAYSURF.get_width() - title_width - 15
