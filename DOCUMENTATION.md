@@ -1,24 +1,25 @@
-# Solar System Simulation v1.5 — Full Documentation
+# Solar System Simulation v1.6 — Full Documentation
 
 ## Overview
 
-This Python/Pygame project simulates the solar system using real astronomical data and Newtonian gravity. Version 1.5 introduces interactive mouse navigation, orbit tracking, enhanced UI design, and professional visual feedback. The simulation now features mouse drag navigation, real-time orbit counters, improved trail rendering, and a comprehensive tabular interface. The code maintains its modular structure while adding sophisticated user interaction capabilities.
+This Python/Pygame project simulates the solar system using real astronomical data and Newtonian gravity. Version 1.6 adds a realistic asteroid belt between Mars and Jupiter, building on the interactive mouse navigation, orbit tracking, and professional UI from v1.5. The simulation now features 300+ asteroids with optimized physics, mouse drag navigation, real-time orbit counters, improved trail rendering, and a comprehensive tabular interface. The code maintains its modular structure while adding sophisticated visual elements and user interaction capabilities.
 
 ---
 
 ## File Structure
 
-- `main.py` — Main simulation loop; handles events, scaling, rendering, and interactive controls.
+- `main.py` — Main simulation loop; handles events, scaling, rendering, interactive controls, and asteroid belt generation.
 - `constants.py` — Physical constants, colors, planetary data.
-- `solarsystem_sim.py` — Enhanced classes for Sun, Planet, and Body with orbit tracking and visual effects.
+- `solarsystem_sim.py` — Enhanced classes for Sun, Planet, Asteroid, and Body with orbit tracking and visual effects.
 - `solarsystem_scale.py` — Functions for planet size scaling and zoom calculations.
 - `README.md` — Project overview and setup.
 - `CHANGELOG.md` — Detailed version history and changes.
 
 ---
 
-## Key Features (v1.5)
+## Key Features (v1.6)
 
+- **Asteroid Belt:** 300+ asteroids orbiting between Mars and Jupiter (2.2-3.2 AU) with optimized physics.
 - **Interactive Navigation:** Mouse wheel zoom and left-click drag to pan the view.
 - **Orbit Tracking System:** Real-time orbit counters for each planet with completion indicators.
 - **Enhanced Visual Feedback:** Flash ring effects when planets complete orbits.
@@ -47,6 +48,10 @@ This Python/Pygame project simulates the solar system using real astronomical da
   - Positions in AU from the Sun.
   - Scaled radii (pixels) from `solarsystem_scale.py`.
   - Realistic masses, velocities, and colors.
+- Generates asteroid belt with:
+  - 300 asteroids randomly distributed between 2.2-3.2 AU.
+  - Calculated orbital velocities with random eccentricity.
+  - Uniform light gray color (192, 192, 192).
 
 ### Main Loop
 
@@ -59,10 +64,12 @@ This Python/Pygame project simulates the solar system using real astronomical da
     - `[ESC]` — Exits the simulation.
 - **Simulation Updates:**
   - Updates planetary positions via Newtonian gravity calculations.
+  - Updates asteroid positions using Sun-only gravity for performance.
   - Tracks orbit completion and increments orbit counters.
   - Manages orbit trail rendering with fade effects and memory optimization.
   - Scales orbits and planet visuals according to current zoom level.
 - **Rendering:**
+  - Draws asteroid belt with screen culling optimization.
   - Draws orbit trails with distance-based and orbit-count-based fading.
   - Renders planets with flash effects for orbit completions.
   - Displays comprehensive UI with FPS, time elapsed, controls table, and planet data table.
@@ -114,6 +121,11 @@ This Python/Pygame project simulates the solar system using real astronomical da
   - `flash_timer` — Manages visual feedback for orbit completions.
   - `trail_points` — Optimized trail rendering with automatic cleanup.
   - Advanced fade effects combining distance-based and orbit-count-based algorithms.
+- **Asteroid:** Lightweight body with simplified physics for performance.
+  - Sun-only gravity calculations (no planet interactions).
+  - No orbit trails to reduce memory usage.
+  - Screen culling for optimized rendering.
+  - Uniform light gray coloring (192, 192, 192).
 
 ### `solarsystem_scale.py`
 - **scale_planet_size:** Returns pixel radius for a planet given its physical radius and the current zoom.
@@ -121,6 +133,7 @@ This Python/Pygame project simulates the solar system using real astronomical da
 
 ### `main.py`
 - **Enhanced Event Handling:** Mouse drag navigation and comprehensive keyboard controls.
+- **Asteroid Belt Generation:** `create_asteroid_belt()` function generates 300 asteroids with random placement.
 - **UI Rendering:** Professional tabular layouts with `render_menu_texts()` function.
 - **Time Tracking:** Real-time simulation time calculation and display.
 - **Screenshot System:** Integrated F12 screenshot functionality with timestamp naming.
@@ -153,28 +166,35 @@ This Python/Pygame project simulates the solar system using real astronomical da
 
 ## Roadmap
 
-**Completed in v1.5**
+**Completed in v1.6**
 - ✅ **Mouse control navigation** — Left-click drag and mouse wheel zoom
 - ✅ **Orbit tracking and counters** — Real-time orbit completion detection
 - ✅ **Enhanced orbit drawing** — Single trail with fade effects and memory management
 - ✅ **Professional UI design** — Tabular layouts and comprehensive information display
+- ✅ **Asteroid belt** — 300+ asteroids between Mars and Jupiter with optimized physics
 
 **Planned Features**
+- Major asteroids (Ceres, Vesta, Pallas, Juno) with realistic properties
+- Kirkwood gaps to show Jupiter's resonance effects
+- Toggle to show/hide asteroid belt
 - Use of different planet distances from the sun and real value comparison
 - Further visual and code optimizations
 - **Web version:** Refactor rendering logic to support a JavaScript/Pyodide frontend.
-- **Additional Objects:** Asteroid belt and transneptunian objects
+- **Additional Objects:** Transneptunian objects and Kuiper belt
 - **Advanced Controls:** Pause/play functionality and time step presets
 - **Enhanced Visuals:** Particle effects and improved planet textures
 
 ---
 
-## Known Limitations in v1.5
+## Known Limitations in v1.6
 
 - Zooming is multiplicative and can become awkward at extreme levels.
 - Screenshot functionality requires the `screenshots/` directory to exist.
 - Orbit completion detection may occasionally miss very fast orbits at high simulation speeds.
 - Performance may degrade slightly with very long simulation runs due to time tracking overhead.
+- Major asteroids (Ceres, Vesta, etc.) are not individually represented.
+- Asteroid-planet gravitational interactions are not simulated.
+- All asteroids have uniform properties (mass, color, size range).
 
 ---
 
@@ -194,6 +214,13 @@ This Python/Pygame project simulates the solar system using real astronomical da
 - Smooth panning with proper state management
 - Immediate visual feedback and responsive controls
 - Coordinate system handling for accurate view positioning
+
+### Asteroid Belt System
+- **Random generation:** 300 asteroids with random orbital parameters
+- **Optimized physics:** Sun-only gravity calculations reduce overhead by ~99%
+- **Screen culling:** Only renders asteroids visible in viewport
+- **Memory efficient:** No orbit trails stored for asteroids
+- **Orbital mechanics:** Circular velocity with ±5% random eccentricity
 
 ---
 

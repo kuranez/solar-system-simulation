@@ -24,7 +24,10 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Version Highlights
 
-**New in Version 1.5:**
+**New in Version 1.6:**
+- **Asteroid belt implementation:** Realistic distribution of procedurally generated asteroids between Mars and Jupiter with configurable density, randomized sizes and orbital parameters, and optimized rendering for performance.
+
+**Previous in Version 1.5:**
 - **Mouse drag navigation:** Left-click and drag to pan around the solar system
 - **Orbit counter system:** Track completed orbits for each planet with visual indicators
 - **Enhanced orbit trails:** Only current orbit shown with smooth fade effect
@@ -53,22 +56,22 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshots
 
-![screenshot.png](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-5.png)
+![screenshot.png](https://raw.githubusercontent.com/kuranez/solar-system-simulation/refs/heads/main/screenshots/Screenshot_v1-6.png)
 
 ---
 
-| v.1.0    | v.1.1    | v.1.2    | v.1.3    | v.1.4    |
-|----------|----------|----------|----------|----------|
-| ![v.1.0](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-0.png) | ![v.1.1](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-1.jpg) | ![v.1.2](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-2.png) | ![v.1.3](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-3.png) | ![v.1.4](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-4.png) |
-| **Features & Changes** | **Features & Changes** | **Features & Changes** | **Features & Changes** | **Features & Changes** |
-| - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets |
-| - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard |
-| - Toggle Orbits & Planets | - Toggle Orbits & Planets | - **BUGGY: Toggle Orbits & Planets** | - Pan view with arrow keys or mouse edges | - Pan view with arrow keys or mouse edges |
-| - Display planet distances to Sun | - Display Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun |
-|                                | - **NEW: Adjusted Planet & Orbit Sizes** | - **NEW: Overhauled Solar System Creation** | - **NEW: Improved menu texts** | - **NEW: Mouse wheel zoom: both orbits and planet visuals scale with zoom** |
-|                                | - **NEW: 720p resolution** | - **NEW: Overhauled Scaling & Zoom (Additional variables)** | - **NEW: Frame rate independent physics** | - **NEW: Improved planet scaling logic and modular scaling functions** |
-|                                |                            | - **NEW: Improved Orbit Visuals (Orbit Trail Fade)** | - **NEW: Removed buggy orbit/planet toggles** | - **NEW: Orbit trail fade effect for clearer visualization** |
-|                                |                            |                                                        |                                         | - **NEW: Cleaner, more extensible code structure** |
+| v.1.0    | v.1.1    | v.1.2    | v.1.3    | v.1.4    | v.1.5    |
+|----------|----------|----------|----------|----------|----------|
+| ![v.1.0](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-0.png) | ![v.1.1](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-1.jpg) | ![v.1.2](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-2.png) | ![v.1.3](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-3.png) | ![v.1.4](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-4.png) |![v.1.5](https://raw.githubusercontent.com/kuranez/Solar-System-Simulation/refs/heads/main/screenshots/Screenshot_v1-5.png) |
+| **Features & Changes** | **Features & Changes** | **Features & Changes** | **Features & Changes** | **Features & Changes** | **Features & Changes** |
+| - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets | - Simulation of Inner & Outer Planets |
+| - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard | - Adjust Scale & Speed with Keyboard |
+| - Toggle Orbits & Planets | - Toggle Orbits & Planets | - **BUGGY: Toggle Orbits & Planets** | - Pan view with arrow keys or mouse edges | - Pan view with arrow keys or mouse edges | - **NEW:** Adjust view with mouse drag |
+| - Display Planet Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun | - Display Distances to the Sun |
+|                                | - **NEW: Adjusted Planet & Orbit Sizes** | - **NEW: Overhauled Solar System Creation** | - **NEW: Improved menu texts** | - **NEW: Mouse wheel zoom: both orbits and planet visuals scale with zoom** | - **NEW: Mouse drag navigation** | 
+|                                | - **NEW: 720p resolution** | - **NEW: Overhauled Scaling & Zoom (Additional variables)** | - **NEW: Frame rate independent physics** | - **NEW: Improved planet scaling logic and modular scaling functions** | - **NEW: Orbit counter and improved orbit trails** |
+|                                |                            | - **NEW: Improved Orbit Visuals (Orbit Trail Fade)** | - **NEW: Removed buggy orbit/planet toggles** | - **NEW: Orbit trail fade effect for clearer visualization** | - **NEW: Time display** |
+|                                |                            |                                                        |                                         | - **NEW: Cleaner, more extensible code structure** | - **NEW: Screenshot function** |
 
 ---
 
