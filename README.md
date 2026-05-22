@@ -96,7 +96,6 @@ Install Python packages and run `main.py`, or fork and run a copy on [replit.com
 - ✅ **Enhanced orbit drawing** (Added in v.1.5)
 - Use of different planet distances from the sun and real value comparison
 - Further visual and code optimizations
-- **Web version:** Refactor rendering logic to support a JavaScript/Pyodide frontend.
 - **Additional Objects:** Asteroid belt and transneptunian objects
 
 ---
