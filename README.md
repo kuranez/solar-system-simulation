@@ -8,9 +8,10 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 ## WebApp Demo
 
 > [![Live Demo](https://img.shields.io/badge/🟢%20Live%20App-Solar%20System%20Sim-422C71?style=for-the-badge)](https://apps.kuracodez.space/solar-system-sim/app)
-
-**Modified web version based on this project showcasing different planetary system options**
+>
+> **Modified web version based on this project showcasing different planetary system options**
 **For more info see:** [https://github.com/kuranez/solar-system-simulation-web](https://github.com/kuranez/solar-system-simulation-web)
+>
 
 ---
 
