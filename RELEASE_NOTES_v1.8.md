@@ -27,4 +27,17 @@ Version 1.8 marks a major leap in scientific accuracy for the simulation. The in
 - **2D Projection:** The `x` and `y` components of the 3D vectors are used to place the planets on the 2D screen, creating a top-down view of the ecliptic plane.
 
 ### 📋 **New Dependencies**
-- **skyfield:** This library is now required to run the simulation. It can be installed via pip:
+- **skyfield:** This library is now required to run the simulation. It can be installed via `pip install skyfield`.
+
+
+### 🔮 **Future Enhancements**
+- Integration of major asteroids (Ceres, Vesta) using their real JPL ephemeris data.
+- Options to start the simulation at a specific historical or future date.
+
+---
+
+**Download:** [Solar System Simulation v1.8](https://github.com/kuranez/Solar-System-Simulation/releases/tag/v1.8)
+
+**Documentation:** [Full Documentation](DOCUMENTATION.md) | [Changelog](CHANGELOG.md)
+
+**Support:** [Issues](https://github.com/kuranez/Solar-System-Simulation/issues) | [Discussions](https://github.com/kuranez/Solar-System-Simulation/discussions)
