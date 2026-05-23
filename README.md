@@ -87,6 +87,7 @@ Install Python packages and run `main.py`, or fork and run a copy on [replit.com
 
 **Dependencies:**
 - pygame
+- skyfield
 - sys
 - datetime
 - itertools

@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0] - 2026-05-23
+
+### ✨ Added
+- **Real-Time Planetary Positions:** Integrated the `skyfield` library to calculate initial planet positions and velocities using high-precision data from NASA's Jet Propulsion Laboratory (JPL) DE440s ephemeris. The simulation now starts with a scientifically accurate representation of the solar system for the current date.
+
+### 🔧 Changed
+- The `create_solarsystem()` function in `main.py` was completely refactored to use `skyfield` instead of static values from `constants.py`.
+- The `position` and `velocity` fields in the `PLANETS_DATA` structure in `constants.py` are no longer used for initial setup.
+
+### 📦 Dependencies
+- Added new dependency: `skyfield`.
+
+---
+
 ## [1.5] - 2025-06-29 (Current Release)
 
 ### Current Repository State
