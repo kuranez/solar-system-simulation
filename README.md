@@ -8,7 +8,7 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 ## Features
 
 - Orbits of inner and outer planets of our solar system
-- Uses real astronomical data from NASA
+- Uses real astronomical data from NASA 
 - **Interactive navigation:** Mouse wheel zoom and left-click drag to move view
 - **Orbit tracking:** Real-time orbit counter for each planet with completion indicators
 - **Enhanced visuals:** Single orbit trail per planet with fade effects
@@ -24,7 +24,13 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Version Highlights
 
-**New in Version 1.6:**
+**New in Version 1.8**
+- **Ephemerides Implementation:** Calculation of initial planetary positions using data from NASA's Jet Propulsion Laboratory (JPL) via the Skyfield library.
+
+**Previous in Version 1.7**
+- **Zoom Fix:** Adjusted Simulation Scaling.
+
+**Previous in Version 1.6:**
 - **Asteroid belt implementation:** Realistic distribution of procedurally generated asteroids between Mars and Jupiter with configurable density, randomized sizes and orbital parameters, and optimized rendering for performance.
 
 **Previous in Version 1.5:**

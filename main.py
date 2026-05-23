@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.7
+Solar System Simulation v.1.8
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -12,6 +12,8 @@ from pygame.locals import QUIT
 from solarsystem_scale import calculate_scaled_sizes
 from solarsystem_sim import Body, Sun, Planet, Asteroid
 import datetime  # For screenshot timestamps
+from skyfield.api import load, EarthSatellite
+from skyfield.timelib import Time
 
 # Initialize pygame
 pygame.init()
@@ -48,28 +50,82 @@ total_elapsed_time = 0  # Total simulated time in seconds
 # Solar System Creation
 
 def create_solarsystem():
-    """Create objects in the solar system using scaled sizes."""
-    sun = Sun(0, 0, 2, constants.sun_mass)
+    """Create objects in the solar system using Skyfield for real positions."""
+    # Load Skyfield data
+    # Use most recent DE440s ephemeris for accurate planetary positions
+    eph = load('de440s.bsp')
+    # Load timescale and get current time
+    ts = load.timescale()
+    # Set time to now for current positions, or you can set it to a specific date/time
+    t = ts.now()
 
-    # Use planet data from constants
+    # Get the Sun object from Skyfield
+    sun_obj = eph['SUN']
+    # Create Sun at center with mass from constants
+    sun = Sun(0, 0, 2, constants.sun_mass)
+    # List to hold planet objects
     planets = []
+
+    # Map planet names to the names Skyfield expects for the de440s kernel
+    skyfield_names = {
+        "MERCURY": "MERCURY",
+        "VENUS": "VENUS",
+        "EARTH": "EARTH", # Special handling for Earth to get the planet
+        "MARS": "MARS BARYCENTER",
+        "JUPITER": "JUPITER BARYCENTER",
+        "SATURN": "SATURN BARYCENTER",
+        "URANUS": "URANUS BARYCENTER",
+        "NEPTUNE": "NEPTUNE BARYCENTER",
+    }
+
+    # Loop through our planet data and create Planet objects with positions and velocities from Skyfield
     for data in constants.PLANETS_DATA:
+        planet_name_upper = data["name"].upper()
+        
+        # Get the correct skyfield object name from our map
+        skyfield_name = skyfield_names.get(planet_name_upper)
+        
+        if skyfield_name is None:
+            continue # Skip if we don't have a mapping for this planet
+
+        # For Earth, we need to get the planet itself, not the barycenter with the Moon
+        if planet_name_upper == "EARTH":
+            sky_planet = eph['earth']
+        else:
+            sky_planet = eph[skyfield_name]
+
+        # Get position and velocity from Skyfield
+        astrometric = (sky_planet - sun_obj).at(t)
+        position = astrometric.position
+        velocity = astrometric.velocity
+
+        # Convert from AU and AU/day to meters and m/s
+        x = position.au[0] * constants.AU
+        y = position.au[1] * constants.AU  # Use x and y for 2D projection
+        
+        vx = velocity.au_per_d[0] * constants.AU / (24 * 3600)
+        vy = velocity.au_per_d[1] * constants.AU / (24 * 3600)
+
+        # Create Planet object with scaled size and mass from constants
         planet = Planet(
-            data["position"] * Planet.AU,
-            0,
+            x,
+            y,
             scaled_sizes[data["name"]],
             data["mass"],
             name=data["name"],
-            is_inner_planet=data["is_inner"]
+            is_inner_planet=data.get("is_inner", False)
         )
-        planet.y_vel = data["velocity"]
+        # Set velocity from Skyfield data
+        planet.x_vel = vx
+        planet.y_vel = vy
+        # Draw orbit lines for planets (except the Sun)
         planet.draw_line = True
+        # Add planet to the list
         planets.append(planet)
 
-    # Toggle orbit line for the Sun
-    sun.draw_line = False  
-    
+    sun.draw_line = False
     return [sun] + planets
+
 
 def create_major_asteroids():
     """Create major asteroids Ceres and Vesta"""
@@ -187,7 +243,7 @@ def render_menu_texts():
     DISPLAYSURF.blit(fps_surface, (15, 15))
 
     # Displaying title in the upper right corner
-    title = "Solar System Simulation v.1.7"
+    title = "Solar System Simulation v.1.8"
     title_surface = FONT_1.render(title, True, constants.COLOR_TEXT)
     title_width, title_height = title_surface.get_size()
     upper_right_x = DISPLAYSURF.get_width() - title_width - 15
