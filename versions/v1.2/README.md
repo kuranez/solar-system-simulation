@@ -5,7 +5,8 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshot
 
-![[Solar-System-Sim/2D-Solar-System-Sim-Link/versions/v1.2/screenshot/Screenshot.png]]
+![screenshot-v-1-2](screenshots/screenshot-v-1-2.png)
+
 ## Features
 
 - Orbits of inner and outer planets of our solar system

@@ -5,7 +5,8 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshot
 
-![[Screenshot_v-1-3.png]]
+![screenshot-v-1-3](screenshots/screenshot-v-1-3.png)
+
 ## Features
 
 - Orbits of inner and outer planets of our solar system

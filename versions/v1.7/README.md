@@ -5,7 +5,7 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshot
 
-![[screenshot_v-1-7.png]]
+![screenshot-v-1-7](screenshots/screenshot-v-1-7.png)
 
 ## Features
 

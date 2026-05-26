@@ -5,7 +5,7 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshot
 
-![[Solar-System-Sim/2D-Solar-System-Sim-Link/versions/v1.6/screenshot/Screenshot_v1-6.png]]
+![screenshot-v-1-6](screenshots/screenshot-v-1-6.png)
 
 ## Features
 
