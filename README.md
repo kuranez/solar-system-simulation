@@ -10,7 +10,7 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshot
 
-![[screenshot-v-1-8.png]]
+![screenshot-v-1-8](screenshots/screenshot-v-1-8.png)
 
 ## Core Features
 
