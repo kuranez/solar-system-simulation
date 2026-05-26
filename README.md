@@ -1,15 +1,20 @@
-# 2D Solar System Simulation (v1.7)
+# 2D Solar System Simulation (v1.8)
 
-2D simulation of our solar system using pygame.  
+This Python/Pygame project simulates the solar system using real astronomical data and Newtonian gravity.  Version 1.8 introduces ephemeris-based initialization using data from JPL (via the Skyfield library) so planetary starting positions and velocities are more physically accurate.
+
 Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by [@techwithtim](https://github.com/techwithtim/Python-Planet-Simulation) and inspired by tweaks and additions by [@zerot69](https://github.com/zerot69/Solar-System-Simulation).
+
+[![Live Demo](https://img.shields.io/badge/🟢%20Live%20App-Solar%20System%20Sim-422C71?style=for-the-badge)](https://apps.kuracodez.space/solar-system-sim/app)
+
+---
 
 ## Screenshot
 
-![[screenshot_v-1-7.png]]
+![[screenshot-v-1-8.png]]
 
-## Features
+## Core Features
 
-- Main planet orbits and asteroid belt, including Ceres & Vesta.
+- Orbits of inner and outer planets of our solar system
 - Uses real astronomical data from NASA 
 - **Interactive navigation:** Mouse wheel zoom and left-click drag to move view
 - **Orbit tracking:** Real-time orbit counter for each planet with completion indicators
@@ -24,12 +29,23 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Setup
 
-Install Python packages and run `main.py`.
+Install Python packages and run `main.py`. 
 
 **Dependencies:**
 - pygame
-- math
+- skyfield
+- jplephem
 - itertools
+
+## Controls
+
+| Control | Action |
+|---------|--------|
+| **Mouse Wheel** | Zoom In/Out |
+| **Left Click + Drag** | Move View |
+| **[+] / [-]** | Adjust Speed |
+| **F12** | Take Screenshot |
+| **[ESC]** | Quit Simulation |
 
 ## Project Structure
 
@@ -37,33 +53,43 @@ Install Python packages and run `main.py`.
 - `constants.py` — Physical constants, colors, planetary data
 - `solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking
 - `solarsystem_scale.py` — Scaling and planet size calculations
+- `de440a.bsp`  — 
+- `CHANGELOG.md` — Detailed version changes
+- `DOCUMENTATION.md` — Full documentation for current version
+
+## WebApp Demo
+ 
+ Simplified web version based on this project showcasing different planetary system options .
+ 
+ **WebApp:** [https://apps.kuracodez.space/solar-system-sim](https://apps.kuracodez.space/solar-system-sim/app) 
+ 
+ **For more info see:** [https://github.com/kuranez/solar-system-simulation-web](https://github.com/kuranez/solar-system-simulation-web)
+
 
 ---
 # Changelog
 
-### 🚀 What's New in v1.7
+### 🚀 What's New in v1.8
 
-Version 1.7 improves asteroid visibility and simulation polish by introducing individually-instantiated major asteroids and a dedicated `Asteroid` class optimized for performance.
+Version 1.8 marks a major leap in scientific accuracy for the simulation. The initial positions of all planets are now calculated in real-time using high-precision data from NASA's Jet Propulsion Laboratory (JPL), providing an authentic snapshot of the solar system at the moment the simulation begins.
 
-### ✨ Added
-- `Asteroid` class (`solarsystem_sim.py`) — lightweight asteroid bodies that only compute Sun gravity and use screen-culling for efficient rendering
-- Major asteroids: Ceres and Vesta are instantiated as distinct bodies using `constants.ASTEROID_CERES` and `constants.ASTEROID_VESTA`
-- `create_major_asteroids()` (in `main.py`) — creates Ceres and Vesta with appropriate semi-major axes, colors and initial velocities
-- Improved asteroid belt generation: `create_asteroid_belt()` now generates a configurable number of asteroids (300 by default) between 2.2–3.2 AU
-- Planet orbit completion indicator: visual flash when a planet completes an orbit; planets now track orbit counts
-
-### 🔧 Performance & Rendering
-- Asteroids only calculate gravitational attraction to the Sun (no planet interactions) for performance
-- Screen culling for asteroids avoids drawing off-screen objects
-- Asteroids have no orbit trails to save memory and maintain smooth framerates
-
-### 📝 Notes
-- The simulation title and in-game time display have been updated to reflect v1.7
-- `constants.py` contains `ASTEROID_CERES` and `ASTEROID_VESTA` entries used by v1.7
-
----
+#### 🛰️ **Real-Time Planetary Positions with JPL Ephemerides**
+- **High-Precision Data:** Initial planet positions and velocities are now derived from the JPL DE440s ephemeris, the same data used by NASA for space mission navigation.
+- **Dynamic Starting Configuration:** Every time you run the simulation, it starts with the planets in their actual current locations in the solar system.
+- **Skyfield Integration:** The powerful `skyfield` library has been integrated to handle the complex astronomical calculations, ensuring accuracy and reliability.
+- **2D Projection:** The 3D coordinates from the ephemeris are accurately projected onto a 2D plane for visualization.
 
 ## Version History Overview
+
+### [1.7] - Major Asteroids Ceres & Vesta - Nov 21, 2025
+
+**Features**
+
+- **Zoom Fix:** Adjusted Simulation Scaling.
+- **Added:** Orbit completion indicator. Visual flash, when a planet completes an orbit.
+- **Major asteroids:** Added Ceres and Vesta as individual major-asteroid objects.
+
+**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v.1.6...v.1.7
 
 ### [1.6] - Asteroid Belt Implementation - Nov 20, 2025
 
@@ -122,6 +148,7 @@ Version 1.7 improves asteroid visibility and simulation polish by introducing in
 
 **Full Changelog**: https://github.com/kuranez/solar-system-simulation/commits/v1.0
 
+
 ---
 # Sources
 
@@ -129,3 +156,4 @@ Version 1.7 improves asteroid visibility and simulation polish by introducing in
 - Article by rastr-0: [teletype.in](https://teletype.in/@rastr_0/solar_system)
 - Zerot69's Solar System Simulation: [GitHub](https://github.com/zerot69/Solar-System-Simulation)
 - Planetary Data from NASA: [nssdc.gsfc.nasa.gov](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
+
