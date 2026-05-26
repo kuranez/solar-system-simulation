@@ -1,5 +1,7 @@
 # solarsystem_sim.py
 
+from symtable import Class
+
 import constants
 import pygame
 import math
@@ -295,6 +297,36 @@ class Asteroid(Body):
             # Draw as simple circle (no fade trails)
             pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), max(1, int(self.radius)))
 
+    def update_position(self, current_solarsystem):
+        """Only calculate attraction to the Sun for performance"""
+        # The Sun is the first object in the solar system list
+        sun = current_solarsystem[0]
+        fx, fy = self.attraction(sun)
+        self.x_vel += fx / self.mass * self.TIMESTEP
+        self.y_vel += fy / self.mass * self.TIMESTEP
+        self.x += self.x_vel * self.TIMESTEP
+        self.y += self.y_vel * self.TIMESTEP
+        # No orbit trail needed
+
+class TNO(Body):
+    def __init__(self, x, y, radius, mass, color=(200, 200, 200)):
+        super().__init__(x, y, radius, mass)
+        self.sun = False
+        self.name = "TNO"
+        self.color = color  # Set TNO color
+        self.draw_line = False
+        self.is_inner_planet = False
+
+    def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
+        """Optimized draw for TNOs"""
+        x = self.x * scale + constants.WIDTH / 2 + screen_offset_x
+        y = self.y * scale + constants.HEIGHT / 2 + screen_offset_y
+        
+        # Only draw if on screen (culling)
+        if 0 <= x <= constants.WIDTH and 0 <= y <= constants.HEIGHT:
+            # Draw as simple circle (no fade trails for TNOs to save performance)
+            pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), max(1, int(self.radius)))
+    
     def update_position(self, current_solarsystem):
         """Only calculate attraction to the Sun for performance"""
         # The Sun is the first object in the solar system list
