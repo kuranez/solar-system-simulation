@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.9
+Solar System Simulation v.1.8
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -10,7 +10,7 @@ import random
 import sys
 from pygame.locals import QUIT
 from solarsystem_scale import calculate_scaled_sizes
-from solarsystem_sim import Body, Sun, Planet, Asteroid, TNO
+from solarsystem_sim import Body, Sun, Planet, Asteroid
 import datetime  # For screenshot timestamps
 from skyfield.api import load, EarthSatellite
 from skyfield.timelib import Time
@@ -218,40 +218,6 @@ def create_asteroid_belt(num_asteroids=500):
     
     return asteroids
 
-def create_major_TNOs():
-    """Create a few major Trans-Neptunian Objects (TNOs) like Pluto, Eris, Haumea, Makemake"""
-    major_tnos = []
-    
-    for tno_data in [
-        constants.TNO_PLUTO, 
-        constants.TNO_ERIS, 
-        constants.TNO_HAUMEA, 
-        constants.TNO_MAKEMAKE,
-        constants.TNO_QUAOAR,
-        constants.TNO_ORCUS,
-        constants.TNO_SEDNA,
-        constants.TNO_GONGGONG
-        ]:
-        distance = tno_data["semi_major_axis"]
-        angle = random.uniform(0, 2 * math.pi)
-        tno = Planet(
-            distance * math.cos(angle),
-            distance * math.sin(angle),
-            3,  # Size in pixels
-            tno_data["mass"],
-            name=tno_data["name"],
-            is_inner_planet=False
-        )
-        # Calculate orbital velocity
-        orbital_speed = math.sqrt(constants.G * constants.sun_mass / distance)
-        tno.x_vel = -orbital_speed * math.sin(angle)
-        tno.y_vel = orbital_speed * math.cos(angle)
-        tno.color = tno_data["color"]
-        tno.draw_line = False  # No orbit trail
-        major_tnos.append(tno)
-    
-    return major_tnos
-
 # Create solar system 
 solarsystem = create_solarsystem()
 
@@ -264,11 +230,9 @@ major_asteroids = create_major_asteroids()
 # Create asteroid belt
 asteroids = create_asteroid_belt(num_asteroids=300)
 
-# Create Trans-Neptunian Objects (TNOs)
-major_tnos = create_major_TNOs()
-
 # Current Solar System (combine all bodies)
-current_solarsystem = solarsystem + major_asteroids + asteroids + major_tnos
+current_solarsystem = solarsystem + major_asteroids + asteroids
+
 
 
 # Render Menu Text
@@ -279,7 +243,7 @@ def render_menu_texts():
     DISPLAYSURF.blit(fps_surface, (15, 15))
 
     # Displaying title in the upper right corner
-    title = "Solar System Simulation v.1.9"
+    title = "Solar System Simulation v.1.8"
     title_surface = FONT_1.render(title, True, constants.COLOR_TEXT)
     title_width, title_height = title_surface.get_size()
     upper_right_x = DISPLAYSURF.get_width() - title_width - 15
