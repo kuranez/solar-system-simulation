@@ -1,4 +1,4 @@
-# 2D Solar System Simulation (v1.8)
+# 2D Solar System Simulation
 
 This Python/Pygame project simulates the solar system using real astronomical data and Newtonian gravity.  Version 1.8 introduces ephemeris-based initialization using data from JPL (via the Skyfield library) so planetary starting positions and velocities are more physically accurate.
 
@@ -10,7 +10,7 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 ## Screenshot
 
-![screenshot-v-1-8](screenshots/screenshot-v-1-8.png)
+![Screenshot](screenshots/screenshot-v-1-8.png)
 
 ## Core Features
 
@@ -67,93 +67,95 @@ Install Python packages and run `main.py`.
 
 
 ---
-# Changelog
 
-### 🚀 What's New in v1.8
+## Version Highlights
 
-Version 1.8 marks a major leap in scientific accuracy for the simulation. The initial positions of all planets are now calculated in real-time using high-precision data from NASA's Jet Propulsion Laboratory (JPL), providing an authentic snapshot of the solar system at the moment the simulation begins.
+**New in Version 1.8**
+- **Ephemerides Implementation:** Calculation of initial planetary positions using data from NASA's Jet Propulsion Laboratory (JPL) via the Skyfield library
 
-#### 🛰️ **Real-Time Planetary Positions with JPL Ephemerides**
-- **High-Precision Data:** Initial planet positions and velocities are now derived from the JPL DE440s ephemeris, the same data used by NASA for space mission navigation.
-- **Dynamic Starting Configuration:** Every time you run the simulation, it starts with the planets in their actual current locations in the solar system.
-- **Skyfield Integration:** The powerful `skyfield` library has been integrated to handle the complex astronomical calculations, ensuring accuracy and reliability.
-- **2D Projection:** The 3D coordinates from the ephemeris are accurately projected onto a 2D plane for visualization.
+**Previous in Version 1.7**
+- **Zoom Fix:** Adjusted Simulation Scaling
+- **Added:** Visual orbit completion indicator.
+- **Added:** Asteroids Ceres & Vesta
 
-## Version History Overview
+**Previous in Version 1.6:**
+- **Asteroid belt implementation:** Realistic distribution of procedurally generated asteroids between Mars and Jupiter with configurable density, randomized sizes and orbital parameters, and optimized rendering for performance.
 
-### [1.7] - Major Asteroids Ceres & Vesta - Nov 21, 2025
+**Previous in Version 1.5:**
+- **Mouse drag navigation:** Left-click and drag to pan around the solar system
+- **Orbit counter system:** Track completed orbits for each planet with visual indicators
+- **Enhanced orbit trails:** Only current orbit shown with smooth fade effect
+- **Professional UI redesign:** Clean tabular layout for all information
+- **Time elapsed display:** Real-time simulation time tracking
+- **Built-in screenshots:** F12 key to save simulation images
+- **Improved visual feedback:** Flash effects for orbit completions
 
-**Features**
+**Previous in Version 1.4:**
+- **Mouse wheel zoom:** both orbits and planet visuals scale with zoom
+- Improved planet scaling logic and modular scaling functions
+- Orbit trail fade effect for clearer visualization
+- Cleaner, more extensible code structure
 
-- **Zoom Fix:** Adjusted Simulation Scaling.
-- **Added:** Orbit completion indicator. Visual flash, when a planet completes an orbit.
-- **Major asteroids:** Added Ceres and Vesta as individual major-asteroid objects.
+**Previous in Version 1.3:**
+- Improved menu texts
+- **Frame rate independent physics**
+- Removed orbit and planet visibility options
 
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v.1.6...v.1.7
+**Previous in Version 1.2:**
+- Enhanced visuals & scaling
 
-### [1.6] - Asteroid Belt Implementation - Nov 20, 2025
+**Previous in Version 1.1:**
+- Size & resolution updates
 
-- **Added:** Asteroid belt: complete main belt implementation with 300+ objects. Realistic distribution of procedurally generated asteroids between Mars and Jupiter with configurable density, randomized sizes and orbital parameters, and optimized rendering for performance. 
-- **Changed:** Optimized physics: Sun-only gravity calculations for asteroids
+### Initial Release
 
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v.1.5...v.1.6
+**Core Features:** 
 
-### [1.5] - Improved UI - Jun 29, 2025
-- **Added:** Mouse drag navigation, orbit counters, enhanced orbit visualization, orbit completion indicators, improved menu system, time elapsed indicator, screenshot functionality
-- **Changed:** UI overhaul with table-based layout, enhanced planet data display, optimized orbit trail rendering
-- **Fixed:** Orbit trail memory leaks, UI element positioning, time tracking accuracy
-
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v.1.4...v.1.5
-
-### [1.4] - Code Organization - Jun 27, 2025
-- **Added:** Mouse wheel zoom, modular architecture, enhanced orbit trails, real-time planet scaling, unified constants
-- **Changed:** Complete refactoring of zoom and scaling system, improved code organization, optimized drawing and update loops, enhanced user interface
-- **Fixed:** Planet size scaling issues, orbit trail fade inconsistencies, code redundancy in scaling calculations
-
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v1.3...v.1.4
-
-### [1.3] - Frame Rate Independence & UI Improvements - Oct 20, 2024
-- **Added:** Frame rate independent physics
-- **Added:** Improved menu texts and navigation instructions
-- **Removed:** Buggy orbit and planet visibility toggles
-- **Changed:** Enhanced user interface layout
-- **Files:** Basic structure with main simulation files
-
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v1.2...v1.3
-
-### [1.2] - Enhanced Visuals & Scaling - Oct 20, 2024
-- **Added:** Improved orbit visuals with trail fade effect
-- **Added:** Overhauled scaling and zoom system with additional variables
-- **Added:** Overhauled solar system creation process
-- **Changed:** Better visual representation of planetary orbits
-- **Known Issues:** Toggle orbit/planet functionality became buggy
-
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v1.1...v1.2
-
-### [1.1] - Size & Resolution Updates  - Jul 31, 2024
-- **Added:** Adjusted planet and orbit sizes for better visibility
-- **Added:** 720p resolution support (1280x720)
-- **Changed:** Improved planet size scaling relative to distances
-- **Maintained:** All core simulation features from v1.0
-
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/compare/v1.0...v1.1
-
-### [1.0] - Initial Release - Jul 23, 2024
-- **Core Features:** 
   - Simulation of inner and outer planets
   - Keyboard controls for scale and speed adjustment
   - Toggle functionality for orbits and planets
   - Display of planet distances to the Sun
-- **Foundation:** Basic solar system simulation with gravitational physics
-
-**Full Changelog**: https://github.com/kuranez/solar-system-simulation/commits/v1.0
-
+  
+ **Foundation:** Basic solar system simulation with gravitational physics
 
 ---
-# Sources
+
+## Milestones & Roadmap
+
+✅ **Completed Features**
+
+- **Mouse control navigation** (Added in v1.5)
+- **Orbit tracking and counters** (Added in v1.5)
+- **Enhanced orbit drawing** (Added in v1.5)
+-  **Asteroid Belt** (Added in v1.6)
+- **Asteroids Ceres and Vesta** (Added in v1.7)
+
+⚙️ **In Progress**
+
+- **Additional Objects:** Asteroids (Pallas, Juno) and transneptunian objects (Upcoming v1.8)
+- **Web version:** Simplified web version using Panel library (Branched from v1.7)
+
+💡 **Planned Features**
+- Toggle to show/hide asteroid belt
+- Toggle to show/hide views of inner and outer planets
+- Toggle to show/hide asteroids and TNOs
+- Kirkwood gaps to show Jupiter's resonance effects
+- Use of different planet distances from the sun and real value comparison
+- Options to start the simulation at a specific historical or future date.
+- Further visual and code optimizations 
+
+---
+## Sources
 
 - Tech With Tim's tutorial: [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo)
 - Article by rastr-0: [teletype.in](https://teletype.in/@rastr_0/solar_system)
 - Zerot69's Solar System Simulation: [GitHub](https://github.com/zerot69/Solar-System-Simulation)
 - Planetary Data from NASA: [nssdc.gsfc.nasa.gov](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
 
+---
+
+## Contributing
+
+Pull requests, bug reports, and feature requests are welcome!
+
+---

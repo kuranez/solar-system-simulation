@@ -234,10 +234,28 @@ Planet size scaling is tied to zoom so the display remains readable as the user 
 
 ## Roadmap / Planned Features
 
-- Additional named asteroids such as Pallas and Juno
-- Kirkwood gap visualization
-- Toggle controls for the asteroid belt
-- Web-friendly rendering and alternate frontend targets
+✅ **Completed Features**
+
+- **Mouse control navigation** (Added in v1.5)
+- **Orbit tracking and counters** (Added in v1.5)
+- **Enhanced orbit drawing** (Added in v1.5)
+-  **Asteroid Belt** (Added in v1.6)
+- **Asteroids Ceres and Vesta** (Added in v1.7)
+
+⚙️ **In Progress**
+
+- **Additional Objects:** Asteroids (Pallas, Juno) and transneptunian objects (Upcoming v1.8)
+- **Web version:** Simplified web version using Panel library (Branched from v1.7)
+
+💡 **Planned Features**
+
+- Toggle to show/hide asteroid belt
+- Toggle to show/hide views of inner and outer planets
+- Toggle to show/hide asteroids and TNOs
+- Kirkwood gaps to show Jupiter's resonance effects
+- Use of different planet distances from the sun and real value comparison
+- Options to start the simulation at a specific historical or future date.
+- Further visual and code optimizations 
 
 ## Credits & Sources
 
@@ -246,10 +264,9 @@ Planet size scaling is tied to zoom so the display remains readable as the user 
 - Zerot69's Solar System Simulation: [GitHub](https://github.com/zerot69/Solar-System-Simulation)
 - Planetary Data from NASA: [nssdc.gsfc.nasa.gov](https://nssdc.gsfc.nasa.gov/planetary/factsheet/)
 
-## Contributing
-
-Pull requests, bug reports, and feature requests are welcome!
 
 ---
 
-For detailed version-by-version notes, see `CHANGELOG.md` and the archived versions in 
+## Version History 
+
+For detailed version-by-version notes, see `CHANGELOG.md` and the archived versions in [branch version-history](https://github.com/kuranez/solar-system-simulation/tree/version-history)
