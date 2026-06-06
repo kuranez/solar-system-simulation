@@ -26,6 +26,10 @@ class Body:
         self.sun = False
         self.distance_to_sun = 0
 
+        # Metadata for HUD calculations
+        self.perihelion = None
+        self.aphelion = None
+
         self.orbit = []
 
         self.x_vel = 0.0
