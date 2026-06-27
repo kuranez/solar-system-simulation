@@ -88,7 +88,7 @@ def render_menu_texts(screen, font, clock, total_elapsed_time, planet_data, titl
     col3_width = 60   # Orbits
 
     # Render table headers
-    starting_y = screen.get_height() - 240  # Fixed starting y position for the table
+    starting_y = screen.get_height() - 280  # Leave more space below the planet table
     header_y = starting_y
     
     # Column headers
@@ -97,7 +97,7 @@ def render_menu_texts(screen, font, clock, total_elapsed_time, planet_data, titl
     header3 = font.render(table_headers[2], True, constants.COLOR_TEXT)
     
     # Position headers from right edge
-    right_edge = screen.get_width() - 15
+    right_edge = screen.get_width() - 30
     col3_x = right_edge - col3_width
     col2_x = col3_x - col2_width
     col1_x = col2_x - col1_width

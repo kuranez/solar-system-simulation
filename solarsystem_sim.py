@@ -150,7 +150,7 @@ class Planet(Body):
         super().__init__(x, y, radius, mass)
         self.sun = False
         self.name = name
-        self.color = next(Planet.cycle_colors)
+        self.color: tuple[int, int, int] = next(Planet.cycle_colors)
         self.original_radius = radius  # Store the original size for later zooming
 
         # Orbit counting variables (angle-based to remain stable with large timesteps)

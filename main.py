@@ -11,7 +11,7 @@ import sys
 from pygame.locals import QUIT
 from solarsystem_scale import calculate_scaled_sizes
 from solarsystem_sim import Body, Sun, Planet, Asteroid
-from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt
+from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_TNO_belt, create_pluto
 from hud import render_menu_texts
 import datetime  # For screenshot timestamps
 
@@ -62,8 +62,12 @@ major_asteroids = create_major_asteroids()
 # Create asteroid belt
 asteroids = create_asteroid_belt(num_asteroids=300)
 
+# Create TNOs
+tno_belt = create_TNO_belt(num_objects=100)
+pluto = create_pluto()
+
 # Current Solar System (combine all bodies)
-current_solarsystem = solarsystem + major_asteroids + asteroids
+current_solarsystem = solarsystem + major_asteroids + asteroids + tno_belt + [pluto]
 
 planet_hud_data = [
     ("Mercury", mercury, constants.COLOR_MERCURY),
@@ -74,6 +78,7 @@ planet_hud_data = [
     ("Saturn", saturn, constants.COLOR_SATURN),
     ("Uranus", uranus, constants.COLOR_URANUS),
     ("Neptune", neptune, constants.COLOR_NEPTUNE),
+    ("Pluto", pluto, constants.COLOR_PLUTO)
 ]
 
 # Main Loop

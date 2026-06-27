@@ -88,7 +88,6 @@ def create_solarsystem():
     sun.draw_line = False
     return [sun] + planets
 
-
 def create_major_asteroids():
     """Create major asteroids Ceres and Vesta"""
     major_asteroids = []
@@ -285,7 +284,7 @@ def create_pluto():
     pluto.x_vel = -orbital_speed * math.sin(pluto_angle)
     pluto.y_vel = orbital_speed * math.cos(pluto_angle)
     
-    pluto.color = pluto_data["color"]
-    pluto.draw_line = False  # No orbit trail
+    pluto.color = constants.COLOR_PLUTO
+    pluto.draw_line = True  # Show orbit trail for Pluto
     
     return pluto
