@@ -73,9 +73,12 @@ Install Python packages and run `main.py`.
 ## Version Highlights
 
 **New in Version 1.9**
-- **Rearranged functions into new modules** to keep `main.py` clean.
-- **Bugfix:** Orbit completion counter and indicator works at higher simulation speeds.
-- **Added** Pluto, random transneptunian objects and asteroids Pallas and Juno.
+
+- **Module rework:** Split HUD rendering into `hud.py` and expanded `solarsystem_creation.py` to handle Pluto, TNOs, and additional minor bodies more cleanly.
+- **Pluto support:** Pluto is now included as a rendered object with its own orbit trail and HUD entry.
+- **Minor-body additions:** Added Pallas and Juno to the major-asteroid set, along with additional generated TNO objects.
+- **Orbit counter fix:** Orbit completion tracking now remains stable even when simulation speed is increased.
+- **HUD polish:** Adjusted the lower-right planet table spacing so Pluto no longer sits flush against the screen border.
 
 **New in Version 1.8**
 - **Ephemerides Implementation:** Calculation of initial planetary positions using data from NASA's Jet Propulsion Laboratory (JPL) via the Skyfield library
