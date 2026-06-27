@@ -133,6 +133,46 @@ def create_major_asteroids():
     vesta.draw_line = False  # No orbit trail
     major_asteroids.append(vesta)
     
+    # Create Pallas
+    pallas_data = constants.ASTEROID_PALLAS
+    pallas_distance = pallas_data["semi_major_axis"]
+    pallas_angle = random.uniform(0, 2 * math.pi)
+    pallas = Planet(
+        pallas_distance * math.cos(pallas_angle),
+        pallas_distance * math.sin(pallas_angle),
+        2.5,  # Size in pixels
+        pallas_data["mass"],
+        name=pallas_data["name"],
+        is_inner_planet=True
+    )
+    # Calculate orbital velocity
+    orbital_speed = math.sqrt(constants.G * constants.sun_mass / pallas_distance)
+    pallas.x_vel = -orbital_speed * math.sin(pallas_angle)
+    pallas.y_vel = orbital_speed * math.cos(pallas_angle)
+    pallas.color = pallas_data["color"]
+    pallas.draw_line = False  # No orbit trail
+    major_asteroids.append(pallas)
+
+    # Create Juno
+    juno_data = constants.ASTEROID_JUNO
+    juno_distance = juno_data["semi_major_axis"]
+    juno_angle = random.uniform(0, 2 * math.pi)
+    juno = Planet(
+        juno_distance * math.cos(juno_angle),
+        juno_distance * math.sin(juno_angle),
+        2.5,  # Size in pixels
+        juno_data["mass"],
+        name=juno_data["name"],
+        is_inner_planet=True
+    )
+    # Calculate orbital velocity
+    orbital_speed = math.sqrt(constants.G * constants.sun_mass / juno_distance)
+    juno.x_vel = -orbital_speed * math.sin(juno_angle)
+    juno.y_vel = orbital_speed * math.cos(juno_angle)
+    juno.color = juno_data["color"]
+    juno.draw_line = False  # No orbit trail
+    major_asteroids.append(juno)
+
     return major_asteroids
 
 def create_asteroid_belt(num_asteroids=500):
@@ -179,3 +219,73 @@ def create_asteroid_belt(num_asteroids=500):
         asteroids.append(asteroid)
     
     return asteroids
+
+def create_TNO_belt(num_objects=100):
+    """Generate Trans-Neptunian Objects (TNOs) beyond Neptune's orbit"""    
+    tno_objects = []
+    
+    # TNO belt range (30 to 50 AU from the Sun)
+    inner_radius = 30 * Planet.AU
+    outer_radius = 50 * Planet.AU
+    
+    for i in range(num_objects):
+        # Random orbital distance
+        distance = random.uniform(inner_radius, outer_radius)
+        
+        # Random angle around the Sun
+        angle = random.uniform(0, 2 * math.pi)
+        
+        # Calculate x, y position
+        x = distance * math.cos(angle)
+        y = distance * math.sin(angle)
+        
+        # Small random size (1-3 pixels)
+        size = random.uniform(0.5, 2)
+        
+        # Very small mass (negligible gravitational effect)
+        mass = 1e15  # Much smaller than planets
+        
+        # Uniform light gray color
+        color = (160, 160, 160)
+        
+        tno_object = Asteroid(x, y, size, mass, color)
+        
+        # Calculate orbital velocity (circular orbit around Sun)
+        orbital_speed = math.sqrt(constants.G * constants.sun_mass / distance)
+        
+        # Set velocity perpendicular to position vector
+        tno_object.x_vel = -orbital_speed * math.sin(angle)
+        tno_object.y_vel = orbital_speed * math.cos(angle)
+        
+        # Add some random eccentricity
+        tno_object.x_vel *= random.uniform(0.95, 1.05)
+        tno_object.y_vel *= random.uniform(0.95, 1.05)
+        
+        tno_objects.append(tno_object)
+    
+    return tno_objects
+
+def create_pluto():
+    """Create Pluto as a special case TNO"""
+    pluto_data = constants.TNO_PLUTO
+    pluto_distance = pluto_data["semi_major_axis"]
+    pluto_angle = random.uniform(0, 2 * math.pi)
+    
+    pluto = Planet(
+        pluto_distance * math.cos(pluto_angle),
+        pluto_distance * math.sin(pluto_angle),
+        2.5,  # Size in pixels
+        pluto_data["mass"],
+        name=pluto_data["name"],
+        is_inner_planet=False
+    )
+    
+    # Calculate orbital velocity
+    orbital_speed = math.sqrt(constants.G * constants.sun_mass / pluto_distance)
+    pluto.x_vel = -orbital_speed * math.sin(pluto_angle)
+    pluto.y_vel = orbital_speed * math.cos(pluto_angle)
+    
+    pluto.color = pluto_data["color"]
+    pluto.draw_line = False  # No orbit trail
+    
+    return pluto

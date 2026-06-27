@@ -135,10 +135,12 @@ Install Python packages and run `main.py`.
 - **Enhanced orbit drawing** (Added in v1.5)
 -  **Asteroid Belt** (Added in v1.6)
 - **Asteroids Ceres and Vesta** (Added in v1.7)
+- **Real-time planet positions** using skyfield module (Added in v1.8)
+- **Additional Objects:** Asteroids (Pallas, Juno) and transneptunian objects including Pluto (Added in v.1.9)
 
 ⚙️ **In Progress**
 
-- **Additional Objects:** Asteroids (Pallas, Juno) and transneptunian objects (Upcoming v1.8)
+
 - **Web version:** Simplified web version using Panel library (Branched from v1.7)
 
 💡 **Planned Features**

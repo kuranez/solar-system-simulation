@@ -171,3 +171,31 @@ ASTEROID_VESTA = {
     "orbital_velocity": 19300,
     "color": (190, 185, 180)
 }
+
+ASTEROID_PALLAS = {
+    "name": "Pallas",
+    "radius": 256e3,
+    "mass": 2.11e20,
+    "semi_major_axis": 2.77 * AU,
+    "orbital_velocity": 17000,
+    "color": (200, 200, 200)
+}
+
+ASTEROID_JUNO = {
+    "name": "Juno",
+    "radius": 118e3,
+    "mass": 2.67e19,
+    "semi_major_axis": 2.67 * AU,
+    "orbital_velocity": 18000,
+    "color": (210, 210, 210)
+}
+
+# TNOs
+TNO_PLUTO = {
+    "name": "Pluto",
+    "radius": 1188.3e3 / 2,  # meters
+    "mass": 1.303e22,  # kg
+    "semi_major_axis": 39.48 * AU,
+    "orbital_velocity": 4740,  # m/s
+    "color": (200, 200, 255)
+}
