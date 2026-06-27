@@ -51,11 +51,11 @@ Install Python packages and run `main.py`.
 
 - `main.py` — Main loop, event handling, rendering with enhanced interactive controls
 - `constants.py` — Physical constants, colors, planetary data
-- `hud.py` — Render menu texts
+- `hud.py` — Render menu texts like controls and planet distances.
 - `solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking
 - `solarsystem_scale.py` — Scaling and planet size calculations
 - `solarsystem_creation.py` — Solar system object creation
-- `de440a.bsp`  — 
+- `de440a.bsp`  — Planet position data (jplephem).
 - `CHANGELOG.md` — Detailed version changes
 - `DOCUMENTATION.md` — Full documentation for current version
 
