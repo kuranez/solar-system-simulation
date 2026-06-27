@@ -75,6 +75,7 @@ Install Python packages and run `main.py`.
 **New in Version 1.9**
 - **Rearranged functions into new modules** to keep `main.py` clean.
 - **Bugfix:** Orbit completion counter and indicator works at higher simulation speeds.
+- **Added** Pluto, random transneptunian objects and asteroids Pallas and Juno.
 
 **New in Version 1.8**
 - **Ephemerides Implementation:** Calculation of initial planetary positions using data from NASA's Jet Propulsion Laboratory (JPL) via the Skyfield library

@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.9 - Pluto, HUD, and Orbit Tracking Updates - Jun 27, 2026
+
+**Features**
+
+- **Pluto support:** Pluto is now created as a proper TNO object and included in the on-screen HUD.
+- **Minor-body expansion:** Added Pallas and Juno to the generated major-asteroid set.
+- **Orbit trail for Pluto:** Pluto now renders with an orbit trail like the major planets.
+- **HUD layout adjustment:** Increased spacing around the lower-right planet table so Pluto is not flush against the screen border.
+- **Additional** randomly generated TNO objects to keep Pluto company.
+
+
+**Bugfixes & Improvements**
+
+- **Orbit counting stability:** Orbit counting now uses angular sweep tracking, which remains stable when simulation speed is increased.
+- **HUD refactor:** Menu rendering now receives the screen surface explicitly instead of depending on globals from `main.py`.
+- **Module rework:** Split HUD rendering into [hud.py](solar-system-simulation/hud.py) and Pluto/TNO creation into [solarsystem_creation.py](solar-system-simulation/solarsystem_creation.py) for cleaner organization.
+- **Pluto color consistency:** Added a shared Pluto color constant and aligned Pluto rendering with it.
+
 ## v1.8 - Ephemerides & Skyfield Integration - May 26, 2026 (Current Release)
 
 **Features**
