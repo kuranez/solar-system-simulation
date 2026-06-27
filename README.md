@@ -73,7 +73,8 @@ Install Python packages and run `main.py`.
 ## Version Highlights
 
 **New in Version 1.9**
-- **Rearranged modules** to keep `main.py` clean.
+- **Rearranged functions into new modules** to keep `main.py` clean.
+- **Bugfix:** Orbit completion counter and indicator works at higher simulation speeds.
 
 **New in Version 1.8**
 - **Ephemerides Implementation:** Calculation of initial planetary positions using data from NASA's Jet Propulsion Laboratory (JPL) via the Skyfield library

@@ -153,16 +153,12 @@ class Planet(Body):
         self.color = next(Planet.cycle_colors)
         self.original_radius = radius  # Store the original size for later zooming
 
-        # Orbit counting variables
-        self.orbit = [] # Initialize orbit trail
-        self.orbit_start_index = 0 # Start index for orbit trail
-        self.last_complete_orbit = [] # Store the last complete orbit points
-
+        # Orbit counting variables (angle-based to remain stable with large timesteps)
         self.orbit_count = 0
         self.prev_x = x
         self.prev_y = y
-        self.orbit_detected = False
-        self.has_crossed_reference = False  # Flag to track if the reference point has been crossed 
+        self.previous_angle = math.atan2(y, x)
+        self.accumulated_angle = 0.0
 
         # Visual indicator variables
         self.flash_timer = 0
@@ -177,56 +173,37 @@ class Planet(Body):
         # Call the update_position method from Body to handle physics
         super().update_position(current_solarsystem)
 
-        # Append current position to the orbit
-        self.orbit.append((self.x, self.y))
-
         # Check if the planet has completed a full orbit
-        self._check_orbit_completion()
+        sun = next((body for body in current_solarsystem if getattr(body, "sun", False)), None)
+        if sun is not None:
+            self._check_orbit_completion(sun)
 
         # Update the flash timer if it's active
         if self.flash_timer > 0:
             self.flash_timer -= 1
 
-    def _check_orbit_completion(self):
-        """Check if the planet has completed a full orbit by returning to start point."""
-        # Only check for orbit completion if we have enough trail points
-        if len(self.orbit) < 100:  # Need minimum points to have a meaningful orbit
-            return
-        
-        # Get the starting point of the current orbit
-        if self.orbit_start_index < len(self.orbit):
-            start_point = self.orbit[self.orbit_start_index]
-            current_point = (self.x, self.y)
-            
-            # Calculate distance from current position to start point
-            distance_to_start = math.sqrt(
-                (current_point[0] - start_point[0])**2 + 
-                (current_point[1] - start_point[1])**2
-            )
-            
-            # Define a threshold for "close enough" to starting point (relative to AU)
-            threshold = 0.01 * self.AU  # 1% of AU distance
-            
-            # Check if we've returned close to the starting point
-            if distance_to_start < threshold and not self.orbit_detected:
-                # Make sure we've traveled far enough to be a real orbit
-                if len(self.orbit) - self.orbit_start_index > 50:  # Minimum orbit length
-                    self.orbit_count += 1
-                    self.orbit_detected = True
-                    
-                    # Clear the old trail and start fresh for the new orbit
-                    self.orbit = [(self.x, self.y)]  # Keep only current position
-                    self.orbit_start_index = 0
-                    
-                    # Set the flash timer to create visual indicator
-                    self.flash_timer = self.flash_duration
-                    
-                    # Print debug info
-                    print(f"{self.name} completed orbit #{self.orbit_count}")
-            
-            # Reset detection flag when we're far enough from start point
-            elif distance_to_start > threshold * 2:
-                self.orbit_detected = False
+    def _check_orbit_completion(self, sun):
+        """Count completed orbits by tracking angular sweep around the Sun."""
+        current_angle = math.atan2(self.y - sun.y, self.x - sun.x)
+
+        # Normalize delta to [-pi, pi] to handle angle wraparound at +/-pi.
+        delta = current_angle - self.previous_angle
+        if delta > math.pi:
+            delta -= 2 * math.pi
+        elif delta < -math.pi:
+            delta += 2 * math.pi
+
+        self.accumulated_angle += delta
+        completed_orbits = int(abs(self.accumulated_angle) / (2 * math.pi))
+
+        if completed_orbits > 0:
+            self.orbit_count += completed_orbits
+            # Keep remainder to preserve progress toward the next orbit.
+            self.accumulated_angle = math.fmod(self.accumulated_angle, 2 * math.pi)
+            self.flash_timer = self.flash_duration
+            print(f"{self.name} completed orbit #{self.orbit_count}")
+
+        self.previous_angle = current_angle
 
     def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
         """Draw the body with its orbit trail."""
