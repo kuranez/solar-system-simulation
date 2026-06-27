@@ -51,6 +51,7 @@ Install Python packages and run `main.py`.
 
 - `main.py` — Main loop, event handling, rendering with enhanced interactive controls
 - `constants.py` — Physical constants, colors, planetary data
+- `hud.py` — Render menu texts
 - `solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking
 - `solarsystem_scale.py` — Scaling and planet size calculations
 - `solarsystem_creation.py` — Solar system object creation
