@@ -53,6 +53,7 @@ Install Python packages and run `main.py`.
 - `constants.py` — Physical constants, colors, planetary data
 - `solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking
 - `solarsystem_scale.py` — Scaling and planet size calculations
+- `solarsystem_creation.py` — Solar system object creation
 - `de440a.bsp`  — 
 - `CHANGELOG.md` — Detailed version changes
 - `DOCUMENTATION.md` — Full documentation for current version
