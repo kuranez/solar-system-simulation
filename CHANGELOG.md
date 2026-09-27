@@ -19,6 +19,7 @@ To improve scalability and maintainability, `solarsystem_sim.py` was refactored 
 
 * **`render/` module:** Contains the HUD (`render.hud`) and rendering methods (`render.renderer`).
 * **Orbit tracking:** Replaced orbit-trail-point sampling with angle-based sampling (`physics.orbits_tracker`).
+* **Bugfix:** Planets derailing with increased simulation speed by adding sub-steps.
 
 **The physics engine, orbit tracking, object creation, and rendering are now clearly separated into dedicated modules.**
 
