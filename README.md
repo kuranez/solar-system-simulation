@@ -53,7 +53,7 @@ Install Python packages and run `main.py`.
 - `solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking
 - `solarsystem_scale.py` — Scaling and planet size calculations
 - `solarsystem_creation.py` — Solar system object creation
-- - ~~`constants.py` — Physical constants, colors, planetary data~~
+- ~~`constants.py` — Physical constants, colors, planetary data~~
 - `config/` — Contains modules for simulation settings, display configuration and color palette.
 - `data/` — Contains modules for solar system data (sun, planets, asteroids, TNOs).
 - `physics/constants.py` — Contains physical constants. 
