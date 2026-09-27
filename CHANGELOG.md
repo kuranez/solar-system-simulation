@@ -1,6 +1,19 @@
 # Changelog
 
-## v1.9 - Pluto, HUD, and Orbit Tracking Updates - Jun 27, 2026
+## v1.9.1 - Refactor of `constants.py` into modules - Sep 27, 2026
+
+**Why this change?**
+
+The `constants.py` file contained physical constants, display settings, simulation settings, and planetary data in different formats as a leftover from previous versions.
+
+**How does it work now?**
+
+- **`config`-Module:** Contains submodules for display settings (`config.display`), simulation settings (`config.simulation`) and the color palette (`config.color`).
+- **`physics`-Module:** Physical constants such as the Astronomical unit (AU) and gravitational constant (G) can now be found here in the `physics.constants`submodule.
+- **`data`-Module:** Planetary and asteroid data can now be found here, neatly organized in sub-modules using a standardized keyed-dictionary format. 
+
+
+## v1.9.0 - Pluto, HUD, and Orbit Tracking Updates - Jun 27, 2026
 
 **Features**
 

@@ -1,25 +1,32 @@
-# Solar System Simulation — Documentation (v1.8)
+# Solar System Simulation — Documentation (v1.9)
 
 ## Overview
 
-This Python/Pygame project simulates a 2D view of the Solar System using Newtonian gravity, real planetary data, and interactive camera controls. Version 1.8 adds ephemeris-based initialization using JPL data through Skyfield, so the planets start from a more accurate real-world configuration instead of a purely synthetic initial layout. The documentation below now includes a module-by-module reference and a step-by-step breakdown of the simulation loop.
+This Python/Pygame project simulates a 2D view of the Solar System using Newtonian gravity, real planetary data, and interactive camera controls. 
+
+**Version 1.8** added ephemeris-based initialization using JPL data through Skyfield, so the planets start from a more accurate real-world configuration instead of a purely synthetic initial layout. The documentation below now includes a module-by-module reference and a step-by-step breakdown of the simulation loop.
+
+**Version 1.9** added more objects, including additional major asteroids, Pluto, and Charon. Pluto was added as a proper trans-Neptunian object (TNO), with its own orbit trail and HUD entry. The update also introduced additional randomly generated TNOs and improved orbit tracking and HUD organization.
 
 The project is split into a small set of focused modules:
 
 - `main.py` — program entry point, object creation, event loop, rendering, and UI
-- `constants.py` — physical constants, colors, planetary data, asteroid metadata
+- ~~`constants.py` — physical constants, colors, planetary data, asteroid metadata~~
 - `solarsystem_sim.py` — body classes and physics behaviour
+- `solarsystem_creation.py` — solar system object creation
 - `solarsystem_scale.py` — helpers that convert real sizes into pixel sizes
-- `CHANGELOG.md` — release history
 
-## What Changed in v1.8
+Version 1.9.1 refactored the former `constants.py` file into dedicated modules. The previous file contained physical constants, display settings, simulation settings, and planetary data in different formats as a leftover from earlier versions.
 
-- Initial positions and velocities for planets are derived from JPL ephemerides via `skyfield`.
-- `de440s.bsp` is used as the planetary data source for the startup state.
-- The simulation now begins with more realistic relative placements and orbital directions.
-- The existing zoom and UI work from v1.7 remains in place, with v1.8 focused on startup accuracy.
+The new structure separates these responsibilities into three main areas:
 
-## Features
+- **`config` module:** Contains submodules for display settings (`config.display`), simulation settings (`config.simulation`), and the color palette (`config.color`).
+- **`physics` module:** Contains physical constants such as the astronomical unit (AU) and gravitational constant (G) in the `physics.constants` submodule.
+- **`data` module:** Contains planetary and asteroid data, organized into dedicated submodules using a standardized keyed-dictionary format.
+
+This refactoring makes the project structure more modular and keeps configuration, physical constants, and simulation data separated from each other.
+
+## Project Features
 
 - Realistic orbits for the eight classical planets
 - Ephemeris-based startup state for better astronomical accuracy
@@ -32,6 +39,63 @@ The project is split into a small set of focused modules:
 - Major asteroids Ceres and Vesta
 - Screenshot capture with `F12`
 - Frame-rate independent physics
+
+## Folder Structure Diagram
+
+```text
+solar-system-simulation/
+│
+├── config/				# Configuration modules
+│   ├── __init__.py
+│   ├── colors.py		# Color palette
+│   ├── display.py		# Display and window settings
+│   └── simulation.py	# Simulation settings
+│
+├── data/				# Celestial body data
+│   ├── __init__.py
+│   ├── asteroids.py	# Asteroid data
+│   ├── planets.py		# Planet data
+│   ├── sun.py			# Sun data
+│   └── tnos.py			# TNO data
+│
+├── physics/			# Physics module
+│   ├── __init__.py
+│   └── constants.py	# Physics constants such as AU and G
+│
+├── render/				# Rendering
+│   ├── __init__.py
+│   └── hud.py			# Heads-up display (HUD)
+│
+├── main.py						# Main entry point
+├── solarsystem_creation.py		# Celestial body creation
+├── solarsystem_scale.py		# Celestial body scaling
+├── solarsystem_sim.py			# Celestial body classes handling simulation and physics
+│
+├── de440s.bsp					# Skyfield ephimeres data
+│
+├── README.md					# Project overview
+├── DOCUMENTATION.md			# Detailed documentation
+└── CHANGELOG.md				# Version history
+```
+
+
+## What Changed in v1.9 and v1.8
+
+**v1.9.1 — Refactor of `constants.py`**
+- Refactored constants.py into dedicated config, physics, and data modules.
+
+**v1.9 — Pluto, Asteroid, HUD, and Orbit** Tracking Updates
+- Added additional TNO and asteroid objects.
+- Improved orbit counting using angular sweep tracking.
+- Refactored HUD rendering and TNO creation into separate modules.
+- Improved HUD layout and Pluto color consistency.
+
+**v1.8 — Skyfield integration**
+- Initial positions and velocities for planets are derived from JPL ephemerides via `skyfield`.
+- `de440s.bsp` is used as the planetary data source for the startup state.
+- The simulation now begins with more realistic relative placements and orbital directions.
+- The existing zoom and UI work from v1.7 remains in place, with v1.8 focused on startup accuracy.
+
 
 ## Installation
 
@@ -116,15 +180,19 @@ This module contains the physical object model.
 - `calculate_scaled_sizes(scale)`
 	- Builds a dictionary of scaled pixel radii for every planet in `PLANETS_DATA`.
 
-### `constants.py`
+### `solarsystem_creation.py`
 
-This module defines the simulation data rather than behavior.
+**TO DO** add section!
 
-- Display size and colors
-- Physical constants such as `AU`, `G`, and `TIMESTEP`
-- Sun properties
-- Planet properties in `PLANETS_DATA`
-- Major asteroid metadata for Ceres and Vesta
+### ~~`constants.py`~~
+
+~~This module defines the simulation data rather than behavior.~~
+
+~~- Display size and colors~~
+~~- Physical constants such as `AU`, `G`, and `TIMESTEP`~~
+~~- Sun properties~~
+~~- Planet properties in `PLANETS_DATA`~~
+~~- Major asteroid metadata for Ceres and Vesta~~
 
 ## How the Simulation Works
 
@@ -239,12 +307,15 @@ Planet size scaling is tied to zoom so the display remains readable as the user 
 - **Mouse control navigation** (Added in v1.5)
 - **Orbit tracking and counters** (Added in v1.5)
 - **Enhanced orbit drawing** (Added in v1.5)
--  **Asteroid Belt** (Added in v1.6)
+- **Asteroid Belt** (Added in v1.6)
 - **Asteroids Ceres and Vesta** (Added in v1.7)
+- **Asteroids Juno and Pallas** (Added in v1.9)
+- **Asteroids Hygea and Eros** (Added in v1.9.2) (Upcoming soon)
+- **TNOs Pluto and Charon** (Added in v1.9 and v1.9.2)
 
 ⚙️ **In Progress**
 
-- **Additional Objects:** Asteroids (Pallas, Juno) and transneptunian objects (Upcoming v1.8)
+- **Additional Objects:** Asteroids (Pallas, Juno) and transneptunian objects (Upcoming v1.9) -> Hygea and Eros to go, Charon to go
 - **Web version:** Simplified web version using Panel library (Branched from v1.7)
 
 💡 **Planned Features**

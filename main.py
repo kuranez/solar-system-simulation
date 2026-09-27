@@ -4,9 +4,6 @@ Solar System Simulation v.1.9.1
 https://github.com/kuranez/Solar-System-Simulation
 """
 
-# import constants
-import math
-import random
 import sys
 import datetime  # For screenshot timestamps
 
@@ -17,8 +14,8 @@ import config.colors
 import config.display
 import config.simulation
 
+from solarsystem_sim import Body
 from solarsystem_scale import calculate_scaled_sizes
-from solarsystem_sim import Body, Sun, Planet, Asteroid
 from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_TNO_belt, create_pluto
 
 from render.hud import render_menu_texts

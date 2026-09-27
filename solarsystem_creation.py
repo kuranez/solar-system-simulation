@@ -12,7 +12,7 @@ from data.planets import PLANET_DATA
 from data.asteroids import ASTEROID_DATA
 from data.tnos import TNO_DATA
 
-from solarsystem_sim import Body, Sun, Planet, Asteroid
+from solarsystem_sim import Sun, Planet, Asteroid
 from solarsystem_scale import calculate_scaled_sizes
 
 from skyfield.api import load, EarthSatellite
