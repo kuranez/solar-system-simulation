@@ -1,8 +1,8 @@
 # Changelog
 
-## v1.9.2 - Refactor of `solarsystem_sim.py` physics into `physics/`- and `object/`-modules - Sep 28, 2026
-
 ## v1.9.2 - Refactor of `solarsystem_sim.py` into `physics/` and `objects/` modules - Sep 28, 2026
+
+**Commit:** [eb6b0a1](https://github.com/kuranez/solar-system-simulation/commit/eb6b0a11aa5ebd1966272a881c36f49c27615f13)
 
 **Why this change?**
 
@@ -24,6 +24,8 @@ To improve scalability and maintainability, `solarsystem_sim.py` was refactored 
 
 
 ## v1.9.1 - Refactor of `constants.py` into `config`-, `data/` and `physics/`-modules - Sep 27, 2026
+
+**Commit:**[37a259f](https://github.com/kuranez/solar-system-simulation/commit/37a259fb0b0edc32e8628ccb6d973b437b40de52)
 
 **Why this change?**
 
