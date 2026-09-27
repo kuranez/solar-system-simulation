@@ -12,11 +12,11 @@ The project is split into a small set of focused modules:
 
 - `main.py` — program entry point, object creation, event loop, rendering, and UI
 - ~~`constants.py` — physical constants, colors, planetary data, asteroid metadata~~
-- `solarsystem_sim.py` — body classes and physics behaviour
-- `solarsystem_creation.py` — solar system object creation
+- ~~`solarsystem_sim.py` — body classes and physics behaviour~~ (Split, moved, overhauled to objects/ and physics/)
+- `solarsystem_creation.py` — solar system object creation 
 - `solarsystem_scale.py` — helpers that convert real sizes into pixel sizes
 
-Version 1.9.1 refactored the former `constants.py` file into dedicated modules. The previous file contained physical constants, display settings, simulation settings, and planetary data in different formats as a leftover from earlier versions.
+**Version 1.9.1** refactored the former `constants.py` file into dedicated modules. The previous file contained physical constants, display settings, simulation settings, and planetary data in different formats as a leftover from earlier versions.
 
 The new structure separates these responsibilities into three main areas:
 
@@ -25,6 +25,8 @@ The new structure separates these responsibilities into three main areas:
 - **`data` module:** Contains planetary and asteroid data, organized into dedicated submodules using a standardized keyed-dictionary format.
 
 This refactoring makes the project structure more modular and keeps configuration, physical constants, and simulation data separated from each other.
+
+**Version 1.9.2** refactored the former `solarsystem_simulation.py` file and the `solarsystem_creation.py` file into physics, object and render modules.Additionally HUD and orbit tracking were improved.
 
 ## Project Features
 
@@ -58,13 +60,17 @@ solar-system-simulation/
 │   ├── sun.py			# Sun data
 │   └── tnos.py			# TNO data
 │
-├── physics/			# Physics module
+├── physics/				# Physics module
 │   ├── __init__.py
-│   └── constants.py	# Physics constants such as AU and G
+│   ├── engine.py			# Gravity calculations & position updates
+│   ├── orbits_tracker.py	# Orbit recording
+│   ├── orbits.py			# Orbit calculations
+│   └── constants.py		# Physics constants such as AU and G
 │
-├── render/				# Rendering
+├── render/					# Rendering
 │   ├── __init__.py
-│   └── hud.py			# Heads-up display (HUD)
+│   ├── renderer.py			# Object drawing (Celestial bodies, orbits)
+│   └── hud.py				# Heads-up display (HUD)
 │
 ├── main.py						# Main entry point
 ├── solarsystem_creation.py		# Celestial body creation

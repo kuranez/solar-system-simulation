@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.9.1
+Solar System Simulation v.1.9.2
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -14,11 +14,13 @@ import config.colors
 import config.display
 import config.simulation
 
-from solarsystem_sim import Body
-from solarsystem_scale import calculate_scaled_sizes
-from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_TNO_belt, create_pluto
-
+from physics.engine import update_bodies_physics
+from render.renderer import draw_body
 from render.hud import render_menu_texts
+
+# from solarsystem_sim import Body
+from solarsystem_scale import calculate_scaled_sizes
+from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_Kuiper_belt, create_pluto
 
 
 # Initialize pygame
@@ -34,6 +36,10 @@ FONT_1 = pygame.font.SysFont(None, 21)
 clock = pygame.time.Clock()
 FPS = 60
 dt = 0
+
+# Simulation speed : Substepping to fix planet orbits with increased speed
+steps_per_frame = 1
+BASE_TIMESTEP = config.simulation.TIMESTEP # Default: 1 day per physics step
 
 # Scale and Movement Settings
 
@@ -65,10 +71,10 @@ sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune = solarsystem
 major_asteroids = create_major_asteroids()
 
 # Create asteroid belt
-asteroids = create_asteroid_belt(num_asteroids=300)
+asteroids = create_asteroid_belt(num_asteroids=500)
 
 # Create TNOs
-tno_belt = create_TNO_belt(num_objects=100)
+tno_belt = create_Kuiper_belt(num_objects=100)
 pluto = create_pluto()
 
 # Current Solar System (combine all bodies)
@@ -137,10 +143,16 @@ while True:
         # Keyboard events for speed control
         if event.type == pygame.KEYDOWN:
             # Adjust simulation speed using [+] or [-] from both regular keys and numpad
-            if event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS or event.key == pygame.K_KP_PLUS:
-                Body.TIMESTEP += 3600 * 24  # Increase time step (faster)
-            elif event.key == pygame.K_MINUS or event.key == pygame.K_KP_MINUS:
-                Body.TIMESTEP -= 3600 * 24  # Decrease time step (slower)
+            if event.key in (pygame.K_PLUS, pygame.K_EQUALS, pygame.K_KP_PLUS):
+                steps_per_frame = min(64, steps_per_frame + 1)
+            elif event.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
+                steps_per_frame = max(1, steps_per_frame -1)
+
+            # Old buggy code
+            # if event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS or event.key == pygame.K_KP_PLUS:
+            #     config.simulation.TIMESTEP += 3600 * 24  # Increase time step (faster)
+            # elif event.key == pygame.K_MINUS or event.key == pygame.K_KP_MINUS:
+            #     config.simulation.TIMESTEP -= 3600 * 24  # Decrease time step (slower)
 
             # # Check mouse position for screen movement (for future use)
             # mouse_x, mouse_y = pygame.mouse.get_pos()  # Get current mouse position
@@ -165,16 +177,39 @@ while True:
                 pygame.image.save(DISPLAYSURF, screenshot_path)
                 print(f"Screenshot saved to: {screenshot_path}")
 
-    # Draw and update Solar System, new sizes
-    for body in current_solarsystem:
-        body.update_position(current_solarsystem)
-        body.draw(DISPLAYSURF, scale, screen_offset_x, screen_offset_y)
+    # # Draw and update Solar System, new sizes
+    # for body in current_solarsystem:
+    #     body.update_position(current_solarsystem)
+    #     body.draw(DISPLAYSURF, scale, screen_offset_x, screen_offset_y)
     
-    # Update total elapsed simulation time
-    total_elapsed_time += Body.TIMESTEP
+    # # Update total elapsed simulation time
+    # total_elapsed_time += Body.TIMESTEP
+
+    for _ in range(steps_per_frame):
+        # Physics update
+        update_bodies_physics(
+            current_solarsystem,
+            BASE_TIMESTEP,
+            sun=sun
+        )
+
+        total_elapsed_time += BASE_TIMESTEP
+
+    # Render all bodies
+    screen_cx = config.display.WIDTH    / 2 + screen_offset_x
+    screen_cy = config.display.HEIGHT   / 2 + screen_offset_y
+
+    for body in current_solarsystem:
+        draw_body(DISPLAYSURF, body, scale, screen_cx, screen_cy)
 
     # Render menu texts and planet distances
-    render_menu_texts(DISPLAYSURF, FONT_1, clock, total_elapsed_time, planet_hud_data)
+    render_menu_texts(
+        DISPLAYSURF, 
+        FONT_1, 
+        clock, 
+        total_elapsed_time,
+        planet_hud_data,
+        steps_per_frame=steps_per_frame)
 
     # delta time for framerate-independent physics
     dt = clock.tick(FPS) / 1000

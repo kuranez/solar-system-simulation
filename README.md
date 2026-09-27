@@ -50,14 +50,15 @@ Install Python packages and run `main.py`.
 ## Project Structure
 
 - `main.py` — Main loop, event handling, rendering with enhanced interactive controls
-- `solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking
+- ~~`solarsystem_sim.py` — Enhanced Sun, Planet, and Body classes with orbit tracking~~
 - `solarsystem_scale.py` — Scaling and planet size calculations
 - `solarsystem_creation.py` — Solar system object creation
 - ~~`constants.py` — Physical constants, colors, planetary data~~
 - `config/` — Contains modules for simulation settings, display configuration and color palette.
 - `data/` — Contains modules for solar system data (sun, planets, asteroids, TNOs).
-- `physics/constants.py` — Contains physical constants. 
-- `render/hud.py` — Render menu texts like controls and planet distances.
+- `physics/` — Contains modules for physics like gravity computation and orbits.
+- `objects/` — Contains universal celestial body class for simplyfied object creation.
+- `render/` — Contains modules for rendering objects and HUD.
 - `de440a.bsp`  — Planet position data (jplephem).
 - `CHANGELOG.md` — Detailed version changes
 - `DOCUMENTATION.md` — Full documentation for current version
@@ -77,7 +78,7 @@ Install Python packages and run `main.py`.
 
 **New in Version 1.9**
 
-- **Module rework:** Split HUD rendering into `hud.py` and expanded `solarsystem_creation.py` to handle Pluto, TNOs, and additional minor bodies more cleanly (v. 1.9.0). Also organized constants into `data/`-, `physics/`- and `config/`-modules (v.1.9.1).
+- **Module rework:** Split rendering, physics and object creation logic into dedicated modules.
 - **Pluto support:** Pluto is now included as a rendered object with its own orbit trail and HUD entry.
 - **Minor-body additions:** Added Pallas and Juno to the major-asteroid set, along with additional generated TNO objects.
 - **Orbit counter fix:** Orbit completion tracking now remains stable even when simulation speed is increased.

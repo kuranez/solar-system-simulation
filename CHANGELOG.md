@@ -1,6 +1,29 @@
 # Changelog
 
-## v1.9.1 - Refactor of `constants.py` into modules - Sep 27, 2026
+## v1.9.2 - Refactor of `solarsystem_sim.py` physics into `physics/`- and `object/`-modules - Sep 28, 2026
+
+## v1.9.2 - Refactor of `solarsystem_sim.py` into `physics/` and `objects/` modules - Sep 28, 2026
+
+**Why this change?**
+
+The initial Skyfield implementation in v1.8 introduced repeated physics calculations in `solarsystem_creation.py` to verify whether the methods in `solarsystem_sim.py` were causing issues with orbital behavior.
+
+To improve scalability and maintainability, `solarsystem_sim.py` was refactored and its methods were reorganized into dedicated modules.
+
+**How does it work now?**
+
+* **`physics/` module:** Contains physical calculations, including gravity (`physics.engine`) and orbital calculations (`physics.orbits`).
+* **`objects/` module:** Uses a single base class for celestial bodies (`objects.body`) to simplify object creation and reduce duplication.
+
+**Other changes**
+
+* **`render/` module:** Contains the HUD (`render.hud`) and rendering methods (`render.renderer`).
+* **Orbit tracking:** Replaced orbit-trail-point sampling with angle-based sampling (`physics.orbits_tracker`).
+
+**The physics engine, orbit tracking, object creation, and rendering are now clearly separated into dedicated modules.**
+
+
+## v1.9.1 - Refactor of `constants.py` into `config`-, `data/` and `physics/`-modules - Sep 27, 2026
 
 **Why this change?**
 
