@@ -1,17 +1,27 @@
 # solarsystem_creation.py
 
-import constants
+# import constants
 import random
 import math
+
+import config.simulation
+import physics.constants
+
+from data.sun import SUN_DATA
+from data.planets import PLANET_DATA
+from data.asteroids import ASTEROID_DATA
+from data.tnos import TNO_DATA
+
 from solarsystem_sim import Body, Sun, Planet, Asteroid
 from solarsystem_scale import calculate_scaled_sizes
+
 from skyfield.api import load, EarthSatellite
 from skyfield.timelib import Time
 
 def create_solarsystem():
     """Create objects in the solar system using Skyfield for real positions."""
     # Use the default simulation scale for initial planet rendering sizes.
-    scaled_sizes = calculate_scaled_sizes(constants.DEFAULT_SCALE)
+    scaled_sizes = calculate_scaled_sizes(config.simulation.DEFAULT_SCALE)
 
     # Load Skyfield data
     # Use most recent DE440s ephemeris for accurate planetary positions
@@ -24,7 +34,7 @@ def create_solarsystem():
     # Get the Sun object from Skyfield
     sun_obj = eph['SUN']
     # Create Sun at center with mass from constants
-    sun = Sun(0, 0, 2, constants.sun_mass)
+    sun = Sun(0, 0, 2, SUN_DATA["Sun"]["mass"])
     # List to hold planet objects
     planets = []
 
@@ -41,7 +51,7 @@ def create_solarsystem():
     }
 
     # Loop through our planet data and create Planet objects with positions and velocities from Skyfield
-    for data in constants.PLANETS_DATA:
+    for data in PLANET_DATA.values():
         planet_name_upper = data["name"].upper()
         
         # Get the correct skyfield object name from our map
@@ -62,11 +72,11 @@ def create_solarsystem():
         velocity = astrometric.velocity
 
         # Convert from AU and AU/day to meters and m/s
-        x = position.au[0] * constants.AU
-        y = position.au[1] * constants.AU  # Use x and y for 2D projection
+        x = position.au[0] * physics.constants.AU
+        y = position.au[1] * physics.constants.AU  # Use x and y for 2D projection
         
-        vx = velocity.au_per_d[0] * constants.AU / (24 * 3600)
-        vy = velocity.au_per_d[1] * constants.AU / (24 * 3600)
+        vx = velocity.au_per_d[0] * physics.constants.AU / (24 * 3600)
+        vy = velocity.au_per_d[1] * physics.constants.AU / (24 * 3600)
 
         # Create Planet object with scaled size and mass from constants
         planet = Planet(
@@ -93,7 +103,7 @@ def create_major_asteroids():
     major_asteroids = []
     
     # Create Ceres
-    ceres_data = constants.ASTEROID_CERES
+    ceres_data = ASTEROID_DATA["Ceres"]
     ceres_distance = ceres_data["semi_major_axis"]
     ceres_angle = random.uniform(0, 2 * math.pi)
     ceres = Planet(
@@ -105,7 +115,7 @@ def create_major_asteroids():
         is_inner_planet=True
     )
     # Calculate orbital velocity
-    orbital_speed = math.sqrt(constants.G * constants.sun_mass / ceres_distance)
+    orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / ceres_distance)
     ceres.x_vel = -orbital_speed * math.sin(ceres_angle)
     ceres.y_vel = orbital_speed * math.cos(ceres_angle)
     ceres.color = ceres_data["color"]
@@ -113,7 +123,7 @@ def create_major_asteroids():
     major_asteroids.append(ceres)
     
     # Create Vesta
-    vesta_data = constants.ASTEROID_VESTA
+    vesta_data = ASTEROID_DATA["Vesta"]
     vesta_distance = vesta_data["semi_major_axis"]
     vesta_angle = random.uniform(0, 2 * math.pi)
     vesta = Planet(
@@ -125,7 +135,7 @@ def create_major_asteroids():
         is_inner_planet=True
     )
     # Calculate orbital velocity
-    orbital_speed = math.sqrt(constants.G * constants.sun_mass / vesta_distance)
+    orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / vesta_distance)
     vesta.x_vel = -orbital_speed * math.sin(vesta_angle)
     vesta.y_vel = orbital_speed * math.cos(vesta_angle)
     vesta.color = vesta_data["color"]
@@ -133,7 +143,7 @@ def create_major_asteroids():
     major_asteroids.append(vesta)
     
     # Create Pallas
-    pallas_data = constants.ASTEROID_PALLAS
+    pallas_data = ASTEROID_DATA["Pallas"]
     pallas_distance = pallas_data["semi_major_axis"]
     pallas_angle = random.uniform(0, 2 * math.pi)
     pallas = Planet(
@@ -145,7 +155,7 @@ def create_major_asteroids():
         is_inner_planet=True
     )
     # Calculate orbital velocity
-    orbital_speed = math.sqrt(constants.G * constants.sun_mass / pallas_distance)
+    orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / pallas_distance)
     pallas.x_vel = -orbital_speed * math.sin(pallas_angle)
     pallas.y_vel = orbital_speed * math.cos(pallas_angle)
     pallas.color = pallas_data["color"]
@@ -153,7 +163,7 @@ def create_major_asteroids():
     major_asteroids.append(pallas)
 
     # Create Juno
-    juno_data = constants.ASTEROID_JUNO
+    juno_data = ASTEROID_DATA["Juno"]
     juno_distance = juno_data["semi_major_axis"]
     juno_angle = random.uniform(0, 2 * math.pi)
     juno = Planet(
@@ -165,7 +175,7 @@ def create_major_asteroids():
         is_inner_planet=True
     )
     # Calculate orbital velocity
-    orbital_speed = math.sqrt(constants.G * constants.sun_mass / juno_distance)
+    orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / juno_distance)
     juno.x_vel = -orbital_speed * math.sin(juno_angle)
     juno.y_vel = orbital_speed * math.cos(juno_angle)
     juno.color = juno_data["color"]
@@ -205,7 +215,7 @@ def create_asteroid_belt(num_asteroids=500):
         asteroid = Asteroid(x, y, size, mass, color)
         
         # Calculate orbital velocity (circular orbit around Sun)
-        orbital_speed = math.sqrt(constants.G * constants.sun_mass / distance)
+        orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / distance)
         
         # Set velocity perpendicular to position vector
         asteroid.x_vel = -orbital_speed * math.sin(angle)
@@ -250,7 +260,7 @@ def create_TNO_belt(num_objects=100):
         tno_object = Asteroid(x, y, size, mass, color)
         
         # Calculate orbital velocity (circular orbit around Sun)
-        orbital_speed = math.sqrt(constants.G * constants.sun_mass / distance)
+        orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / distance)
         
         # Set velocity perpendicular to position vector
         tno_object.x_vel = -orbital_speed * math.sin(angle)
@@ -266,7 +276,7 @@ def create_TNO_belt(num_objects=100):
 
 def create_pluto():
     """Create Pluto as a special case TNO"""
-    pluto_data = constants.TNO_PLUTO
+    pluto_data = TNO_DATA["Pluto"]
     pluto_distance = pluto_data["semi_major_axis"]
     pluto_angle = random.uniform(0, 2 * math.pi)
     
@@ -280,11 +290,11 @@ def create_pluto():
     )
     
     # Calculate orbital velocity
-    orbital_speed = math.sqrt(constants.G * constants.sun_mass / pluto_distance)
+    orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / pluto_distance)
     pluto.x_vel = -orbital_speed * math.sin(pluto_angle)
     pluto.y_vel = orbital_speed * math.cos(pluto_angle)
     
-    pluto.color = constants.COLOR_PLUTO
+    pluto.color = pluto_data["color"]
     pluto.draw_line = True  # Show orbit trail for Pluto
     
     return pluto

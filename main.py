@@ -1,26 +1,34 @@
 """
-Solar System Simulation v.1.9
+Solar System Simulation v.1.9.1
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
-import constants
+
+# import constants
 import math
-import pygame
 import random
 import sys
+import datetime  # For screenshot timestamps
+
+import pygame
 from pygame.locals import QUIT
+
+import config.colors
+import config.display
+import config.simulation
+
 from solarsystem_scale import calculate_scaled_sizes
 from solarsystem_sim import Body, Sun, Planet, Asteroid
 from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_TNO_belt, create_pluto
-from hud import render_menu_texts
-import datetime  # For screenshot timestamps
+
+from render.hud import render_menu_texts
 
 
 # Initialize pygame
 pygame.init()
 
 # Window Settings
-DISPLAYSURF = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT), pygame.FULLSCREEN)
+DISPLAYSURF = pygame.display.set_mode((config.display.WIDTH, config.display.HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption('Solar System Simulation')
 
 FONT_1 = pygame.font.SysFont(None, 21)
@@ -33,7 +41,7 @@ dt = 0
 # Scale and Movement Settings
 
 # Initial scale factor for the solar system
-scale = constants.DEFAULT_SCALE  # This is the zoom factor for positions
+scale = config.simulation.DEFAULT_SCALE  # This is the zoom factor for positions
 # How fast zoom in/out should change scale
 zoom_speed = scale * 0.1  # 10 % per scroll step
 screen_offset_x = 0  # Offset for horizontal movement
@@ -70,21 +78,21 @@ pluto = create_pluto()
 current_solarsystem = solarsystem + major_asteroids + asteroids + tno_belt + [pluto]
 
 planet_hud_data = [
-    ("Mercury", mercury, constants.COLOR_MERCURY),
-    ("Venus", venus, constants.COLOR_VENUS),
-    ("Earth", earth, constants.COLOR_EARTH),
-    ("Mars", mars, constants.COLOR_MARS),
-    ("Jupiter", jupiter, constants.COLOR_JUPITER),
-    ("Saturn", saturn, constants.COLOR_SATURN),
-    ("Uranus", uranus, constants.COLOR_URANUS),
-    ("Neptune", neptune, constants.COLOR_NEPTUNE),
-    ("Pluto", pluto, constants.COLOR_PLUTO)
+    ("Mercury", mercury,    config.colors.PLANET_COLORS["Mercury"]),
+    ("Venus",   venus,      config.colors.PLANET_COLORS["Venus"]),
+    ("Earth",   earth,      config.colors.PLANET_COLORS["Earth"]),
+    ("Mars",    mars,       config.colors.PLANET_COLORS["Mars"]),
+    ("Jupiter", jupiter,    config.colors.PLANET_COLORS["Jupiter"]),
+    ("Saturn",  saturn,     config.colors.PLANET_COLORS["Saturn"]),
+    ("Uranus",  uranus,     config.colors.PLANET_COLORS["Uranus"]),
+    ("Neptune", neptune,    config.colors.PLANET_COLORS["Neptune"]),
+    ("Pluto",   pluto,      config.colors.TNO_COLORS["Pluto"])
 ]
 
 # Main Loop
 while True:
     clock.tick(FPS)
-    DISPLAYSURF.fill(constants.COLOR_BACKGROUND)
+    DISPLAYSURF.fill(config.display.COLOR_BACKGROUND)
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -100,7 +108,7 @@ while True:
             elif event.y < 0:
                 scale /= 1.1  # Zoom out (decrease scale)
             # Ensure scale is within a reasonable range (not too small or too large)
-            scale = max(constants.DEFAULT_SCALE * 0.05, min(scale, constants.DEFAULT_SCALE * 10))
+            scale = max(config.simulation.DEFAULT_SCALE * 0.05, min(scale, config.simulation.DEFAULT_SCALE * 10))
             # Recalculate planet sizes for new scale
             scaled_sizes = calculate_scaled_sizes(scale)
             # Update each planet's radius

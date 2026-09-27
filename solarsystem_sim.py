@@ -1,19 +1,26 @@
 # solarsystem_sim.py
-
-import constants
+ 
+# import constants
 import pygame
 import math
 import itertools
+
+import physics.constants 
+import config.simulation
+import config.display
+import config.colors
+
+from data import sun, planets, asteroids, tnos
 
 
 # Solar system bodies
 class Body:
     
     # Constants
-    AU = constants.AU
-    G = constants.G
+    AU = physics.constants.AU
+    G = physics.constants.G
     # DEFAULT_SCALE = constants.DEFAULT_SCALE
-    TIMESTEP = constants.TIMESTEP
+    TIMESTEP = config.simulation.TIMESTEP
 
     def __init__(self, x, y, radius, mass):
         self.x = x
@@ -93,16 +100,16 @@ class Body:
     def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
         """Draw the body and its faded orbit trail."""
         # Calculate position on screen
-        x = self.x * scale + constants.WIDTH / 2 + screen_offset_x
-        y = self.y * scale + constants.HEIGHT / 2 + screen_offset_y
+        x = self.x * scale + config.display.WIDTH / 2 + screen_offset_x
+        y = self.y * scale + config.display.HEIGHT / 2 + screen_offset_y
 
         # Draw the faded orbit trail
         if self.draw_line and len(self.orbit) >= 2:
             fade_scale = 1.5  # Adjust this value to control brightness
             orbit_points = [
                 (
-                    px * scale + constants.WIDTH / 2 + screen_offset_x,
-                    py * scale + constants.HEIGHT / 2 + screen_offset_y
+                    px * scale + config.display.WIDTH / 2 + screen_offset_x,
+                    py * scale + config.display.HEIGHT / 2 + screen_offset_y
                 )
                 for px, py in self.orbit
             ]
@@ -110,9 +117,9 @@ class Body:
                 distance = len(orbit_points) - i
                 fade_factor = max(0, min(255, int(255 * (distance / len(orbit_points)) * fade_scale)))
                 faded_color = (
-                    int(self.color[0] * (1 - fade_factor / 255) + constants.COLOR_BACKGROUND[0] * (fade_factor / 255)),
-                    int(self.color[1] * (1 - fade_factor / 255) + constants.COLOR_BACKGROUND[1] * (fade_factor / 255)),
-                    int(self.color[2] * (1 - fade_factor / 255) + constants.COLOR_BACKGROUND[2] * (fade_factor / 255))
+                    int(self.color[0] * (1 - fade_factor / 255) + config.display.COLOR_BACKGROUND[0] * (fade_factor / 255)),
+                    int(self.color[1] * (1 - fade_factor / 255) + config.display.COLOR_BACKGROUND[1] * (fade_factor / 255)),
+                    int(self.color[2] * (1 - fade_factor / 255) + config.display.COLOR_BACKGROUND[2] * (fade_factor / 255))
                 )
                 pygame.draw.line(DISPLAYSURF, faded_color, orbit_points[i - 1], orbit_points[i], 1)
 
@@ -126,7 +133,7 @@ class Sun(Body):
         super().__init__(x, y, radius, mass)
         self.sun = True
         self.name = "Sun"
-        self.color = constants.COLOR_SUN
+        self.color = config.colors.SUN_COLOR["Sun"],
         self.orbit_count = 0  # Sun doesn't orbit but needs the attribute
 
     def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
@@ -136,14 +143,14 @@ class Sun(Body):
 # Planets
 class Planet(Body):
     cycle_colors = itertools.cycle([
-        constants.COLOR_MERCURY,    # Mercury
-        constants.COLOR_VENUS,      # Venus
-        constants.COLOR_EARTH,      # Earths
-        constants.COLOR_MARS,       # Mars
-        constants.COLOR_JUPITER,    # Jupiter
-        constants.COLOR_SATURN,     # Saturn
-        constants.COLOR_URANUS,     # Uranus
-        constants.COLOR_NEPTUNE     # Neptune
+        config.colors.PLANET_COLORS["Mercury"], # Mercury
+        config.colors.PLANET_COLORS["Venus"],   # Venus
+        config.colors.PLANET_COLORS["Earth"],   # Earth
+        config.colors.PLANET_COLORS["Mars"],    # Mars
+        config.colors.PLANET_COLORS["Jupiter"], # Jupiter
+        config.colors.PLANET_COLORS["Saturn"],  # Saturn
+        config.colors.PLANET_COLORS["Uranus"],  # Uranus
+        config.colors.PLANET_COLORS["Neptune"], # Neptune
     ])
 
     def __init__(self, x, y, radius, mass, name, is_inner_planet=False):
@@ -208,8 +215,8 @@ class Planet(Body):
     def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
         """Draw the body with its orbit trail."""
         # Calculate position on screen
-        x = self.x * scale + constants.WIDTH / 2 + screen_offset_x
-        y = self.y * scale + constants.HEIGHT / 2 + screen_offset_y
+        x = self.x * scale + config.display.WIDTH / 2 + screen_offset_x
+        y = self.y * scale + config.display.HEIGHT / 2 + screen_offset_y
         
         # Draw orbit trail with fade effect
         if self.draw_line and len(self.orbit) >= 2:
@@ -220,8 +227,8 @@ class Planet(Body):
             fade_scale = 1.0  # Adjust this value to control brightness
             orbit_points = [
                 (
-                    px * scale + constants.WIDTH / 2 + screen_offset_x,
-                    py * scale + constants.HEIGHT / 2 + screen_offset_y
+                    px * scale + config.display.WIDTH / 2 + screen_offset_x,
+                    py * scale + config.display.HEIGHT / 2 + screen_offset_y
                 )
                 for px, py in self.orbit
             ]
@@ -236,9 +243,9 @@ class Planet(Body):
                 combined_fade = orbit_fade_multiplier * (1 - distance_fade_factor / 255)
                 
                 faded_color = (
-                    int(self.color[0] * combined_fade + constants.COLOR_BACKGROUND[0] * (1 - combined_fade)),
-                    int(self.color[1] * combined_fade + constants.COLOR_BACKGROUND[1] * (1 - combined_fade)),
-                    int(self.color[2] * combined_fade + constants.COLOR_BACKGROUND[2] * (1 - combined_fade))
+                    int(self.color[0] * combined_fade + config.display.COLOR_BACKGROUND[0] * (1 - combined_fade)),
+                    int(self.color[1] * combined_fade + config.display.COLOR_BACKGROUND[1] * (1 - combined_fade)),
+                    int(self.color[2] * combined_fade + config.display.COLOR_BACKGROUND[2] * (1 - combined_fade))
                 )
                 
                 pygame.draw.line(DISPLAYSURF, faded_color, orbit_points[i - 1], orbit_points[i], 1)
@@ -268,11 +275,11 @@ class Asteroid(Body):
     
     def draw(self, DISPLAYSURF, scale, screen_offset_x=0, screen_offset_y=0):
         """Optimized draw for asteroids"""
-        x = self.x * scale + constants.WIDTH / 2 + screen_offset_x
-        y = self.y * scale + constants.HEIGHT / 2 + screen_offset_y
+        x = self.x * scale + config.display.WIDTH / 2 + screen_offset_x
+        y = self.y * scale + config.display.HEIGHT / 2 + screen_offset_y
         
         # Only draw if on screen (culling)
-        if 0 <= x <= constants.WIDTH and 0 <= y <= constants.HEIGHT:
+        if 0 <= x <= config.display.WIDTH and 0 <= y <= config.display.HEIGHT:
             # Draw as simple circle (no fade trails)
             pygame.draw.circle(DISPLAYSURF, self.color, (int(x), int(y)), max(1, int(self.radius)))
 
