@@ -1,5 +1,5 @@
 """
-Solar System Simulation v.1.9.2
+Solar System Simulation v.1.9.3
 @author: kuranez
 https://github.com/kuranez/Solar-System-Simulation
 """
@@ -21,10 +21,6 @@ from render.scale import calculate_scaled_sizes
 from render.hud import render_menu_texts
 
 from objects.factory import create_solarsystem, create_major_asteroids, create_pluto, create_asteroid_belt, create_Kuiper_belt
-# from solarsystem_sim import Body
-# from solarsystem_scale import calculate_scaled_sizes
-# from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_Kuiper_belt, create_pluto
-
 
 # Initialize pygame
 pygame.init()
@@ -83,8 +79,13 @@ asteroids = create_asteroid_belt(num_asteroids=500)
 tno_belt = create_Kuiper_belt(num_objects=100)
 pluto = create_pluto()
 
+# Performance Tweak : Seperate into major and minor bodies
+major_bodies = solarsystem + major_asteroids + [pluto]
+minor_bodies = asteroids + tno_belt
+
 # Current Solar System (combine all bodies)
-current_solarsystem = solarsystem + major_asteroids + asteroids + tno_belt + [pluto]
+# current_solarsystem = solarsystem + major_asteroids + asteroids + tno_belt + [pluto]
+current_solarsystem = major_bodies + minor_bodies
 
 planet_hud_data = [
     ("Mercury", mercury,    config.colors.PLANET_COLORS["Mercury"]),
@@ -175,14 +176,20 @@ while True:
     # Update and draw celestial bodies
     # -------------------------------------------------------------
     for _ in range(steps_per_frame):
-        # Physics update
+        # Physics update - Seperate major and minor body loops
         update_bodies_physics(
-            current_solarsystem,
+            major_bodies,
+            minor_bodies,
             BASE_TIMESTEP,
             sun=sun
         )
 
         total_elapsed_time += BASE_TIMESTEP
+
+    # Tweak: Update OrbitRecorder once per frame (after all substeps)    
+    for body in major_bodies:
+        if body.orbit_recorder:
+            body.orbit_recorder.update(body.x, body.y, sun.x, sun.y)
 
     # Render all bodies
     screen_cx = config.display.WIDTH    / 2 + screen_offset_x
@@ -190,6 +197,7 @@ while True:
 
     for body in current_solarsystem:
         draw_body(DISPLAYSURF, body, scale, screen_cx, screen_cy)
+
 
     # -------------------------------------------------------------
     # Render HUD

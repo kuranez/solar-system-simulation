@@ -1,4 +1,5 @@
-# physics/engine.py
+# physics.engine - Gravity and Position calculations
+
 import math
 from physics.constants import G
 
@@ -11,74 +12,62 @@ def compute_gravity_force(body1, body2, g=G):
     
     if dist == 0:
         return 0.0, 0.0, 0.0
-    
+
+    # Gravitational force magnitude: F = G * (m1 * m2) / r^2
     force = g * body1.mass * body2.mass / dist_sq
+
+    # Angle between bodies in radians
     theta = math.atan2(dy, dx)
 
-    return math.cos(theta) * force, math.sin(theta) * force, dist
+    # Force components along X and Y axes
+    fx = math.cos(theta) * force
+    fy = math.sin(theta) * force
 
-def update_bodies_physics(bodies, dt, sun=None):
-    """
-    Unified physics update:
-    - Major bodies (planets): full N-body or Sun-centered gravity
-    - Minor bodies (asteroids): fast Sun-only attraction
-    """
-    # for old bodies
-    # for body in bodies:
-    #    if getattr(body, "is_sun", False):
-    #        continue
+    return fx, fy, dist
 
-    for body in bodies:
+def update_bodies_physics(major_bodies, minor_bodies, dt, sun=None):
+    """
+    Optimized physics update using familiar trigonometry:
+    - Major bodies (planets): N-body gravity ONLY with other major bodies.
+    - Minor bodies (asteroids/TNOs): Fast 1-body gravity to the Sun.
+    """
+    # -------------------------------------------------------------
+    # 1. Major Bodies (Planets & Pluto)
+    # -------------------------------------------------------------
+    for body in major_bodies:
         if body.is_sun:
             continue
-
-        total_fx, total_fy = 0.0, 0.0
-
-        # 1. Compute gravitational forces
-
-        # for old bodies
-        # if getattr(body, "is_asteroid", False) and sun:
-
-        if body.is_asteroid and sun:
-            # Fast 1-body gravitation for asteroids
-            fx, fy, dist = compute_gravity_force(body, sun)
+        total_fx = 0.0
+        total_fy = 0.0
+        # Planets only pull/get pulled by other major bodies (Sun + planets)
+        for other in major_bodies:
+            if body is other:
+                continue
+            fx, fy, dist = compute_gravity_force(body, other)
             total_fx += fx
             total_fy += fy
-            body.distance_to_sun = dist
-        else:
-            # Full N-body gravity for planets
-            for other in bodies:
-                if body is other:
-                    continue
-                fx, fy, dist = compute_gravity_force(body, other)
-                total_fx += fx
-                total_fy += fy
-                if other.is_sun:
-                    body.distance_to_sun = dist
-
-        # 2. Integrate velocity & position (Euler step)
+            if other.is_sun:
+                body.distance_to_sun = dist
+        # Velocity and position integration (Euler step)
         body.vx += (total_fx / body.mass) * dt
         body.vy += (total_fy / body.mass) * dt
         body.x += body.vx * dt
         body.y += body.vy * dt
-
-        # for old bodies
-        # if getattr(body, "has_trail", False):
-        #     body.orbit.append((body.x, body.y))
-        #     if len(body.orbit) > 20000:
-        #         body.orbit.pop(0)
-
-        # 3. Dynamically track min & max distances
+        # Distance telemetry (min/max tracking)
         if body.distance_to_sun > 0:
             if body.min_distance is None or body.distance_to_sun < body.min_distance:
                 body.min_distance = body.distance_to_sun
             if body.max_distance is None or body.distance_to_sun > body.max_distance:
                 body.max_distance = body.distance_to_sun
-
-        # Update orbit data if enabled
-        # if body.orbit_tracker:
-        #     body.orbit_tracker.record_position(body.x, body.y)
-        #     if sun:
-        #         body.orbit_tracker.update_orbit_count(body.x, body.y, sun.x, sun.y)
-        if body.orbit_recorder and sun:
-            body.orbit_recorder.update(body.x, body.y, sun.x, sun.y)
+    # -------------------------------------------------------------
+    # 2. Minor Bodies (Asteroids & TNOs)
+    # -------------------------------------------------------------
+    if sun:
+        for asteroid in minor_bodies:
+            # Asteroids only get pulled by the Sun (1-body central force)
+            fx, fy, dist = compute_gravity_force(asteroid, sun)
+            asteroid.vx += (fx / asteroid.mass) * dt
+            asteroid.vy += (fy / asteroid.mass) * dt
+            asteroid.x += asteroid.vx * dt
+            asteroid.y += asteroid.vy * dt
+            asteroid.distance_to_sun = dist

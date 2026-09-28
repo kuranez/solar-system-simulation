@@ -1,8 +1,12 @@
 # Changelog
 
+
 ## v1.9.2 - Refactor of `solarsystem_sim.py` into `physics/` and `objects/` modules - Sep 28, 2026
 
-**Commit:** [eb6b0a1](https://github.com/kuranez/solar-system-simulation/commit/eb6b0a11aa5ebd1966272a881c36f49c27615f13)
+**Commits:** 
+- [eb6b0a1](https://github.com/kuranez/solar-system-simulation/commit/eb6b0a11aa5ebd1966272a881c36f49c27615f13)
+- 
+- [945e81c](https://github.com/kuranez/solar-system-simulation/commit/945e81cad0ca78aba91627081139c667ab581be1)
 
 **Why this change?**
 
