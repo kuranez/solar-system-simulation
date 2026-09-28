@@ -15,12 +15,15 @@ import config.display
 import config.simulation
 
 from physics.engine import update_bodies_physics
+
 from render.renderer import draw_body
+from render.scale import calculate_scaled_sizes
 from render.hud import render_menu_texts
 
+from objects.factory import create_solarsystem, create_major_asteroids, create_pluto, create_asteroid_belt, create_Kuiper_belt
 # from solarsystem_sim import Body
-from solarsystem_scale import calculate_scaled_sizes
-from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_Kuiper_belt, create_pluto
+# from solarsystem_scale import calculate_scaled_sizes
+# from solarsystem_creation import create_solarsystem, create_major_asteroids, create_asteroid_belt, create_Kuiper_belt, create_pluto
 
 
 # Initialize pygame
@@ -38,10 +41,12 @@ FPS = 60
 dt = 0
 
 # Simulation speed : Substepping to fix planet orbits with increased speed
-steps_per_frame = 1
-BASE_TIMESTEP = config.simulation.TIMESTEP # Default: 1 day per physics step
+steps_per_frame = config.simulation.SUBSTEP     # Default: 1
+BASE_TIMESTEP = config.simulation.TIMESTEP      # Default: 1 day per physics step
 
+# -------------------------------------------------------------
 # Scale and Movement Settings
+# -------------------------------------------------------------
 
 # Initial scale factor for the solar system
 scale = config.simulation.DEFAULT_SCALE  # This is the zoom factor for positions
@@ -59,8 +64,9 @@ drag_start_x, drag_start_y = 0, 0
 simulation_start_time = 0  # Will be set when simulation starts
 total_elapsed_time = 0  # Total simulated time in seconds
 
+# -------------------------------------------------------------
 # Solar System Creation
-
+# -------------------------------------------------------------
 # Create solar system 
 solarsystem = create_solarsystem()
 
@@ -92,11 +98,16 @@ planet_hud_data = [
     ("Pluto",   pluto,      config.colors.TNO_COLORS["Pluto"])
 ]
 
+# !!!!!!!!!
 # Main Loop
+# !!!!!!!!!
 while True:
     clock.tick(FPS)
     DISPLAYSURF.fill(config.display.COLOR_BACKGROUND)
 
+    # -------------------------------------------------------------
+    # Keybinds
+    # -------------------------------------------------------------
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
@@ -148,23 +159,6 @@ while True:
             elif event.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
                 steps_per_frame = max(1, steps_per_frame -1)
 
-            # Old buggy code
-            # if event.key == pygame.K_PLUS or event.key == pygame.K_EQUALS or event.key == pygame.K_KP_PLUS:
-            #     config.simulation.TIMESTEP += 3600 * 24  # Increase time step (faster)
-            # elif event.key == pygame.K_MINUS or event.key == pygame.K_KP_MINUS:
-            #     config.simulation.TIMESTEP -= 3600 * 24  # Decrease time step (slower)
-
-            # # Check mouse position for screen movement (for future use)
-            # mouse_x, mouse_y = pygame.mouse.get_pos()  # Get current mouse position
-            # if mouse_x <= 10:  # If mouse is at the left edge
-            #     screen_offset_x += 5
-            # elif mouse_x >= constants.WIDTH - 10:  # If mouse is at the right edge
-            #     screen_offset_x -= 5
-            # if mouse_y <= 10:  # If mouse is at the top edge
-            #     screen_offset_y += 5
-            # elif mouse_y >= constants.HEIGHT - 10:  # If mouse is at the bottom edge
-            #     screen_offset_y -= 5
-
             # Exit the program with ESC
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
@@ -177,14 +171,9 @@ while True:
                 pygame.image.save(DISPLAYSURF, screenshot_path)
                 print(f"Screenshot saved to: {screenshot_path}")
 
-    # # Draw and update Solar System, new sizes
-    # for body in current_solarsystem:
-    #     body.update_position(current_solarsystem)
-    #     body.draw(DISPLAYSURF, scale, screen_offset_x, screen_offset_y)
-    
-    # # Update total elapsed simulation time
-    # total_elapsed_time += Body.TIMESTEP
-
+    # -------------------------------------------------------------
+    # Update and draw celestial bodies
+    # -------------------------------------------------------------
     for _ in range(steps_per_frame):
         # Physics update
         update_bodies_physics(
@@ -202,6 +191,9 @@ while True:
     for body in current_solarsystem:
         draw_body(DISPLAYSURF, body, scale, screen_cx, screen_cy)
 
+    # -------------------------------------------------------------
+    # Render HUD
+    # -------------------------------------------------------------
     # Render menu texts and planet distances
     render_menu_texts(
         DISPLAYSURF, 
@@ -209,12 +201,14 @@ while True:
         clock, 
         total_elapsed_time,
         planet_hud_data,
-        steps_per_frame=steps_per_frame)
+        steps_per_frame = steps_per_frame)
 
+    # -------------------------------------------------------------
+    # Misc
+    # -------------------------------------------------------------
     # delta time for framerate-independent physics
     dt = clock.tick(FPS) / 1000
     
-
     # Update display
     pygame.display.update()
 

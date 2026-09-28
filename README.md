@@ -31,11 +31,12 @@ Based on the [YouTube](https://www.youtube.com/watch?v=WTLPmUHTPqo) tutorial by 
 
 Install Python packages and run `main.py`. 
 
-**Dependencies:**
+**Main dependencies:**
 - pygame
 - skyfield
 - jplephem
-- itertools
+
+**See `requirements.txt` for all packages used!**
 
 ## Controls
 

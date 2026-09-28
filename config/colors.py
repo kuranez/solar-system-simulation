@@ -22,12 +22,14 @@ PLANET_COLORS = {
 
 # TNOs
 TNO_COLORS = {
+    "Random":   (128, 128, 128),
     "Pluto":    (200, 200, 255),
     # "Charon": (0, 0, 0)
 }
 
 # Asteroids
 ASTEROID_COLORS = {
+    "Random":   (128, 128, 128),
     "Ceres":    (180, 180, 180),
     "Vesta":    (190, 185, 180),
     "Pallas":   (200, 200, 200),

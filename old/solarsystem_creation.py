@@ -1,8 +1,6 @@
-# solarsystem_creation - Factory module
+# solarsystem_creation - Factory module: Creates objects in the Solar System like Sun, Planets, Asteroids
 
-# import constants
 import random
-# import math
 
 import config.simulation
 import physics.constants
@@ -10,22 +8,22 @@ import physics.constants
 from objects.body import Body
 
 from physics.orbits import calculate_circular_orbit
+from render.scale import calculate_scaled_sizes
 
 from data.sun import SUN_DATA
 from data.planets import PLANET_DATA
 from data.asteroids import ASTEROID_DATA
 from data.tnos import TNO_DATA
 
-# from solarsystem_sim import Sun, Planet, Asteroid
-from solarsystem_scale import calculate_scaled_sizes
-
 from skyfield.api import load
 # from skyfield.timelib import Time
 
 def create_solarsystem():
     """Create objects in the solar system using Skyfield for real positions."""
-    # Use the default simulation scale for initial planet rendering sizes.
-    scaled_sizes = calculate_scaled_sizes(config.simulation.DEFAULT_SCALE)
+    # Scaling
+    default_size = config.simulation.DEFAULT_SCALE
+    sun_size = config.simulation.SUN_SIZE
+    scaled_sizes = calculate_scaled_sizes(default_size)
 
     # Load Skyfield data
     # Use most recent DE440s ephemeris for accurate planetary positions
@@ -36,19 +34,15 @@ def create_solarsystem():
     t = ts.now()
     
     # Create Sun at center with mass from constants
-    # New creation method
     sun = Body(
-        name = SUN_DATA["Sun"]["name"],     # Name
+        name =  SUN_DATA["Sun"]["name"],    # Name
         x = 0.0, y = 0.0,                   # Position: Center of Screen
         vx = 0.0, vy = 0.0,                 # Intial velocity
         mass = SUN_DATA["Sun"]["mass"],     # Mass
-        radius = 2,                         # Draw radius -> Display radius not physical radius
+        radius = sun_size,                  # Draw radius -> Display radius not physical radius
         color = SUN_DATA["Sun"]["color"],   # Color
         is_sun = True
     )
-
-    # Old creation method
-    # sun = Sun(0, 0, 2, SUN_DATA["Sun"]["mass"])
 
     # Map planet names to the names Skyfield expects for the de440s kernel
     skyfield_names = {
@@ -95,32 +89,15 @@ def create_solarsystem():
         vx = velocity.au_per_d[0] * physics.constants.AU / (24 * 3600)
         vy = velocity.au_per_d[1] * physics.constants.AU / (24 * 3600)
 
-        # Create Planet object with scaled size and mass from constants
-
+        # Create Planet objects with scaled size and mass from constants
         planet = Body(
             name = data["name"],
-            x = x, y = y,
-            vx = vx, vy = vy,
+            x = x, y = y, vx = vx, vy = vy,
             mass = data["mass"],
             radius = scaled_sizes[data["name"]],
             color = data["color"],
-            track_orbit=True # Enables OrbitTracker
+            track_orbit = True # Enables OrbitTracker
         )
-
-        # Old planet creation
-        # planet = Planet(
-        #     x,
-        #     y,
-        #     scaled_sizes[data["name"]],
-        #     data["mass"],
-        #     name=data["name"],
-        #     is_inner_planet=data.get("is_inner", False)
-        # )
-        # # Set velocity from Skyfield data
-        # planet.x_vel = vx
-        # planet.y_vel = vy
-        # # Draw orbit lines for planets (except the Sun)
-        # planet.draw_line = True
 
         # Add planet to the list
         planets.append(planet)
@@ -131,6 +108,7 @@ def create_solarsystem():
 def create_major_asteroids():
     """Create major asteroids Ceres and Vesta"""
     sun_mass = SUN_DATA["Sun"]["mass"]
+    asteroid_radius = config.simulation.MINOR_BASE_SIZE
     major_asteroids = []
     
     for data in ASTEROID_DATA.values():
@@ -138,13 +116,13 @@ def create_major_asteroids():
 
     major_asteroids.append(
         Body(
-            name=data["name"],
+            name = data["name"],
             x = x, y = y, vx = vx, vy = vy,
             mass = data["mass"],
-            radius = 2.5,
+            radius = asteroid_radius,
             color = data["color"],
-            is_asteroid=True,
-            track_orbit=False
+            is_asteroid = True,
+            track_orbit = False
         )
     )
 
@@ -155,58 +133,31 @@ def create_asteroid_belt(num_asteroids: int):
     sun_mass = SUN_DATA["Sun"]["mass"]
     asteroids = []
     
-    # Asteroid belt range (2.2 to 3.2 AU from the Sun)
-    inner_radius = 2.2 * physics.constants.AU
-    outer_radius = 3.2 * physics.constants.AU
+    # Asteroid belt range (default: 2.2 to 3.2 AU from the Sun)
+    inner_radius = config.simulation.INNER_RADIUS
+    outer_radius = config.simulation.OUTER_RADIUS
+
+    # Asteroid sizes (default: 0.5 to 2 px)
+    min_size = config.simulation.MIN_SIZE
+    max_size = config.simulation.MAX_SIZE
+    rnd_mass = config.simulation.RND_MASS
     
     for i in range(num_asteroids):
         # Random orbital distance
         dist = random.uniform(inner_radius, outer_radius)
         x, y, vx, vy = calculate_circular_orbit(sun_mass, dist, eccentricity_range = (0.95, 1.05))
-
-        # Old orbit calc
-        # Random angle around the Sun
-        # angle = random.uniform(0, 2 * math.pi)
-        
-        # Calculate x, y position
-        # x = dist * math.cos(angle)
-        # y = dist * math.sin(angle)
         
         asteroids.append(
             Body(
                 name="Asteroid",
                 x = x, y = y, vx = vx, vy = vy,
-                mass = 1e15,
-                radius = random.uniform(0.5, 2),
-                color = (128, 128, 128),
+                mass = rnd_mass,
+                radius = random.uniform(min_size, max_size),
+                color = config.colors.ASTEROID_COLORS["Random"],
                 is_asteroid = True,
                 track_orbit = False
             )
         )
-
-        # Small random size (1-3 pixels)
-        # size = random.uniform(0.5, 2)
-        
-        # Very small mass (negligible gravitational effect)
-        # mass = 1e15  # Much smaller than planets
-        
-        # Uniform light gray color
-        # color = (128, 128, 128)
-        
-        # asteroid = Asteroid(x, y, size, mass, color)
-        
-        # Calculate orbital velocity (circular orbit around Sun)
-        # orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / distance)
-        
-        # Set velocity perpendicular to position vector
-        # asteroid.x_vel = -orbital_speed * math.sin(angle)
-        # asteroid.y_vel = orbital_speed * math.cos(angle)
-        
-        # Add some random eccentricity
-        # asteroid.x_vel *= random.uniform(0.95, 1.05)
-        # asteroid.y_vel *= random.uniform(0.95, 1.05)
-        
-        # asteroids.append(asteroid)
     
     return asteroids
 
@@ -215,9 +166,14 @@ def create_Kuiper_belt(num_objects: int):
     sun_mass = SUN_DATA["Sun"]["mass"]    
     tnos = []
     
-    # TNO belt range (30 to 50 AU from the Sun)
-    inner_radius = 30 * physics.constants.AU
-    outer_radius = 50 * physics.constants.AU
+    # TNO belt range (default: 30 to 50 AU from the Sun)
+    inner_radius = config.simulation.INNER_KUIPER_RADIUS
+    outer_radius = config.simulation.OUTER_KUIPER_RADIUS
+
+    # TNO random object size
+    min_size = config.simulation.MIN_SIZE
+    max_size = config.simulation.MAX_SIZE
+    rnd_mass = config.simulation.RND_MASS
     
     for i in range(num_objects):
         # Random orbital distance
@@ -228,44 +184,13 @@ def create_Kuiper_belt(num_objects: int):
             Body(
                 name="TNO",
                 x = x, y = y, vx = vx, vy = vy,
-                mass = 1e15,
-                radius = random.uniform(0.5, 2.0),
-                color = (160, 160, 160),
+                mass = rnd_mass,
+                radius = random.uniform(min_size, max_size),
+                color = config.colors.TNO_COLORS["Random"],
                 is_asteroid = True,
                 track_orbit = False
             )
         )
-        
-        # Random angle around the Sun
-        # angle = random.uniform(0, 2 * math.pi)
-        
-        # Calculate x, y position
-        # x = distance * math.cos(angle)
-        # y = distance * math.sin(angle)
-        
-        # Small random size (1-3 pixels)
-        # size = random.uniform(0.5, 2)
-        
-        # Very small mass (negligible gravitational effect)
-        # mass = 1e15  # Much smaller than planets
-        
-        # Uniform light gray color
-        # color = (160, 160, 160)
-        
-        # tno_object = Asteroid(x, y, size, mass, color)
-        
-        # Calculate orbital velocity (circular orbit around Sun)
-        # orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / distance)
-        
-        # Set velocity perpendicular to position vector
-        # tno_object.x_vel = -orbital_speed * math.sin(angle)
-        # tno_object.y_vel = orbital_speed * math.cos(angle)
-        
-        # Add some random eccentricity
-        # tno_object.x_vel *= random.uniform(0.95, 1.05)
-        # tno_object.y_vel *= random.uniform(0.95, 1.05)
-        
-        # tno_objects.append(tno_object)
     
     return tnos
 
@@ -273,35 +198,16 @@ def create_pluto():
     """Create Pluto as a special case TNO"""
     sun_mass = SUN_DATA["Sun"]["mass"]
     data = TNO_DATA["Pluto"]
+    base_size = config.simulation.MINOR_BASE_SIZE
     x, y, vx, vy = calculate_circular_orbit(sun_mass, data["semi_major_axis"])
 
     pluto = Body(
-        name=       data["name"],
-        x=x,        y=y,
-        vx=vx,      vy=vy,
-        mass=       data["mass"],
-        radius=     2.5,
-        color=      data["color"],
+        name = data["name"],
+        x = x, y = y, vx = vx, vy = vy,
+        mass = data["mass"],
+        radius = base_size,
+        color = data["color"],
         track_orbit=True
     )
-    # pluto_distance = pluto_data["semi_major_axis"]
-    # pluto_angle = random.uniform(0, 2 * math.pi)
-    
-    # pluto = Planet(
-    #     pluto_distance * math.cos(pluto_angle),
-    #     pluto_distance * math.sin(pluto_angle),
-    #     2.5,  # Size in pixels
-    #     pluto_data["mass"],
-    #     name=pluto_data["name"],
-    #     is_inner_planet=False
-    # )
-    
-    # # Calculate orbital velocity
-    # orbital_speed = math.sqrt(physics.constants.G * SUN_DATA["Sun"]["mass"] / pluto_distance)
-    # pluto.x_vel = -orbital_speed * math.sin(pluto_angle)
-    # pluto.y_vel = orbital_speed * math.cos(pluto_angle)
-    
-    # pluto.color = pluto_data["color"]
-    # pluto.draw_line = True  # Show orbit trail for Pluto
     
     return pluto

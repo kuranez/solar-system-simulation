@@ -13,8 +13,9 @@ The project is split into a small set of focused modules:
 - `main.py` — program entry point, object creation, event loop, rendering, and UI
 - ~~`constants.py` — physical constants, colors, planetary data, asteroid metadata~~
 - ~~`solarsystem_sim.py` — body classes and physics behaviour~~ (Split, moved, overhauled to objects/ and physics/)
-- `solarsystem_creation.py` — solar system object creation 
-- `solarsystem_scale.py` — helpers that convert real sizes into pixel sizes
+- ~~`solarsystem_creation.py` — solar system object creation~~ 
+- ~~`solarsystem_scale.py` — helpers that convert real sizes into pixel sizes~~
+- **TO DO:** Describe new modular structure (config/, objects/, data/ physics/, render/ vs. old sim/create/scale/constants)
 
 **Version 1.9.1** refactored the former `constants.py` file into dedicated modules. The previous file contained physical constants, display settings, simulation settings, and planetary data in different formats as a leftover from earlier versions.
 
@@ -51,7 +52,7 @@ solar-system-simulation/
 │   ├── __init__.py
 │   ├── colors.py		# Color palette
 │   ├── display.py		# Display and window settings
-│   └── simulation.py	# Simulation settings
+│   └── simulation.py	# Simulation settings (speed and scale)
 │
 ├── data/				# Celestial body data
 │   ├── __init__.py
@@ -59,6 +60,11 @@ solar-system-simulation/
 │   ├── planets.py		# Planet data
 │   ├── sun.py			# Sun data
 │   └── tnos.py			# TNO data
+│
+├── objects/			# Celestial body class
+│   ├── __init__.py
+│   ├── body.py			# Base class for celestial bodies
+│   └── factory.py		# Solar system creation factory
 │
 ├── physics/				# Physics module
 │   ├── __init__.py
@@ -70,18 +76,22 @@ solar-system-simulation/
 ├── render/					# Rendering
 │   ├── __init__.py
 │   ├── renderer.py			# Object drawing (Celestial bodies, orbits)
+│   ├── scale.py			# Object scaling
 │   └── hud.py				# Heads-up display (HUD)
 │
+├── docs/					# Documentation & Changelog
+│   ├── ARCHITECTURE.md
+│   ├── CHANGELOG.md
+│   └── DOCUMENTATION.md
+│
+├── old/					# Legacy modules
+│   ├── solarsystem_sim.py	
+│   ├── solarsystem_creation.py	
+│   └── solarsystem_scale.py
+│
 ├── main.py						# Main entry point
-├── solarsystem_creation.py		# Celestial body creation
-├── solarsystem_scale.py		# Celestial body scaling
-├── solarsystem_sim.py			# Celestial body classes handling simulation and physics
 │
-├── de440s.bsp					# Skyfield ephimeres data
-│
-├── README.md					# Project overview
-├── DOCUMENTATION.md			# Detailed documentation
-└── CHANGELOG.md				# Version history
+└── de440s.bsp					# Skyfield ephimeres data
 ```
 
 

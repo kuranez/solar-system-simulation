@@ -8,10 +8,10 @@ def render_menu_texts(
         clock, 
         total_elapsed_time, 
         planet_data,
-        steps_per_frame=1,
-        min_steps=1,
-        max_steps=64, 
-        title="Solar System Simulation v.1.9.2"):
+        steps_per_frame = 1,
+        min_steps = 1,
+        max_steps = 64, 
+        title = "Solar System Simulation v.1.9.2"):
     """Render HUD overlays (FPS, elapsed time, controls, and planet table)."""
 
     # -------------------------------------------------------------
