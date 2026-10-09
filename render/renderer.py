@@ -2,32 +2,60 @@
 import pygame
 import config.display
 
-def draw_orbit_trail(surface, body, scale, offset_x, offset_y):
-    """Draw smooth, faded orbit trail"""
-    # 
-    if not body.orbit_recorder or len(body.orbit_recorder.points) < 2:
-        return
+# def draw_orbit_trail(surface, body, scale, offset_x, offset_y):
+#     """Draw smooth, faded orbit trail"""
+#     # 
+#     if not body.orbit_recorder or len(body.orbit_recorder.points) < 2:
+#         return
 
+#     pts = body.orbit_recorder.points
+#     n_pts = len(pts)
+    
+#     # 1. Screen projection
+#     screen_pts = [
+#         (int(px * scale + offset_x), int(py * scale + offset_y))
+#         for px, py in pts
+#     ]
+
+#     bg_color = config.display.COLOR_BACKGROUND
+
+#     # 2. Draw segments in larger chunks or fast lines
+#     for i in range(1, n_pts):
+#         fade = i / n_pts
+#         faded_color = (
+#             int(body.color[0] * fade + bg_color[0] * (1 - fade)),
+#             int(body.color[1] * fade + bg_color[1] * (1 - fade)),
+#             int(body.color[2] * fade + bg_color[2] * (1 - fade)),
+#         )
+#         pygame.draw.line(surface, faded_color, screen_pts[i - 1], screen_pts[i], 1)
+
+def draw_orbit_trail(surface, body, scale, offset_x, offset_y, point_radius=1):
+    """Draw orbit trail as individual fading points/dots."""
+    if not body.orbit_recorder or not body.orbit_recorder.points:
+        return
     pts = body.orbit_recorder.points
     n_pts = len(pts)
-    
-    # Screen projection
-    screen_pts = [
-        (int(px * scale + offset_x), int(py * scale + offset_y))
-        for px, py in pts
-    ]
-
     bg_color = config.display.COLOR_BACKGROUND
+    w, h = config.display.WIDTH, config.display.HEIGHT
+    for i, (px, py) in enumerate(pts):
+        sx = int(px * scale + offset_x)
+        sy = int(py * scale + offset_y)
+        # Culling: Only draw if on screen
+        if 0 <= sx < w and 0 <= sy < h:
+            # Fade factor: older points are dimmer
+            fade = 0.2 + 0.8 * ((i + 1) / n_pts)
+            
+            faded_color = (
+                int(body.color[0] * fade + bg_color[0] * (1 - fade)),
+                int(body.color[1] * fade + bg_color[1] * (1 - fade)),
+                int(body.color[2] * fade + bg_color[2] * (1 - fade)),
+            )
+            # Option A: Draw 1px-2px smooth dot
+            pygame.draw.circle(surface, faded_color, (sx, sy), point_radius)
+            
+            # Option B (Ultra fast exact 1-pixel):
+            # surface.set_at((sx, sy), faded_color)
 
-    # Draw segments in larger chunks or fast lines
-    for i in range(1, n_pts):
-        fade = i / n_pts
-        faded_color = (
-            int(body.color[0] * fade + bg_color[0] * (1 - fade)),
-            int(body.color[1] * fade + bg_color[1] * (1 - fade)),
-            int(body.color[2] * fade + bg_color[2] * (1 - fade)),
-        )
-        pygame.draw.line(surface, faded_color, screen_pts[i - 1], screen_pts[i], 1)
 
 def draw_body(surface, body, scale, offset_x, offset_y):
     """Project and draw celestial body and its orbit."""

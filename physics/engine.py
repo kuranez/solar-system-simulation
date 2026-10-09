@@ -4,7 +4,7 @@ import math
 from physics.constants import G
 
 def compute_gravity_force(body1, body2, g=G):
-    """Compute gravitational force vector exerted on body1 by body2."""
+    """Compute gravitational force vector exerted on body1 by body2 using trigonometry."""
     dx = body2.x - body1.x
     dy = body2.y - body1.y
     dist_sq = dx * dx + dy * dy
@@ -37,28 +37,35 @@ def update_bodies_physics(major_bodies, minor_bodies, dt, sun=None):
     for body in major_bodies:
         if body.is_sun:
             continue
+
         total_fx = 0.0
         total_fy = 0.0
+
         # Planets only pull/get pulled by other major bodies (Sun + planets)
         for other in major_bodies:
             if body is other:
                 continue
+
             fx, fy, dist = compute_gravity_force(body, other)
             total_fx += fx
             total_fy += fy
+
             if other.is_sun:
                 body.distance_to_sun = dist
+
         # Velocity and position integration (Euler step)
         body.vx += (total_fx / body.mass) * dt
         body.vy += (total_fy / body.mass) * dt
         body.x += body.vx * dt
         body.y += body.vy * dt
+
         # Distance telemetry (min/max tracking)
         if body.distance_to_sun > 0:
             if body.min_distance is None or body.distance_to_sun < body.min_distance:
                 body.min_distance = body.distance_to_sun
             if body.max_distance is None or body.distance_to_sun > body.max_distance:
                 body.max_distance = body.distance_to_sun
+                
     # -------------------------------------------------------------
     # 2. Minor Bodies (Asteroids & TNOs)
     # -------------------------------------------------------------
@@ -66,6 +73,7 @@ def update_bodies_physics(major_bodies, minor_bodies, dt, sun=None):
         for asteroid in minor_bodies:
             # Asteroids only get pulled by the Sun (1-body central force)
             fx, fy, dist = compute_gravity_force(asteroid, sun)
+            
             asteroid.vx += (fx / asteroid.mass) * dt
             asteroid.vy += (fy / asteroid.mass) * dt
             asteroid.x += asteroid.vx * dt

@@ -173,10 +173,10 @@ while True:
                 print(f"Screenshot saved to: {screenshot_path}")
 
     # -------------------------------------------------------------
-    # Update and draw celestial bodies
+    # Physics 6 Orbit Recording Loop
     # -------------------------------------------------------------
     for _ in range(steps_per_frame):
-        # Physics update - Seperate major and minor body loops
+        # 1. Physics step (move planets by dt)
         update_bodies_physics(
             major_bodies,
             minor_bodies,
@@ -186,7 +186,8 @@ while True:
 
         total_elapsed_time += BASE_TIMESTEP
 
-    # Tweak: Update OrbitRecorder once per frame (after all substeps)    
+    # 2. Feed the OrbitRecorder on each physics step 
+    #         # (This ensures fast inner planets like Mercury capture every 1° even at 64x speed!)  
     for body in major_bodies:
         if body.orbit_recorder:
             body.orbit_recorder.update(body.x, body.y, sun.x, sun.y)
